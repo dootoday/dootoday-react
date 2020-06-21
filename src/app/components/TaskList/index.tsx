@@ -4,6 +4,7 @@
  *
  */
 import React, { memo } from 'react';
+import { Typography } from '@material-ui/core';
 import styled from 'styled-components/macro';
 
 interface Props {}
@@ -13,8 +14,8 @@ export const TaskList = memo((props: Props) => {
     <Div>
       <section>
         <header className="header">
-          <h2>Sunday</h2>
-          <p>June 21, 2020</p>
+          <Typography variant="h6">Sunday</Typography>
+          <Typography variant="caption">June 21, 2020</Typography>
         </header>
       </section>
       <section className="body"></section>

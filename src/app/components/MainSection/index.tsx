@@ -5,7 +5,14 @@
  */
 import React, { memo } from 'react';
 import styled from 'styled-components/macro';
+import { IconButton } from '@material-ui/core';
 import { TaskList } from '../TaskList';
+import {
+  PlayArrow,
+  FastForward,
+  Home,
+  CalendarToday,
+} from '@material-ui/icons';
 
 interface Props {}
 
@@ -13,9 +20,30 @@ export const MainSection = memo((props: Props) => {
   return (
     <Section>
       <nav className="main-nav left">
-        <button>{'Prev'}</button>
-        <button>{'Prevv'}</button>
-        <button>{'Home'}</button>
+        <IconButton
+          className="icon"
+          color="primary"
+          aria-label="move one day back"
+          component="span"
+        >
+          <PlayArrow className="left primary-arrow" />
+        </IconButton>
+        <IconButton
+          className="icon"
+          color="primary"
+          aria-label="move five days back"
+          component="span"
+        >
+          <FastForward className="left secondary-arrow" />
+        </IconButton>
+        <IconButton
+          className="icon"
+          color="primary"
+          aria-label="go to current date"
+          component="span"
+        >
+          <Home className="tertiary-arrow" />
+        </IconButton>
       </nav>
       <div className="main-content">
         <ol className="grid" role="row">
@@ -29,9 +57,30 @@ export const MainSection = memo((props: Props) => {
         </ol>
       </div>
       <nav className="main-nav right">
-        <button>{'Next'}</button>
-        <button>{'Nextt'}</button>
-        <button>{'Cal'}</button>
+        <IconButton
+          className="icon"
+          color="primary"
+          aria-label="move one day ahead"
+          component="span"
+        >
+          <PlayArrow className="primary-arrow" />
+        </IconButton>
+        <IconButton
+          className="icon"
+          color="primary"
+          aria-label="move five days ahead"
+          component="span"
+        >
+          <FastForward className="secondary-arrow" />
+        </IconButton>
+        <IconButton
+          className="icon"
+          color="primary"
+          aria-label="select a date"
+          component="span"
+        >
+          <CalendarToday className="tertiary-arrow" />
+        </IconButton>
       </nav>
     </Section>
   );
@@ -54,6 +103,7 @@ const Section = styled.section`
     z-index: 1;
 
     .grid {
+      margin-top: 0px;
       display: grid;
       list-style-type: none;
       grid-auto-columns: calc(20 * 1%);
@@ -75,7 +125,33 @@ const Section = styled.section`
 
   .main-nav {
     overflow: hidden;
-    padding: 0 1.1111111111rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+
+    .icon {
+      padding: 0;
+      .left {
+        transform: rotate(180deg);
+      }
+      .primary-arrow {
+        font-size: 1.8em;
+      }
+      .secondary-arrow {
+        font-size: 1em;
+        margin-top: 10px;
+      }
+      .tertiary-arrow {
+        font-size: 0.6em;
+        margin-top: 10px;
+        opacity: 0.5;
+      }
+
+      .secondary-arrow .tertiary-arrow {
+        opacity: 0.5;
+      }
+    }
 
     @media (max-width: 48em) {
       padding: 0 0.5555555556rem;
