@@ -3,7 +3,7 @@
  * TaskList
  *
  */
-import React, { memo, useState } from 'react';
+import React, { memo, useState, useEffect, useRef } from 'react';
 import { Typography } from '@material-ui/core';
 import styled from 'styled-components/macro';
 
@@ -58,18 +58,57 @@ interface Props {
 export const TaskList = memo((props: Props) => {
   const { title, meta, titleEditable, onTitleChange, onTaskAdd } = props;
   const [editingTitle, setEditingTitle] = useState(false);
+  const [titleValue, chageTitleValue] = useState(title);
+  const inputRef = useRef() as React.MutableRefObject<HTMLInputElement>;
+  const onClickTitle = (event: any) => {
+    event.preventDefault();
+    if (titleEditable) {
+      setEditingTitle(true);
+    }
+  };
+  const onBlurTitle = (event: any) => {
+    event.preventDefault();
+    setEditingTitle(false);
+    onTitleChange && onTitleChange(titleValue);
+  };
+  const onKeyPressTitle = (event: any) => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      inputRef.current.blur();
+    }
+    if (event.key === 'Escape') {
+      event.preventDefault();
+      setEditingTitle(false);
+      chageTitleValue(title);
+    }
+  };
+  useEffect(() => {
+    if (editingTitle) {
+      inputRef.current.focus();
+      inputRef.current.select();
+    }
+  }, [editingTitle, inputRef]);
   return (
     <Div>
       <section>
         <header className="header">
           {!editingTitle && (
-            <Typography variant="h6" onClick={() => setEditingTitle(true)}>
-              {title}
+            <Typography variant="h6" onClick={onClickTitle}>
+              {titleValue}
             </Typography>
           )}
           {titleEditable && editingTitle && (
             <div>
-              <input className="title_editor" name="title" value={title} />
+              <input
+                ref={inputRef}
+                className="title_editor"
+                name="title"
+                autoComplete="off"
+                value={titleValue}
+                onChange={e => chageTitleValue(e.target.value)}
+                onBlur={onBlurTitle}
+                onKeyDown={onKeyPressTitle}
+              />
             </div>
           )}
           <Typography variant="caption">{meta}</Typography>

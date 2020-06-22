@@ -1,4 +1,5 @@
 import React from 'react';
+import { action } from '@storybook/addon-actions';
 import { TaskList } from 'app/components/TaskList';
 
 const Container = ({ children }) => (
@@ -20,6 +21,7 @@ export const taskList = () => (
     title={'Monday'}
     meta={'June 21, 2020'}
     titleEditable={true}
+    onTitleChange={action('title changed')}
   />
 );
 
