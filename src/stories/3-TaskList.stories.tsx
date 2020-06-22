@@ -1,21 +1,30 @@
 import React from 'react';
 import { TaskList } from 'app/components/TaskList';
 
-export const taskList = () => (
+const Container = ({ children }) => (
   <div
     style={{
-      height: '500px',
-      width: '200px',
+      height: '300px',
+      width: '250px',
       padding: '80px 10px 0px 10px',
       position: 'relative',
-      fontSize: '12px',
     }}
   >
-    <TaskList></TaskList>
+    {children}
   </div>
+);
+
+export const taskList = () => (
+  <TaskList
+    id={'some_id'}
+    title={'Monday'}
+    meta={'June 21, 2020'}
+    titleEditable={true}
+  />
 );
 
 export default {
   title: 'Task List',
   component: TaskList,
+  decorators: [storyFn => <Container>{storyFn()}</Container>],
 };

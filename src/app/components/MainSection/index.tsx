@@ -6,7 +6,7 @@
 import React, { memo } from 'react';
 import styled from 'styled-components/macro';
 import { IconButton } from '@material-ui/core';
-import { TaskList } from '../TaskList';
+// import { TaskList } from '../TaskList';
 import {
   PlayArrow,
   FastForward,
@@ -50,7 +50,7 @@ export const MainSection = memo((props: Props) => {
           {[1, 2, 3, 4, 5, 6, 7, 8, 9].map(i => {
             return (
               <li className="grid_item" key={i}>
-                <TaskList></TaskList>
+                Hello world
               </li>
             );
           })}
