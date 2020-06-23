@@ -15,11 +15,17 @@ const Container = ({ children }) => (
   </div>
 );
 
+const tasks = [
+  { id: 'some-id-1', markdown: 'This is task 1', isDone: false },
+  { id: 'some-id-2', markdown: 'This is task 2', isDone: false },
+];
+
 export const taskList = () => (
   <TaskList
     id={'some_id'}
     title={'Monday'}
     meta={'June 21, 2020'}
+    tasks={tasks}
     titleEditable={true}
     onTitleChange={action('title changed')}
   />

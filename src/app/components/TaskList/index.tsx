@@ -6,6 +6,7 @@
 import React, { memo, useState, useEffect, useRef } from 'react';
 import { Typography } from '@material-ui/core';
 import styled from 'styled-components/macro';
+import { Task, TaskItem } from '../TaskItem';
 
 interface Props {
   /**
@@ -35,6 +36,11 @@ interface Props {
    */
   titleEditable?: boolean;
 
+  /**
+   * Task list is the list of the tasks
+   */
+  tasks?: Task[];
+
   /** Events **/
   /**
    * Should be provided if title is editabe
@@ -56,7 +62,7 @@ interface Props {
 }
 
 export const TaskList = memo((props: Props) => {
-  const { title, meta, titleEditable, onTitleChange, onTaskAdd } = props;
+  const { title, meta, titleEditable, tasks, onTitleChange, onTaskAdd } = props;
   const [editingTitle, setEditingTitle] = useState(false);
   const [titleValue, chageTitleValue] = useState(title);
   const inputRef = useRef() as React.MutableRefObject<HTMLInputElement>;
@@ -114,7 +120,15 @@ export const TaskList = memo((props: Props) => {
           <Typography variant="caption">{meta}</Typography>
         </header>
       </section>
-      <section className="body"></section>
+      <section className="body">
+        <ul>
+          {!!tasks &&
+            !!tasks.length &&
+            tasks.map(task => (
+              <TaskItem key={task.id} task={task} isEditable={true} />
+            ))}
+        </ul>
+      </section>
     </Div>
   );
 });
@@ -158,5 +172,10 @@ const Div = styled.div`
       transparent 25px
     );
     flex: 1 1 100%;
+
+    ul {
+      padding: 0px;
+      margin: 0px;
+    }
   }
 `;

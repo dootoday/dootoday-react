@@ -120,6 +120,7 @@ export const TaskItem = memo((props: Props) => {
 const Li = styled.li`
   list-style: none;
   max-height: 20px;
+  margin-bottom: 5px;
 
   .done {
     text-decoration: line-through;
