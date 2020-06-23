@@ -36,15 +36,31 @@ export const TaskItem = memo((props: Props) => {
   const [editing, setEditing] = useState(false);
   const [taskState, setTaskState] = useState<Task>(task);
   const inputRef = useRef() as React.MutableRefObject<HTMLInputElement>;
+  let timeouts: number[] = [];
   const handleDoublieClick = () => {
+    if (timeouts.length) {
+      timeouts.forEach(to => {
+        clearTimeout(to);
+      });
+      timeouts = [];
+    }
     if (isEditable) {
       setEditing(true);
     }
   };
+  const handleClick = () => {
+    timeouts.push(
+      setTimeout(() => {
+        const newState = { ...taskState, ...{ isDone: !taskState.isDone } };
+        setTaskState(newState);
+        onTaskUpdate && onTaskUpdate(newState);
+      }, 400),
+    );
+  };
   const onBlur = (event: any) => {
     event.preventDefault();
     setEditing(false);
-    onTaskUpdate && onTaskUpdate(taskState);
+    onTaskUpdate && onTaskUpdate({ ...taskState });
   };
   const onKeyPress = (event: any) => {
     if (event.key === 'Enter') {
@@ -64,42 +80,46 @@ export const TaskItem = memo((props: Props) => {
     }
   }, [editing, inputRef]);
   return (
-    <Li>
-      {!editing && (
-        <Typography
-          onDoubleClick={handleDoublieClick}
-          variant={'caption'}
-          className={taskState.isDone ? 'done' : ''}
-        >
-          <ReactMarkdown
-            className={'md'}
-            disallowedTypes={['break', 'delete']}
-            linkTarget={'_blank'}
-            source={taskState.markdown}
-          />
-        </Typography>
+    <>
+      {task.markdown && (
+        <Li>
+          {!editing && (
+            <Typography
+              onDoubleClick={handleDoublieClick}
+              onClick={handleClick}
+              variant={'caption'}
+              className={taskState.isDone ? 'done' : ''}
+            >
+              <ReactMarkdown
+                className={'md'}
+                disallowedTypes={['break', 'delete']}
+                linkTarget={'_blank'}
+                source={taskState.markdown}
+              />
+            </Typography>
+          )}
+          {editing && (
+            <input
+              name="task"
+              ref={inputRef}
+              className="input"
+              value={taskState.markdown}
+              onChange={e =>
+                setTaskState({ ...taskState, ...{ markdown: e.target.value } })
+              }
+              onBlur={onBlur}
+              onKeyDown={onKeyPress}
+            />
+          )}
+        </Li>
       )}
-      {editing && (
-        <input
-          name="task"
-          ref={inputRef}
-          className="input"
-          value={taskState.markdown}
-          onChange={e =>
-            setTaskState({ ...taskState, ...{ markdown: e.target.value } })
-          }
-          onBlur={onBlur}
-          onKeyDown={onKeyPress}
-        />
-      )}
-    </Li>
+    </>
   );
 });
 
 const Li = styled.li`
   list-style: none;
   max-height: 20px;
-  cursor: grab;
 
   .done {
     text-decoration: line-through;
@@ -115,8 +135,23 @@ const Li = styled.li`
     padding: 0px;
     height: auto;
     width: 100%;
+    padding-left: 5px;
   }
   .md {
+    width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding-left: 5px;
+    :hover {
+      overflow: visible;
+      text-overflow: unset;
+      white-space: initial;
+      background-color: #fddddb;
+      cursor: grab;
+      position: relative;
+    }
+
     h1,
     h2,
     h3,
@@ -132,10 +167,6 @@ const Li = styled.li`
     }
     p {
       margin: 0px;
-      width: 100%;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
     }
     ul {
       margin: 0px;
