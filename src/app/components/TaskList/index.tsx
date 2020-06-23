@@ -127,6 +127,11 @@ export const TaskList = memo((props: Props) => {
             tasks.map(task => (
               <TaskItem key={task.id} task={task} isEditable={true} />
             ))}
+          <TaskItem
+            task={{ id: '0', markdown: '', isDone: false }}
+            isJustInput={true}
+            placeHolder="Add a new task here"
+          />
         </ul>
       </section>
     </Div>

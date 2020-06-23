@@ -26,15 +26,34 @@ interface Props {
   isEditable?: boolean;
 
   /**
+   * isJustInput: If this is true then this component will work
+   * as an input field for a task item
+   */
+  isJustInput?: boolean;
+
+  /**
+   * placeHolder: should only be provided if isJustInput is true
+   * else it'll be ignored
+   */
+  placeHolder?: string;
+
+  /**
    * onTaskUpdate: Event for task update
    */
   onTaskUpdate?: (task: Task) => void;
 }
 
 export const TaskItem = memo((props: Props) => {
-  const { task, isEditable, onTaskUpdate } = props;
-  const [editing, setEditing] = useState(false);
-  const [taskState, setTaskState] = useState<Task>(task);
+  const { task, isEditable, isJustInput, placeHolder, onTaskUpdate } = props;
+  const [editing, setEditing] = useState(!!isJustInput);
+  const justEditingTaskState: Task = {
+    id: task.id,
+    markdown: '',
+    isDone: false,
+  };
+  const [taskState, setTaskState] = useState<Task>(
+    isJustInput ? justEditingTaskState : task,
+  );
   const inputRef = useRef() as React.MutableRefObject<HTMLInputElement>;
   let timeouts: number[] = [];
   const handleDoublieClick = () => {
@@ -59,18 +78,27 @@ export const TaskItem = memo((props: Props) => {
   };
   const onBlur = (event: any) => {
     event.preventDefault();
-    setEditing(false);
     onTaskUpdate && onTaskUpdate({ ...taskState });
+    if (isJustInput) {
+      setTaskState(justEditingTaskState);
+    } else {
+      setEditing(false);
+    }
   };
   const onKeyPress = (event: any) => {
     if (event.key === 'Enter') {
       event.preventDefault();
-      inputRef.current.blur();
+      if (isJustInput) {
+        onTaskUpdate && onTaskUpdate({ ...taskState });
+        setTaskState(justEditingTaskState);
+      } else {
+        inputRef.current.blur();
+      }
     }
     if (event.key === 'Escape') {
       event.preventDefault();
-      setEditing(false);
-      setTaskState(task);
+      setEditing(!!isJustInput);
+      setTaskState(isJustInput ? justEditingTaskState : task);
     }
   };
   useEffect(() => {
@@ -81,38 +109,37 @@ export const TaskItem = memo((props: Props) => {
   }, [editing, inputRef]);
   return (
     <>
-      {task.markdown && (
-        <Li>
-          {!editing && (
-            <Typography
-              onDoubleClick={handleDoublieClick}
-              onClick={handleClick}
-              variant={'caption'}
-              className={taskState.isDone ? 'done' : ''}
-            >
-              <ReactMarkdown
-                className={'md'}
-                disallowedTypes={['break', 'delete']}
-                linkTarget={'_blank'}
-                source={taskState.markdown}
-              />
-            </Typography>
-          )}
-          {editing && (
-            <input
-              name="task"
-              ref={inputRef}
-              className="input"
-              value={taskState.markdown}
-              onChange={e =>
-                setTaskState({ ...taskState, ...{ markdown: e.target.value } })
-              }
-              onBlur={onBlur}
-              onKeyDown={onKeyPress}
+      <Li>
+        {!editing && (
+          <Typography
+            onDoubleClick={handleDoublieClick}
+            onClick={handleClick}
+            variant={'caption'}
+            className={taskState.isDone ? 'done' : ''}
+          >
+            <ReactMarkdown
+              className={'md'}
+              disallowedTypes={['break', 'delete']}
+              linkTarget={'_blank'}
+              source={taskState.markdown}
             />
-          )}
-        </Li>
-      )}
+          </Typography>
+        )}
+        {(editing || isJustInput) && (
+          <input
+            name="task"
+            ref={inputRef}
+            className="input"
+            value={taskState.markdown}
+            placeholder={!!isJustInput ? placeHolder : ''}
+            onChange={e =>
+              setTaskState({ ...taskState, ...{ markdown: e.target.value } })
+            }
+            onBlur={onBlur}
+            onKeyDown={onKeyPress}
+          />
+        )}
+      </Li>
     </>
   );
 });
@@ -121,6 +148,7 @@ const Li = styled.li`
   list-style: none;
   max-height: 20px;
   margin-bottom: 5px;
+  margin-top: 3px;
 
   .done {
     text-decoration: line-through;

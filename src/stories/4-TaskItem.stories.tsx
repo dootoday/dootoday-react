@@ -24,7 +24,11 @@ export const taskItem = () => (
       onTaskUpdate={action('task updated')}
     />
     <TaskItem
-      task={{ id: 'some-id', markdown: 'This is a **task**', isDone: true }}
+      task={{
+        id: 'some-id',
+        markdown: 'This is a **non editable** task',
+        isDone: true,
+      }}
     />
     <TaskItem
       task={{
@@ -33,7 +37,19 @@ export const taskItem = () => (
           'This is a very long text. This is a very long text. This is a very long text. This is a very long text. This is a very long text. This is a very long text. This is a very long text. This is a very long text. This is a very long text. This is a very long text. This is a very long text. This is a very long text. This is a very long text. This is a very long text.',
         isDone: false,
       }}
+      isEditable={true}
       onTaskUpdate={action('task updated')}
+    />
+
+    <TaskItem
+      task={{
+        id: '0',
+        markdown: 'hello',
+        isDone: false,
+      }}
+      isJustInput={true}
+      placeHolder="Add a new task here"
+      onTaskUpdate={action('task added')}
     />
   </>
 );
