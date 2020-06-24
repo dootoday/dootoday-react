@@ -41,6 +41,8 @@ export const taskList = () => (
         meta={'June 21, 2020'}
         tasks={[tasks[0], tasks[2]]}
         titleEditable={false}
+        onTaskAdd={action('task add')}
+        onTaskUpdate={action('task update')}
         onTitleChange={action('title changed')}
       />
     </div>
@@ -51,6 +53,8 @@ export const taskList = () => (
         meta={'June 21, 2020'}
         tasks={[tasks[1], tasks[3]]}
         titleEditable={true}
+        onTaskAdd={action('task add')}
+        onTaskUpdate={action('task update')}
         onTitleChange={action('title changed')}
       />
     </div>

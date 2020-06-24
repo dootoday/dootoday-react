@@ -53,13 +53,13 @@ interface Props {
    * This event is called when a new task is added for the
    * list
    */
-  onTaskAdd?: (task: string) => void;
+  onTaskAdd?: (task: string, listID: string) => void;
 
   /**
    * This event is called when an existing task is
    * updated on the list
    */
-  onTaskUpdate?: (id: string, task: string) => void;
+  onTaskUpdate?: (task: Task, listID: string) => void;
 }
 
 export const TaskList = memo((props: Props) => {
@@ -71,6 +71,7 @@ export const TaskList = memo((props: Props) => {
     tasks,
     onTitleChange,
     onTaskAdd,
+    onTaskUpdate,
   } = props;
   const [editingTitle, setEditingTitle] = useState(false);
   const [titleValue, chageTitleValue] = useState(title);
@@ -96,6 +97,12 @@ export const TaskList = memo((props: Props) => {
       setEditingTitle(false);
       chageTitleValue(title);
     }
+  };
+  const handleTaskAdd = (task: Task) => {
+    onTaskAdd && onTaskAdd(task.markdown, id);
+  };
+  const handleTaskUpdate = (task: Task) => {
+    onTaskUpdate && onTaskUpdate(task, id);
   };
   useEffect(() => {
     if (editingTitle) {
@@ -143,7 +150,11 @@ export const TaskList = memo((props: Props) => {
                         {...provided.draggableProps}
                         {...provided.dragHandleProps}
                       >
-                        <TaskItem task={task} isEditable={true} />
+                        <TaskItem
+                          task={task}
+                          onTaskUpdate={handleTaskUpdate}
+                          isEditable={true}
+                        />
                       </li>
                     )}
                   </Draggable>
@@ -152,6 +163,7 @@ export const TaskList = memo((props: Props) => {
               <li>
                 <TaskItem
                   task={{} as Task}
+                  onTaskUpdate={handleTaskAdd}
                   isJustInput={true}
                   placeHolder="Add a new task here"
                 />
