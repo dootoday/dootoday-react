@@ -73,9 +73,14 @@ export const MainSec = () => (
   <div style={{ height: '500px' }}>
     <MainSection
       taskColumns={getTaskColumns()}
+      startIndex={number('Start At', 2)}
+      showDateNav={true}
+      showHomeNav={true}
       onTaskAdd={action('task add')}
       onTaskUpdate={action('task update')}
-      startIndex={number('Start At', 2)}
+      onMoveRequest={action('move request')}
+      onMoveToDateRequest={action('date request')}
+      onHomeRequest={action('home request')}
     ></MainSection>
   </div>
 );

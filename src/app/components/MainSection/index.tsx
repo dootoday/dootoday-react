@@ -40,6 +40,16 @@ interface Props {
   colTitleEditable?: boolean;
 
   /**
+   * showHomeNav: Should show the home button in nav
+   */
+  showHomeNav?: boolean;
+
+  /**
+   * showDateNav: Should show the date button in nav
+   */
+  showDateNav?: boolean;
+
+  /**
    * onTaskAdd: Event on task add
    */
   onTaskAdd?: (task: string, colID: string) => void;
@@ -48,6 +58,22 @@ interface Props {
    * onTaskUpdate: Event on task add
    */
   onTaskUpdate?: (task: Task) => void;
+
+  /**
+   * onMoveRequest: Event on task add
+   */
+  onMoveRequest?: (moveby: number) => void;
+
+  /**
+   * onHomeRequest: This is an event on click the home button
+   * in nav
+   */
+  onHomeRequest?: () => void;
+
+  /**
+   * onMoveToDateRequest: Move to a date request
+   */
+  onMoveToDateRequest?: (d: Date) => void;
 }
 
 export const MainSection = memo((props: Props) => {
@@ -55,8 +81,13 @@ export const MainSection = memo((props: Props) => {
     taskColumns,
     colTitleEditable,
     startIndex,
+    showHomeNav,
+    showDateNav,
     onTaskAdd,
     onTaskUpdate,
+    onMoveRequest,
+    onHomeRequest,
+    onMoveToDateRequest,
   } = props;
 
   const calculateStartIndex = (startIndex: number, mobile: boolean): number => {
@@ -78,6 +109,7 @@ export const MainSection = memo((props: Props) => {
     >
       <nav className="main-nav left">
         <IconButton
+          onClick={() => onMoveRequest && onMoveRequest(-1)}
           className="icon"
           color="primary"
           aria-label="move one day back"
@@ -86,6 +118,7 @@ export const MainSection = memo((props: Props) => {
           <PlayArrow className="left primary-arrow" />
         </IconButton>
         <IconButton
+          onClick={() => onMoveRequest && onMoveRequest(-5)}
           className="icon"
           color="primary"
           aria-label="move five days back"
@@ -93,14 +126,17 @@ export const MainSection = memo((props: Props) => {
         >
           <FastForward className="left secondary-arrow" />
         </IconButton>
-        <IconButton
-          className="icon"
-          color="primary"
-          aria-label="go to current date"
-          component="span"
-        >
-          <Home className="tertiary-arrow" />
-        </IconButton>
+        {showHomeNav && (
+          <IconButton
+            onClick={() => onHomeRequest && onHomeRequest()}
+            className="icon"
+            color="primary"
+            aria-label="go to current date"
+            component="span"
+          >
+            <Home className="tertiary-arrow" />
+          </IconButton>
+        )}
       </nav>
       <div className="main-content">
         <ol className="grid" role="row">
@@ -124,6 +160,7 @@ export const MainSection = memo((props: Props) => {
       </div>
       <nav className="main-nav right">
         <IconButton
+          onClick={() => onMoveRequest && onMoveRequest(1)}
           className="icon"
           color="primary"
           aria-label="move one day ahead"
@@ -132,6 +169,7 @@ export const MainSection = memo((props: Props) => {
           <PlayArrow className="right primary-arrow" />
         </IconButton>
         <IconButton
+          onClick={() => onMoveRequest && onMoveRequest(5)}
           className="icon"
           color="primary"
           aria-label="move five days ahead"
@@ -139,14 +177,16 @@ export const MainSection = memo((props: Props) => {
         >
           <FastForward className="right secondary-arrow" />
         </IconButton>
-        <IconButton
-          className="icon"
-          color="primary"
-          aria-label="select a date"
-          component="span"
-        >
-          <CalendarToday className="right tertiary-arrow" />
-        </IconButton>
+        {showDateNav && (
+          <IconButton
+            className="icon"
+            color="primary"
+            aria-label="select a date"
+            component="span"
+          >
+            <CalendarToday className="right tertiary-arrow" />
+          </IconButton>
+        )}
       </nav>
     </Section>
   );
