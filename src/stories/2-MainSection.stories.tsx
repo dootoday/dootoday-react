@@ -43,7 +43,11 @@ const cols: TaskColumn[] = [
 
 export const MainSec = () => (
   <div style={{ height: '500px' }}>
-    <MainSection taskColumns={cols}></MainSection>
+    <MainSection
+      taskColumns={cols}
+      onTaskAdd={action('task add')}
+      onTaskUpdate={action('task update')}
+    ></MainSection>
   </div>
 );
 

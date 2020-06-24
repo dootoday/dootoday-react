@@ -39,10 +39,26 @@ interface Props {
    * colTitleEditable: If the column titles are editable
    */
   colTitleEditable?: boolean;
+
+  /**
+   * onTaskAdd: Event on task add
+   */
+  onTaskAdd?: (task: string, colID: string) => void;
+
+  /**
+   * onTaskUpdate: Event on task add
+   */
+  onTaskUpdate?: (task: Task) => void;
 }
 
 export const MainSection = memo((props: Props) => {
-  const { taskColumns, colTitleEditable, startIndex } = props;
+  const {
+    taskColumns,
+    colTitleEditable,
+    startIndex,
+    onTaskAdd,
+    onTaskUpdate,
+  } = props;
   return (
     <Section>
       <nav className="main-nav left">
@@ -82,6 +98,8 @@ export const MainSection = memo((props: Props) => {
                     title={taskColumn.title}
                     meta={taskColumn.meta || ''}
                     tasks={taskColumn.tasks}
+                    onTaskAdd={onTaskAdd}
+                    onTaskUpdate={onTaskUpdate}
                     titleEditable={!!colTitleEditable}
                   />
                 </li>
