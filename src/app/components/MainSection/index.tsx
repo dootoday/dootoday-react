@@ -220,14 +220,14 @@ const Section = styled.section<{
       grid-template-rows: 100%;
       padding-left: 0;
       min-height: 25.1111111111rem;
-      transition: transform 0.5s ease-in-out, -webkit-transform 0.5s ease-in-out;
+      transition: all 0.5s ease-in-out, -webkit-all 0.5s ease-in-out;
       z-index: 0;
       position: relative;
-      transform: translateX(${props => -(props.startIndex * 20)}%);
+      left: ${props => -(props.startIndex * 20)}%;
 
       @media (max-width: 48.0625em) {
         grid-auto-columns: calc(100 * 1%);
-        transform: translateX(${props => -(props.startIndexMob * 100)}%);
+        left: ${props => -(props.startIndexMob * 100)}%;
       }
 
       .grid_item {
