@@ -148,20 +148,14 @@ export const TaskList = memo((props: Props) => {
                     )}
                   </Draggable>
                 ))}
-              <Draggable
-                draggableId={'inp' + id}
-                index={tasks ? tasks.length + 1 : 0}
-              >
-                {provided => (
-                  <li ref={provided.innerRef} {...provided.draggableProps}>
-                    <TaskItem
-                      task={{} as Task}
-                      isJustInput={true}
-                      placeHolder="Add a new task here"
-                    />
-                  </li>
-                )}
-              </Draggable>
+              {provided.placeholder}
+              <li>
+                <TaskItem
+                  task={{} as Task}
+                  isJustInput={true}
+                  placeHolder="Add a new task here"
+                />
+              </li>
             </ul>
           )}
         </Droppable>
@@ -202,13 +196,24 @@ const Div = styled.div`
   .body {
     background-image: repeating-linear-gradient(
       transparent,
-      transparent 22px,
-      rgba(0, 0, 0, 0.08) 22px,
-      rgba(0, 0, 0, 0.08) 23.23px,
-      transparent 23.23px,
-      transparent 25px
+      transparent 44px,
+      rgba(0, 0, 0, 0.08) 44px,
+      rgba(0, 0, 0, 0.08) 45px,
+      transparent 45px,
+      transparent 47px
     );
     flex: 1 1 100%;
+
+    @media (min-width: 48.0625em) {
+      background-image: repeating-linear-gradient(
+        transparent,
+        transparent 22px,
+        rgba(0, 0, 0, 0.08) 22px,
+        rgba(0, 0, 0, 0.08) 23.23px,
+        transparent 23.23px,
+        transparent 25px
+      );
+    }
 
     ul {
       padding: 0px;

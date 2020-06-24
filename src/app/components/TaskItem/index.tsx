@@ -206,4 +206,31 @@ const Div = styled.div`
       }
     }
   }
+
+  @media (max-width: 48.0625em) {
+    margin-bottom: 0px;
+    margin-top: 15px;
+    min-height: 28px;
+    .input {
+      font-size: 0.95rem;
+    }
+    .md {
+      font-size: 0.95rem;
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      h6 {
+        font-size: 0.95rem;
+        line-height: 1.66;
+      }
+      p {
+        font-size: 0.95rem;
+      }
+      li {
+        font-size: 0.95rem;
+      }
+    }
+  }
 `;

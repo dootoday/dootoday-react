@@ -7,7 +7,7 @@ const Container = ({ children }) => (
   <div
     style={{
       height: '300px',
-      width: '250px',
+      width: 'auto',
       padding: '80px 10px 0px 10px',
       position: 'relative',
     }}
@@ -34,7 +34,7 @@ export const taskList = () => (
       height: '500px',
     }}
   >
-    <div style={{ minWidth: '250px' }}>
+    <div style={{ width: '250px' }}>
       <TaskList
         id={'some_id_1'}
         title={'Monday'}
