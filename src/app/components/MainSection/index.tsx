@@ -3,9 +3,11 @@
  * MainSection
  *
  */
-import React, { memo } from 'react';
+import React, { memo, useState } from 'react';
 import styled from 'styled-components/macro';
 import { IconButton } from '@material-ui/core';
+import { MuiPickersUtilsProvider, DatePicker } from '@material-ui/pickers';
+import DateFnsUtils from '@date-io/date-fns';
 import { Task } from '../TaskItem';
 import { TaskList } from '../TaskList';
 import {
@@ -90,6 +92,8 @@ export const MainSection = memo((props: Props) => {
     onMoveToDateRequest,
   } = props;
 
+  const [datePickerOpen, setDatePickerOpen] = useState(false);
+
   const calculateStartIndex = (startIndex: number, mobile: boolean): number => {
     const screenlimit = mobile ? 1 : 5;
     if (startIndex > taskColumns.length - screenlimit) {
@@ -99,6 +103,11 @@ export const MainSection = memo((props: Props) => {
       return 0;
     }
     return startIndex;
+  };
+
+  const handleDateChange = (date: any) => {
+    onMoveToDateRequest && onMoveToDateRequest(date as Date);
+    setDatePickerOpen(false);
   };
 
   return (
@@ -178,14 +187,26 @@ export const MainSection = memo((props: Props) => {
           <FastForward className="right secondary-arrow" />
         </IconButton>
         {showDateNav && (
-          <IconButton
-            className="icon"
-            color="primary"
-            aria-label="select a date"
-            component="span"
-          >
-            <CalendarToday className="right tertiary-arrow" />
-          </IconButton>
+          <>
+            <IconButton
+              onClick={() => setDatePickerOpen(true)}
+              className="icon"
+              color="primary"
+              aria-label="select a date"
+              component="span"
+            >
+              <CalendarToday className="right tertiary-arrow" />
+            </IconButton>
+            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+              <DatePicker
+                open={datePickerOpen}
+                value={new Date()}
+                onChange={handleDateChange}
+                onClose={() => setDatePickerOpen(false)}
+                TextFieldComponent={() => <span />}
+              />
+            </MuiPickersUtilsProvider>
+          </>
         )}
       </nav>
     </Section>
