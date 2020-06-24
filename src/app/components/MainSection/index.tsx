@@ -6,7 +6,8 @@
 import React, { memo } from 'react';
 import styled from 'styled-components/macro';
 import { IconButton } from '@material-ui/core';
-// import { TaskList } from '../TaskList';
+import { Task } from '../TaskItem';
+import { TaskList } from '../TaskList';
 import {
   PlayArrow,
   FastForward,
@@ -14,9 +15,34 @@ import {
   CalendarToday,
 } from '@material-ui/icons';
 
-interface Props {}
+export interface TaskColumn {
+  id: string;
+  title: string;
+  meta?: string;
+  tasks: Task[];
+  active?: boolean;
+}
+
+interface Props {
+  /**
+   * taskColumns: This is the columns for the task
+   */
+  taskColumns: TaskColumn[];
+
+  /**
+   * startIndex: This is the starting point in the screen
+   * default value is 0
+   */
+  startIndex?: number;
+
+  /**
+   * colTitleEditable: If the column titles are editable
+   */
+  colTitleEditable?: boolean;
+}
 
 export const MainSection = memo((props: Props) => {
+  const { taskColumns, colTitleEditable, startIndex } = props;
   return (
     <Section>
       <nav className="main-nav left">
@@ -47,13 +73,20 @@ export const MainSection = memo((props: Props) => {
       </nav>
       <div className="main-content">
         <ol className="grid" role="row">
-          {[1, 2, 3, 4, 5, 6, 7, 8, 9].map(i => {
-            return (
-              <li className="grid_item" key={i}>
-                Hello world
-              </li>
-            );
-          })}
+          {!!taskColumns.length &&
+            taskColumns.map(taskColumn => {
+              return (
+                <li className="grid_item" key={taskColumn.id}>
+                  <TaskList
+                    id={taskColumn.id}
+                    title={taskColumn.title}
+                    meta={taskColumn.meta || ''}
+                    tasks={taskColumn.tasks}
+                    titleEditable={!!colTitleEditable}
+                  />
+                </li>
+              );
+            })}
         </ol>
       </div>
       <nav className="main-nav right">
@@ -122,7 +155,7 @@ const Section = styled.section`
         border-right: 1px solid rgba(0, 0, 0, 0.08);
         grid-row: 1/-1;
         position: relative;
-        padding: 80px 10px 0px 10px;
+        padding: 0px 15px;
       }
     }
   }
