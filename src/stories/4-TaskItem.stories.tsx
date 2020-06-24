@@ -1,6 +1,8 @@
 import React from 'react';
 import { action } from '@storybook/addon-actions';
 import { TaskItem } from 'app/components/TaskItem';
+import { red } from '@material-ui/core/colors';
+import { createMuiTheme } from '@material-ui/core/styles';
 
 const Container = ({ children }) => (
   <div
@@ -15,6 +17,16 @@ const Container = ({ children }) => (
     {children}
   </div>
 );
+
+const theme = createMuiTheme({
+  palette: {
+    primary: {
+      main: red[400],
+      dark: red[600],
+      light: red[100],
+    },
+  },
+});
 
 export const taskItem = () => (
   <>
@@ -43,10 +55,45 @@ export const taskItem = () => (
 
     <TaskItem
       task={{
+        id: 'some-id',
+        markdown: 'This is highlighted task',
+        isDone: false,
+      }}
+      highlight={true}
+      isEditable={true}
+      onTaskUpdate={action('task updated')}
+    />
+
+    <TaskItem
+      task={{
+        id: 'some-id',
+        markdown: 'This is highlighted task with theme',
+        isDone: false,
+      }}
+      theme={theme}
+      highlight={true}
+      isEditable={true}
+      onTaskUpdate={action('task updated')}
+    />
+
+    <TaskItem
+      task={{
         id: '0',
         markdown: 'hello',
         isDone: false,
       }}
+      isJustInput={true}
+      placeHolder="Add a new task here"
+      onTaskUpdate={action('task added')}
+    />
+
+    <TaskItem
+      task={{
+        id: '0',
+        markdown: 'hello',
+        isDone: false,
+      }}
+      highlight={true}
       isJustInput={true}
       placeHolder="Add a new task here"
       onTaskUpdate={action('task added')}

@@ -1,6 +1,8 @@
 import React from 'react';
 import { action } from '@storybook/addon-actions';
 import { withKnobs, number } from '@storybook/addon-knobs';
+import { createMuiTheme } from '@material-ui/core/styles';
+import { red } from '@material-ui/core/colors';
 import { DragDropContext } from 'react-beautiful-dnd';
 import { MainSection, TaskColumn } from 'app/components/MainSection';
 import { Task } from 'app/components/TaskItem';
@@ -12,6 +14,16 @@ const Container = ({ children }) => (
     </DragDropContext>
   </div>
 );
+
+const theme = createMuiTheme({
+  palette: {
+    primary: {
+      main: red[400],
+      dark: red[600],
+      light: red[100],
+    },
+  },
+});
 
 const getTaskColumns = (): TaskColumn[] => {
   const today = new Date();
@@ -63,6 +75,7 @@ const getTaskColumns = (): TaskColumn[] => {
       id: id,
       title: title,
       meta: `${date} ${months[month]}, ${year}`,
+      active: thatDay.getTime() === today.getTime(),
       tasks: tasks,
     });
   }
@@ -75,9 +88,10 @@ export const MainSec = () => (
   <div style={{ height: '500px' }}>
     <MainSection
       taskColumns={taskCols}
-      startIndex={number('Start At', 2)}
+      startIndex={number('Start At', 9)}
       showDateNav={true}
       showHomeNav={true}
+      theme={theme}
       onTaskAdd={action('task add')}
       onTaskUpdate={action('task update')}
       onMoveRequest={action('move request')}

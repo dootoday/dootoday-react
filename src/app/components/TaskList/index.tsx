@@ -6,6 +6,7 @@
 import React, { memo, useState, useEffect, useRef } from 'react';
 import { Typography } from '@material-ui/core';
 import { Draggable, Droppable } from 'react-beautiful-dnd';
+import { createMuiTheme, Theme, ThemeProvider } from '@material-ui/core/styles';
 import styled from 'styled-components/macro';
 import { Task, TaskItem } from '../TaskItem';
 
@@ -42,6 +43,16 @@ interface Props {
    */
   tasks?: Task[];
 
+  /**
+   * highlight: should items be highlighted
+   */
+  highlight?: boolean;
+
+  /**
+   * theme: Theme object of material UI
+   */
+  theme?: Theme;
+
   /** Events **/
   /**
    * Should be provided if title is editabe
@@ -73,6 +84,8 @@ export const TaskList = memo((props: Props) => {
     onTaskAdd,
     onTaskUpdate,
   } = props;
+  const theme = props.theme || createMuiTheme();
+  const highlight = !!props.highlight;
   const [editingTitle, setEditingTitle] = useState(false);
   const [titleValue, chageTitleValue] = useState(title);
   const inputRef = useRef() as React.MutableRefObject<HTMLInputElement>;
@@ -111,7 +124,7 @@ export const TaskList = memo((props: Props) => {
     }
   }, [editingTitle, inputRef]);
   return (
-    <Div>
+    <Div {...{ theme, highlight }}>
       <section>
         <header className="header">
           {!editingTitle && (
@@ -126,7 +139,7 @@ export const TaskList = memo((props: Props) => {
                 className="title_editor"
                 name="title"
                 autoComplete="off"
-                value={titleValue}
+                value={titleValue || ''}
                 onChange={e => chageTitleValue(e.target.value)}
                 onBlur={onBlurTitle}
                 onKeyDown={onKeyPressTitle}
@@ -152,6 +165,8 @@ export const TaskList = memo((props: Props) => {
                       >
                         <TaskItem
                           task={task}
+                          theme={theme}
+                          highlight={highlight}
                           onTaskUpdate={handleTaskUpdate}
                           isEditable={true}
                         />
@@ -163,6 +178,8 @@ export const TaskList = memo((props: Props) => {
               <li>
                 <TaskItem
                   task={{} as Task}
+                  theme={theme}
+                  highlight={highlight}
                   onTaskUpdate={handleTaskAdd}
                   isJustInput={true}
                   placeHolder="Add a new task here"
@@ -176,10 +193,11 @@ export const TaskList = memo((props: Props) => {
   );
 });
 
-const Div = styled.div`
+const Div = styled.div<{ theme: Theme; highlight: boolean }>`
   display: flex;
   flex-direction: column;
   height: 100%;
+  color: ${props => (props.highlight ? props.theme.palette.primary.dark : '')};
 
   .header {
     left: 0;
@@ -198,6 +216,8 @@ const Div = styled.div`
       letter-spacing: 0.0075em;
       text-transform: uppercase;
       text-align: center;
+      color: ${props =>
+        props.highlight ? props.theme.palette.primary.dark : ''};
     }
 
     @media (min-width: 48.0625em) {

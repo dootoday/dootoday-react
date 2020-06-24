@@ -5,6 +5,7 @@
  */
 import React, { memo, useState, useRef, useEffect } from 'react';
 import styled from 'styled-components/macro';
+import { createMuiTheme, Theme } from '@material-ui/core/styles';
 import { Typography } from '@material-ui/core';
 import ReactMarkdown from 'react-markdown';
 
@@ -38,6 +39,16 @@ interface Props {
   placeHolder?: string;
 
   /**
+   * highlight: should items be highlighted
+   */
+  highlight?: boolean;
+
+  /**
+   * theme: Theme object of material UI
+   */
+  theme?: Theme;
+
+  /**
    * onTaskUpdate: Event for task update
    */
   onTaskUpdate?: (task: Task) => void;
@@ -45,6 +56,8 @@ interface Props {
 
 export const TaskItem = memo((props: Props) => {
   const { task, isEditable, isJustInput, placeHolder, onTaskUpdate } = props;
+  const theme = props.theme || createMuiTheme();
+  const highlight = !!props.highlight;
   const [editing, setEditing] = useState(!!isJustInput);
   const justEditingTaskState: Task = {
     id: task.id,
@@ -109,7 +122,7 @@ export const TaskItem = memo((props: Props) => {
   }, [editing, inputRef, isJustInput]);
   return (
     <>
-      <Div>
+      <Div {...{ theme, highlight }}>
         {!editing && (
           <Typography
             onDoubleClick={handleDoublieClick}
@@ -130,7 +143,7 @@ export const TaskItem = memo((props: Props) => {
             name="task"
             ref={inputRef}
             className="input"
-            value={taskState.markdown}
+            value={taskState.markdown || ''}
             placeholder={!!isJustInput ? placeHolder : ''}
             autoComplete="off"
             onChange={e =>
@@ -145,10 +158,11 @@ export const TaskItem = memo((props: Props) => {
   );
 });
 
-const Div = styled.div`
+const Div = styled.div<{ theme: Theme; highlight: boolean }>`
   height: 25px;
   margin-bottom: 0px;
   margin-top: 0px;
+  color: ${props => (props.highlight ? props.theme.palette.primary.dark : '')};
 
   .done {
     text-decoration: line-through;
@@ -164,19 +178,21 @@ const Div = styled.div`
     padding: 0px;
     height: auto;
     width: 100%;
-    padding-left: 5px;
+    padding-left: 2px;
+    color: ${props =>
+      props.highlight ? props.theme.palette.primary.dark : ''};
   }
   .md {
     width: 100%;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    padding-left: 5px;
+    padding-left: 2px;
     :hover {
       overflow: visible;
       text-overflow: unset;
       white-space: initial;
-      background-color: #fddddb;
+      background-color: ${props => props.theme.palette.primary.light};
       cursor: grab;
       position: relative;
     }

@@ -52,6 +52,7 @@ export const taskList = () => (
         title={'Editable'}
         meta={'June 21, 2020'}
         tasks={[tasks[1], tasks[3]]}
+        highlight={true}
         titleEditable={true}
         onTaskAdd={action('task add')}
         onTaskUpdate={action('task update')}

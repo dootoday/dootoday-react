@@ -6,6 +6,7 @@
 import React, { memo, useState } from 'react';
 import styled from 'styled-components/macro';
 import { IconButton } from '@material-ui/core';
+import { Theme, createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import { MuiPickersUtilsProvider, DatePicker } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
 import { Task } from '../TaskItem';
@@ -52,6 +53,11 @@ interface Props {
   showDateNav?: boolean;
 
   /**
+   * theme: Theme object of material UI
+   */
+  theme?: Theme;
+
+  /**
    * onTaskAdd: Event on task add
    */
   onTaskAdd?: (task: string, colID: string) => void;
@@ -91,7 +97,7 @@ export const MainSection = memo((props: Props) => {
     onHomeRequest,
     onMoveToDateRequest,
   } = props;
-
+  const theme = props.theme || createMuiTheme();
   const [datePickerOpen, setDatePickerOpen] = useState(false);
 
   const calculateStartIndex = (startIndex: number, mobile: boolean): number => {
@@ -117,35 +123,37 @@ export const MainSection = memo((props: Props) => {
       totalLength={taskColumns.length}
     >
       <nav className="main-nav left">
-        <IconButton
-          onClick={() => onMoveRequest && onMoveRequest(-1)}
-          className="icon"
-          color="primary"
-          aria-label="move one day back"
-          component="span"
-        >
-          <PlayArrow className="left primary-arrow" />
-        </IconButton>
-        <IconButton
-          onClick={() => onMoveRequest && onMoveRequest(-5)}
-          className="icon"
-          color="primary"
-          aria-label="move five days back"
-          component="span"
-        >
-          <FastForward className="left secondary-arrow" />
-        </IconButton>
-        {showHomeNav && (
+        <ThemeProvider theme={theme}>
           <IconButton
-            onClick={() => onHomeRequest && onHomeRequest()}
+            onClick={() => onMoveRequest && onMoveRequest(-1)}
             className="icon"
             color="primary"
-            aria-label="go to current date"
+            aria-label="move one day back"
             component="span"
           >
-            <Home className="tertiary-arrow" />
+            <PlayArrow className="left primary-arrow" />
           </IconButton>
-        )}
+          <IconButton
+            onClick={() => onMoveRequest && onMoveRequest(-5)}
+            className="icon"
+            color="primary"
+            aria-label="move five days back"
+            component="span"
+          >
+            <FastForward className="left secondary-arrow" />
+          </IconButton>
+          {showHomeNav && (
+            <IconButton
+              onClick={() => onHomeRequest && onHomeRequest()}
+              className="icon"
+              color="primary"
+              aria-label="go to current date"
+              component="span"
+            >
+              <Home className="tertiary-arrow" />
+            </IconButton>
+          )}
+        </ThemeProvider>
       </nav>
       <div className="main-content">
         <ol className="grid" role="row">
@@ -158,9 +166,11 @@ export const MainSection = memo((props: Props) => {
                     title={taskColumn.title}
                     meta={taskColumn.meta || ''}
                     tasks={taskColumn.tasks}
+                    highlight={!!taskColumn.active}
+                    theme={theme}
+                    titleEditable={!!colTitleEditable}
                     onTaskAdd={onTaskAdd}
                     onTaskUpdate={onTaskUpdate}
-                    titleEditable={!!colTitleEditable}
                   />
                 </li>
               );
@@ -168,46 +178,48 @@ export const MainSection = memo((props: Props) => {
         </ol>
       </div>
       <nav className="main-nav right">
-        <IconButton
-          onClick={() => onMoveRequest && onMoveRequest(1)}
-          className="icon"
-          color="primary"
-          aria-label="move one day ahead"
-          component="span"
-        >
-          <PlayArrow className="right primary-arrow" />
-        </IconButton>
-        <IconButton
-          onClick={() => onMoveRequest && onMoveRequest(5)}
-          className="icon"
-          color="primary"
-          aria-label="move five days ahead"
-          component="span"
-        >
-          <FastForward className="right secondary-arrow" />
-        </IconButton>
-        {showDateNav && (
-          <>
-            <IconButton
-              onClick={() => setDatePickerOpen(true)}
-              className="icon"
-              color="primary"
-              aria-label="select a date"
-              component="span"
-            >
-              <CalendarToday className="right tertiary-arrow" />
-            </IconButton>
-            <MuiPickersUtilsProvider utils={DateFnsUtils}>
-              <DatePicker
-                open={datePickerOpen}
-                value={new Date()}
-                onChange={handleDateChange}
-                onClose={() => setDatePickerOpen(false)}
-                TextFieldComponent={() => <span />}
-              />
-            </MuiPickersUtilsProvider>
-          </>
-        )}
+        <ThemeProvider theme={theme}>
+          <IconButton
+            onClick={() => onMoveRequest && onMoveRequest(1)}
+            className="icon"
+            color="primary"
+            aria-label="move one day ahead"
+            component="span"
+          >
+            <PlayArrow className="right primary-arrow" />
+          </IconButton>
+          <IconButton
+            onClick={() => onMoveRequest && onMoveRequest(5)}
+            className="icon"
+            color="primary"
+            aria-label="move five days ahead"
+            component="span"
+          >
+            <FastForward className="right secondary-arrow" />
+          </IconButton>
+          {showDateNav && (
+            <>
+              <IconButton
+                onClick={() => setDatePickerOpen(true)}
+                className="icon"
+                color="primary"
+                aria-label="select a date"
+                component="span"
+              >
+                <CalendarToday className="right tertiary-arrow" />
+              </IconButton>
+              <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                <DatePicker
+                  open={datePickerOpen}
+                  value={new Date()}
+                  onChange={handleDateChange}
+                  onClose={() => setDatePickerOpen(false)}
+                  TextFieldComponent={() => <span />}
+                />
+              </MuiPickersUtilsProvider>
+            </>
+          )}
+        </ThemeProvider>
       </nav>
     </Section>
   );
