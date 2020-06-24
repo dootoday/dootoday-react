@@ -1,5 +1,6 @@
 import React from 'react';
 import { action } from '@storybook/addon-actions';
+import { withKnobs, number } from '@storybook/addon-knobs';
 import { DragDropContext } from 'react-beautiful-dnd';
 import { MainSection, TaskColumn } from 'app/components/MainSection';
 import { Task } from 'app/components/TaskItem';
@@ -25,6 +26,20 @@ const getTaskColumns = (): TaskColumn[] => {
     'Friday',
     'Saturday',
   ];
+  const months = [
+    'Jan',
+    'Feb',
+    'Mar',
+    'Apr',
+    'May',
+    'Jun',
+    'Jul',
+    'Aug',
+    'Sep',
+    'Oct',
+    'Nov',
+    'Dec',
+  ];
   let output: TaskColumn[] = [];
   for (var d = startDay; d <= endDay; d.setDate(d.getDate() + 1)) {
     const thatDay = new Date(d);
@@ -47,7 +62,7 @@ const getTaskColumns = (): TaskColumn[] => {
     output.push({
       id: id,
       title: title,
-      meta: 'Some text',
+      meta: `${date} ${months[month]}, ${year}`,
       tasks: tasks,
     });
   }
@@ -60,6 +75,7 @@ export const MainSec = () => (
       taskColumns={getTaskColumns()}
       onTaskAdd={action('task add')}
       onTaskUpdate={action('task update')}
+      startIndex={number('Start At', 0)}
     ></MainSection>
   </div>
 );
@@ -67,5 +83,5 @@ export const MainSec = () => (
 export default {
   title: 'Main Section',
   component: MainSection,
-  decorators: [storyFn => <Container>{storyFn()}</Container>],
+  decorators: [storyFn => <Container>{storyFn()}</Container>, withKnobs],
 };

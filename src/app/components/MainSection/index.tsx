@@ -31,9 +31,8 @@ interface Props {
 
   /**
    * startIndex: This is the starting point in the screen
-   * default value is 0
    */
-  startIndex?: number;
+  startIndex: number;
 
   /**
    * colTitleEditable: If the column titles are editable
@@ -59,8 +58,23 @@ export const MainSection = memo((props: Props) => {
     onTaskAdd,
     onTaskUpdate,
   } = props;
+
+  const calculateStartIndex = (startIndex: number, mobile: boolean): number => {
+    const screenlimit = mobile ? 1 : 5;
+    if (startIndex > taskColumns.length - screenlimit) {
+      return taskColumns.length - screenlimit;
+    }
+    if (startIndex < 0) {
+      return 0;
+    }
+    return startIndex;
+  };
+
   return (
-    <Section>
+    <Section
+      startIndex={calculateStartIndex(startIndex, false)}
+      startIndexMob={calculateStartIndex(startIndex, true)}
+    >
       <nav className="main-nav left">
         <IconButton
           className="icon"
@@ -137,7 +151,7 @@ export const MainSection = memo((props: Props) => {
   );
 });
 
-const Section = styled.section`
+const Section = styled.section<{ startIndex: number; startIndexMob: number }>`
   display: grid;
   grid-template-columns: 1fr;
   margin-top: 50px;
@@ -164,9 +178,11 @@ const Section = styled.section`
       transition: transform 0.5s ease-in-out, -webkit-transform 0.5s ease-in-out;
       z-index: 0;
       position: relative;
+      transform: translateX(${props => -(props.startIndex * 20)}%);
 
       @media (max-width: 48.0625em) {
         grid-auto-columns: calc(100 * 1%);
+        transform: translateX(${props => -(props.startIndexMob * 100)}%);
       }
 
       .grid_item {
