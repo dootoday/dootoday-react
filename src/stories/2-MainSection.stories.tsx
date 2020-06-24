@@ -39,8 +39,8 @@ const getTaskColumns = (): TaskColumn[] => {
     let tasks: Task[] = [];
     for (var i = 0; i < taskCount; i++) {
       tasks.push({
-        id: 'some-id-' + i + '1',
-        markdown: 'This is task ' + i,
+        id: 'some-id-' + id + i,
+        markdown: 'This is task ' + id + i,
         isDone: false,
       });
     }
