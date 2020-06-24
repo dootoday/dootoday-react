@@ -128,7 +128,7 @@ export const TaskList = memo((props: Props) => {
               <TaskItem key={task.id} task={task} isEditable={true} />
             ))}
           <TaskItem
-            task={{ id: '0', markdown: '', isDone: false }}
+            task={{} as Task}
             isJustInput={true}
             placeHolder="Add a new task here"
           />
@@ -163,7 +163,7 @@ const Div = styled.div`
     }
 
     @media (min-width: 48.0625em) {
-      position: absolute;
+      position: relative;
     }
   }
 
