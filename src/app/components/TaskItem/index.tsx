@@ -102,11 +102,11 @@ export const TaskItem = memo((props: Props) => {
     }
   };
   useEffect(() => {
-    if (editing) {
+    if (editing && !isJustInput) {
       inputRef.current.focus();
       inputRef.current.select();
     }
-  }, [editing, inputRef]);
+  }, [editing, inputRef, isJustInput]);
   return (
     <>
       <Div>
@@ -146,9 +146,9 @@ export const TaskItem = memo((props: Props) => {
 });
 
 const Div = styled.div`
-  max-height: 20px;
-  margin-bottom: 5px;
-  margin-top: 3px;
+  height: 25px;
+  margin-bottom: 0px;
+  margin-top: 0px;
 
   .done {
     text-decoration: line-through;
@@ -209,8 +209,8 @@ const Div = styled.div`
 
   @media (max-width: 48.0625em) {
     margin-bottom: 0px;
-    margin-top: 15px;
-    min-height: 28px;
+    margin-top: 10px;
+    height: 37px;
     .input {
       font-size: 0.95rem;
     }
