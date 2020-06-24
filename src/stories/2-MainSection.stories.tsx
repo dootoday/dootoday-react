@@ -69,10 +69,12 @@ const getTaskColumns = (): TaskColumn[] => {
   return output;
 };
 
+const taskCols = getTaskColumns();
+
 export const MainSec = () => (
   <div style={{ height: '500px' }}>
     <MainSection
-      taskColumns={getTaskColumns()}
+      taskColumns={taskCols}
       startIndex={number('Start At', 2)}
       showDateNav={true}
       showHomeNav={true}
@@ -88,5 +90,5 @@ export const MainSec = () => (
 export default {
   title: 'Main Section',
   component: MainSection,
-  decorators: [storyFn => <Container>{storyFn()}</Container>, withKnobs],
+  decorators: [withKnobs, storyFn => <Container>{storyFn()}</Container>],
 };
