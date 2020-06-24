@@ -109,7 +109,7 @@ export const TaskItem = memo((props: Props) => {
   }, [editing, inputRef]);
   return (
     <>
-      <Li>
+      <Div>
         {!editing && (
           <Typography
             onDoubleClick={handleDoublieClick}
@@ -132,6 +132,7 @@ export const TaskItem = memo((props: Props) => {
             className="input"
             value={taskState.markdown}
             placeholder={!!isJustInput ? placeHolder : ''}
+            autoComplete="off"
             onChange={e =>
               setTaskState({ ...taskState, ...{ markdown: e.target.value } })
             }
@@ -139,13 +140,12 @@ export const TaskItem = memo((props: Props) => {
             onKeyDown={onKeyPress}
           />
         )}
-      </Li>
+      </Div>
     </>
   );
 });
 
-const Li = styled.li`
-  list-style: none;
+const Div = styled.div`
   max-height: 20px;
   margin-bottom: 5px;
   margin-top: 3px;

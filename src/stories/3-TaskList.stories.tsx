@@ -1,5 +1,6 @@
 import React from 'react';
 import { action } from '@storybook/addon-actions';
+import { DragDropContext } from 'react-beautiful-dnd';
 import { TaskList } from 'app/components/TaskList';
 
 const Container = ({ children }) => (
@@ -11,7 +12,9 @@ const Container = ({ children }) => (
       position: 'relative',
     }}
   >
-    {children}
+    <DragDropContext onDragEnd={action('on drag drop')}>
+      {children}
+    </DragDropContext>
   </div>
 );
 

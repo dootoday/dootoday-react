@@ -5,6 +5,7 @@
  */
 import React, { memo, useState, useEffect, useRef } from 'react';
 import { Typography } from '@material-ui/core';
+import { Draggable, Droppable } from 'react-beautiful-dnd';
 import styled from 'styled-components/macro';
 import { Task, TaskItem } from '../TaskItem';
 
@@ -62,7 +63,15 @@ interface Props {
 }
 
 export const TaskList = memo((props: Props) => {
-  const { title, meta, titleEditable, tasks, onTitleChange, onTaskAdd } = props;
+  const {
+    id,
+    title,
+    meta,
+    titleEditable,
+    tasks,
+    onTitleChange,
+    onTaskAdd,
+  } = props;
   const [editingTitle, setEditingTitle] = useState(false);
   const [titleValue, chageTitleValue] = useState(title);
   const inputRef = useRef() as React.MutableRefObject<HTMLInputElement>;
@@ -121,18 +130,41 @@ export const TaskList = memo((props: Props) => {
         </header>
       </section>
       <section className="body">
-        <ul>
-          {!!tasks &&
-            !!tasks.length &&
-            tasks.map(task => (
-              <TaskItem key={task.id} task={task} isEditable={true} />
-            ))}
-          <TaskItem
-            task={{} as Task}
-            isJustInput={true}
-            placeHolder="Add a new task here"
-          />
-        </ul>
+        <Droppable droppableId={id}>
+          {provided => (
+            <ul {...provided.droppableProps} ref={provided.innerRef}>
+              {!!tasks &&
+                !!tasks.length &&
+                tasks.map((task, index) => (
+                  <Draggable draggableId={task.id} index={index} key={task.id}>
+                    {provided => (
+                      <li
+                        ref={provided.innerRef}
+                        {...provided.draggableProps}
+                        {...provided.dragHandleProps}
+                      >
+                        <TaskItem task={task} isEditable={true} />
+                      </li>
+                    )}
+                  </Draggable>
+                ))}
+              <Draggable
+                draggableId={'inp' + id}
+                index={tasks ? tasks.length + 1 : 0}
+              >
+                {provided => (
+                  <li ref={provided.innerRef} {...provided.draggableProps}>
+                    <TaskItem
+                      task={{} as Task}
+                      isJustInput={true}
+                      placeHolder="Add a new task here"
+                    />
+                  </li>
+                )}
+              </Draggable>
+            </ul>
+          )}
+        </Droppable>
       </section>
     </Div>
   );
@@ -181,6 +213,9 @@ const Div = styled.div`
     ul {
       padding: 0px;
       margin: 0px;
+      li {
+        list-style: none;
+      }
     }
   }
 `;
