@@ -75,7 +75,7 @@ export const MainSec = () => (
       taskColumns={getTaskColumns()}
       onTaskAdd={action('task add')}
       onTaskUpdate={action('task update')}
-      startIndex={number('Start At', 0)}
+      startIndex={number('Start At', 2)}
     ></MainSection>
   </div>
 );

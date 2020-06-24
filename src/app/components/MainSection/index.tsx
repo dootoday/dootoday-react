@@ -74,6 +74,7 @@ export const MainSection = memo((props: Props) => {
     <Section
       startIndex={calculateStartIndex(startIndex, false)}
       startIndexMob={calculateStartIndex(startIndex, true)}
+      totalLength={taskColumns.length}
     >
       <nav className="main-nav left">
         <IconButton
@@ -128,7 +129,7 @@ export const MainSection = memo((props: Props) => {
           aria-label="move one day ahead"
           component="span"
         >
-          <PlayArrow className="primary-arrow" />
+          <PlayArrow className="right primary-arrow" />
         </IconButton>
         <IconButton
           className="icon"
@@ -136,7 +137,7 @@ export const MainSection = memo((props: Props) => {
           aria-label="move five days ahead"
           component="span"
         >
-          <FastForward className="secondary-arrow" />
+          <FastForward className="right secondary-arrow" />
         </IconButton>
         <IconButton
           className="icon"
@@ -144,14 +145,18 @@ export const MainSection = memo((props: Props) => {
           aria-label="select a date"
           component="span"
         >
-          <CalendarToday className="tertiary-arrow" />
+          <CalendarToday className="right tertiary-arrow" />
         </IconButton>
       </nav>
     </Section>
   );
 });
 
-const Section = styled.section<{ startIndex: number; startIndexMob: number }>`
+const Section = styled.section<{
+  startIndex: number;
+  startIndexMob: number;
+  totalLength: number;
+}>`
   display: grid;
   grid-template-columns: 1fr;
   margin-top: 50px;
@@ -207,12 +212,28 @@ const Section = styled.section<{ startIndex: number; startIndexMob: number }>`
         transform: rotate(180deg);
       }
       .primary-arrow {
-        font-size: 1.8em;
+        font-size: 2em;
       }
       .secondary-arrow {
         font-size: 1em;
         margin-top: 10px;
       }
+
+      .primary-arrow,
+      .secondary-arrow {
+        &.left {
+          display: ${props => (props.startIndex === 0 ? 'none' : '')};
+        }
+        &.right {
+          display: ${props =>
+            props.startIndex === props.totalLength - 5 ? 'none' : ''};
+          @media (max-width: 48em) {
+            display: ${props =>
+              props.startIndexMob === props.totalLength - 1 ? 'none' : ''};
+          }
+        }
+      }
+
       .tertiary-arrow {
         font-size: 0.6em;
         margin-top: 10px;
