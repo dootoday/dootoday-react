@@ -6,7 +6,7 @@
 import React, { memo, useState, useEffect, useRef } from 'react';
 import { Typography } from '@material-ui/core';
 import { Draggable, Droppable } from 'react-beautiful-dnd';
-import { createMuiTheme, Theme, ThemeProvider } from '@material-ui/core/styles';
+import { createMuiTheme, Theme } from '@material-ui/core/styles';
 import styled from 'styled-components/macro';
 import { Task, TaskItem } from '../TaskItem';
 

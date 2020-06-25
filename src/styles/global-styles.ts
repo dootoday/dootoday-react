@@ -5,8 +5,9 @@ export const GlobalStyle = createGlobalStyle`
   body {
     height: 100%;
     width: 100%;
+    line-height: 0;
   }
-
+  /*
   body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   }
@@ -25,5 +26,5 @@ export const GlobalStyle = createGlobalStyle`
   input, select {
     font-family: inherit;
     font-size: inherit;
-  }
+  } */
 `;

@@ -19,10 +19,10 @@ export function App() {
   return (
     <BrowserRouter>
       <Helmet
-        titleTemplate="%s - React Boilerplate"
-        defaultTitle="React Boilerplate"
+        titleTemplate="DooToday - A simple way to be productive"
+        defaultTitle="DooToday - A simple way to be productive"
       >
-        <meta name="description" content="A React Boilerplate application" />
+        <meta name="description" content="A simple way to be productive" />
       </Helmet>
 
       <Switch>
