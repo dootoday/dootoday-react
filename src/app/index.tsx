@@ -12,21 +12,24 @@ import { Switch, Route, BrowserRouter } from 'react-router-dom';
 
 import { GlobalStyle } from 'styles/global-styles';
 
-import { HomePage } from './containers/HomePage/Loadable';
+import { AppLayout } from './containers/AppLayout/Loadable';
+import { Login } from './containers/Login/Loadable';
 import { NotFoundPage } from './components/NotFoundPage/Loadable';
+import { ProtectedRoute } from './components/ProtectedRoute';
 
 export function App() {
   return (
     <BrowserRouter>
       <Helmet
-        titleTemplate="DooToday - A simple way to be productive"
-        defaultTitle="DooToday - A simple way to be productive"
+        titleTemplate="DooToday - Your personal task manager"
+        defaultTitle="DooToday - Your personal task manager"
       >
-        <meta name="description" content="A simple way to be productive" />
+        <meta name="description" content="Your personal task manager" />
       </Helmet>
 
       <Switch>
-        <Route exact path="/" component={HomePage} />
+        <Route exact path="/login" component={Login} />
+        <ProtectedRoute exact path="/" component={AppLayout} />
         <Route component={NotFoundPage} />
       </Switch>
       <GlobalStyle />

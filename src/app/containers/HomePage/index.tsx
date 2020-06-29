@@ -1,10 +1,8 @@
 import React from 'react';
-import { AppBar, Toolbar, Typography } from '@material-ui/core';
 import { MainSection } from 'app/components/MainSection/Loadable';
 import { DragDropContext } from 'react-beautiful-dnd';
 import { TaskColumn } from 'app/components/MainSection';
 import { Task } from 'app/components/TaskItem';
-import { LoginManager } from 'app/components/LoginManager';
 
 export function HomePage() {
   const getTaskColumns = (): TaskColumn[] => {
@@ -67,12 +65,6 @@ export function HomePage() {
   const taskCols = getTaskColumns();
   return (
     <>
-      <AppBar position="static" elevation={0}>
-        <Toolbar variant="dense" style={{ minHeight: '34px' }}>
-          <Typography variant="h6">DooToday</Typography>
-          <LoginManager />
-        </Toolbar>
-      </AppBar>
       <div>
         <DragDropContext onDragEnd={e => console.log(e)}>
           <MainSection
