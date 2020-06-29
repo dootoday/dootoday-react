@@ -14,7 +14,7 @@ export function LoginManager(props: Props) {
     <Div>
       <GoogleLogin
         clientId="993135218200-vtom5mj6hhtki1nd9nd5p7rovr702e99.apps.googleusercontent.com"
-        buttonText="Login"
+        buttonText="Login with Google"
         onSuccess={d => console.log(d)}
         onFailure={d => console.log(d)}
         cookiePolicy={'single_host_origin'}

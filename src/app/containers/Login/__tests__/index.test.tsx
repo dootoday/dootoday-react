@@ -1,5 +1,6 @@
 import React from 'react';
 import { render } from '@testing-library/react';
+import { RouteComponentProps } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 
 import { Login } from '..';
@@ -7,7 +8,7 @@ import { Login } from '..';
 const renderComponent = () =>
   render(
     <HelmetProvider>
-      <Login />
+      <Login {...({} as RouteComponentProps)} />
     </HelmetProvider>,
   );
 
