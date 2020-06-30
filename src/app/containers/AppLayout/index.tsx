@@ -8,8 +8,9 @@ import React, { memo } from 'react';
 import { Helmet } from 'react-helmet-async';
 // import { useTranslation } from 'react-i18next';
 import styled from 'styled-components/macro';
+import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import { useHistory } from 'react-router-dom';
-import { AppBar, Toolbar, Typography, Button } from '@material-ui/core';
+import { AppBar, Toolbar, Button } from '@material-ui/core';
 import { Route } from 'react-router-dom';
 import { HomePage } from '../HomePage';
 import { Logout as LogoutRequest } from 'utils/auth';
@@ -26,21 +27,37 @@ export const AppLayout = memo((props: Props) => {
     history.push('/login');
   };
 
+  const theme = createMuiTheme({
+    palette: {
+      primary: {
+        main: '#0b5d79',
+        dark: '#0b5d79',
+        light: '#aee3f8',
+      },
+    },
+  });
+
   return (
     <>
       <Helmet>
         <title>AppLayout</title>
         <meta name="description" content="Description of AppLayout" />
       </Helmet>
-      <Div>
-        <AppBar position="static" elevation={0}>
-          <Toolbar variant="dense" className="tool-bar">
-            <Typography variant="h6">DooToday</Typography>
-            <Button onClick={handleLogout}>Logout</Button>
-          </Toolbar>
-        </AppBar>
-        <Route exact path="/" component={HomePage} />
-      </Div>
+      <ThemeProvider theme={theme}>
+        <Div>
+          <AppBar position="static" elevation={0}>
+            <Toolbar variant="dense" className="tool-bar">
+              <img
+                className="header-logo"
+                src="https://dootoday-assets.s3.ap-south-1.amazonaws.com/logo-bw-horiz.png"
+                alt="dootoday"
+              />
+              <Button onClick={handleLogout}>Logout</Button>
+            </Toolbar>
+          </AppBar>
+          <Route exact path="/" render={() => <HomePage theme={theme} />} />
+        </Div>
+      </ThemeProvider>
     </>
   );
 });
@@ -50,5 +67,9 @@ const Div = styled.div`
     min-height: 34px;
     display: flex;
     justify-content: space-between;
+
+    .header-logo {
+      height: 25px;
+    }
   }
 `;
