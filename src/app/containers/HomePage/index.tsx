@@ -1,10 +1,11 @@
 import React from 'react';
+import { Theme, createMuiTheme } from '@material-ui/core/styles';
 import { MainSection } from 'app/components/MainSection/Loadable';
 import { DragDropContext } from 'react-beautiful-dnd';
 import { TaskColumn } from 'app/components/MainSection';
 import { Task } from 'app/components/TaskItem';
 
-export function HomePage() {
+export function HomePage(props: { theme?: Theme }) {
   const getTaskColumns = (): TaskColumn[] => {
     const today = new Date();
     const startDay = new Date(new Date().setDate(today.getDate() - 10));
@@ -61,7 +62,7 @@ export function HomePage() {
     }
     return output;
   };
-
+  const theme = props.theme || createMuiTheme();
   const taskCols = getTaskColumns();
   return (
     <>
@@ -72,6 +73,7 @@ export function HomePage() {
             startIndex={9}
             showDateNav={true}
             showHomeNav={true}
+            theme={theme}
           ></MainSection>
         </DragDropContext>
       </div>
