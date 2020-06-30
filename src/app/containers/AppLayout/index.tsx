@@ -30,9 +30,9 @@ export const AppLayout = memo((props: Props) => {
   const theme = createMuiTheme({
     palette: {
       primary: {
-        main: '#0b5d79',
-        dark: '#0b5d79',
-        light: '#aee3f8',
+        main: '#0d6c8c',
+        dark: '#073646',
+        light: '#2dbceb',
       },
     },
   });
