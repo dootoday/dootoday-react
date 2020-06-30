@@ -2,7 +2,7 @@
  * This is Auth utils
  */
 
-import { get, set } from 'local-storage';
+import { get, set, remove } from 'local-storage';
 import Cookies from 'js-cookie';
 import { Refresh as RefreshAPI, Login as LoginAPI } from 'utils/api';
 
@@ -76,26 +76,16 @@ export const IsAuthenticated = (): boolean => {
   return !!authToken;
 };
 
-class Auth {
-  private authenticted;
+// Logout : function to clear tokens
+export const Logout = () => {
+  remove(REFRESH_LS_KEY);
+  Cookies.remove(AUTH_COOKIE_NAME);
+  Cookies.remove(DAY_LEFT_KEY);
+};
 
-  constructor() {
-    this.authenticted = false;
-  }
-
-  login(cb) {
-    this.authenticted = true;
-    cb();
-  }
-
-  logout(cb) {
-    this.authenticted = false;
-    cb();
-  }
-
-  isAuthenticated() {
-    return this.authenticted;
-  }
-}
-
-export default new Auth();
+// To refresh toke
+(() => {
+  setInterval(() => {
+    RefreshToken();
+  }, 60 * 30 * 1000);
+})();

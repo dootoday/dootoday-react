@@ -9,17 +9,15 @@ import { Helmet } from 'react-helmet-async';
 import GoogleLogin from 'react-google-login';
 // import { useTranslation } from 'react-i18next';
 import styled from 'styled-components/macro';
-import {
-  Button,
-  Container,
-  Card,
-  CardContent,
-  Typography,
-} from '@material-ui/core';
+import { Container, Card, CardContent, Typography } from '@material-ui/core';
 import { RouteComponentProps, useLocation } from 'react-router-dom';
 import { useInjectSaga } from 'utils/redux-injectors';
 import { loginSaga } from './saga';
-import auth, { RefreshToken, Login as LoginRequest } from 'utils/auth';
+import {
+  RefreshToken,
+  Login as LoginRequest,
+  IsAuthenticated,
+} from 'utils/auth';
 
 interface Props extends RouteComponentProps<any> {}
 
@@ -40,12 +38,15 @@ export const Login = memo((props: Props) => {
   };
 
   useEffect(() => {
-    console.log('#######-1');
-    RefreshToken().then(gotToken => {
-      if (gotToken) {
-        props.history.push(from);
-      }
-    });
+    if (IsAuthenticated()) {
+      props.history.push(from);
+    } else {
+      RefreshToken().then(gotToken => {
+        if (gotToken) {
+          props.history.push(from);
+        }
+      });
+    }
   });
 
   return (
@@ -65,21 +66,13 @@ export const Login = memo((props: Props) => {
                 Login to DooTooday
               </Typography>
               <GoogleLogin
+                className="google-login"
                 clientId="993135218200-to42da2tiergmovtoa2uln2vn5k3789a.apps.googleusercontent.com"
                 buttonText="Login with Google"
                 onSuccess={d => handleLogin(d['tokenId'])}
                 onFailure={d => console.log(d)}
                 cookiePolicy={'single_host_origin'}
               />
-              <Button
-                onClick={() =>
-                  auth.login(() => {
-                    props.history.push('/');
-                  })
-                }
-              >
-                Test Login
-              </Button>
             </CardContent>
           </Card>
         </Container>
@@ -102,6 +95,10 @@ const Div = styled.div`
 
       .card-header {
         margin-bottom: 30px;
+      }
+
+      .google-login {
+        margin-bottom: 20px;
       }
     }
   }
