@@ -2,9 +2,9 @@
  * This is Auth utils
  */
 
-import { get } from 'local-storage';
+import { get, set } from 'local-storage';
 import Cookies from 'js-cookie';
-import { Refresh as RefreshAPI } from 'utils/api';
+import { Refresh as RefreshAPI, Login as LoginAPI } from 'utils/api';
 
 const AUTH_COOKIE_NAME = 'dootoday_auth_token';
 const REFRESH_LS_KEY = 'dootoday_refresh_token';
@@ -43,6 +43,37 @@ export const RefreshToken = (): Promise<boolean> => {
   } else {
     return Promise.resolve(false);
   }
+};
+
+// Login :
+// This function refresh the auth token
+export const Login = (tokenID: string): Promise<boolean> => {
+  return LoginAPI(tokenID)
+    .then(resp => {
+      if (resp.status === 200) {
+        const data = resp.data;
+        Cookies.set(AUTH_COOKIE_NAME, data.access_token, {
+          expires: EXPIRE_IN_DAYS,
+        });
+        Cookies.set(DAY_LEFT_KEY, data.left_days, {
+          expires: EXPIRE_IN_DAYS,
+        });
+        set(REFRESH_LS_KEY, data.refresh_token);
+      } else {
+        console.error(resp.status);
+        throw new Error('Access token is not valid');
+      }
+    })
+    .then(() => true)
+    .catch(err => false);
+};
+
+// IsAuthenticated :
+// This function checks if the there is a auth token
+// In the auth cookie
+export const IsAuthenticated = (): boolean => {
+  const authToken = Cookies.get(AUTH_COOKIE_NAME);
+  return !!authToken;
 };
 
 class Auth {

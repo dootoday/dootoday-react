@@ -4,7 +4,7 @@
  *
  */
 
-import React, { memo } from 'react';
+import React, { memo, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import GoogleLogin from 'react-google-login';
 // import { useTranslation } from 'react-i18next';
@@ -16,10 +16,10 @@ import {
   CardContent,
   Typography,
 } from '@material-ui/core';
-import { RouteComponentProps } from 'react-router-dom';
+import { RouteComponentProps, useLocation } from 'react-router-dom';
 import { useInjectSaga } from 'utils/redux-injectors';
 import { loginSaga } from './saga';
-import auth from 'utils/auth';
+import auth, { RefreshToken, Login as LoginRequest } from 'utils/auth';
 
 interface Props extends RouteComponentProps<any> {}
 
@@ -28,6 +28,25 @@ export const Login = memo((props: Props) => {
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   // const { t, i18n } = useTranslation();
+  let location = useLocation<{ from: string }>();
+  let { from } = location.state || { from: '/' };
+
+  const handleLogin = (tokenID: string) => {
+    LoginRequest(tokenID).then(gotToken => {
+      if (gotToken) {
+        props.history.push(from);
+      }
+    });
+  };
+
+  useEffect(() => {
+    console.log('#######-1');
+    RefreshToken().then(gotToken => {
+      if (gotToken) {
+        props.history.push(from);
+      }
+    });
+  });
 
   return (
     <>
@@ -46,9 +65,9 @@ export const Login = memo((props: Props) => {
                 Login to DooTooday
               </Typography>
               <GoogleLogin
-                clientId="993135218200-vtom5mj6hhtki1nd9nd5p7rovr702e99.apps.googleusercontent.com"
+                clientId="993135218200-to42da2tiergmovtoa2uln2vn5k3789a.apps.googleusercontent.com"
                 buttonText="Login with Google"
-                onSuccess={d => console.log(d)}
+                onSuccess={d => handleLogin(d['tokenId'])}
                 onFailure={d => console.log(d)}
                 cookiePolicy={'single_host_origin'}
               />
