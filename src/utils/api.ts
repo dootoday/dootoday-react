@@ -6,7 +6,7 @@ import {
   RefreshRequest,
 } from './datatypes';
 
-const BASE_URL = 'http://localhost:9060';
+const BASE_URL = process.env.REACT_APP_BASE_API_URL;
 
 export const Login = (
   tokenID: string,

@@ -67,7 +67,7 @@ export const Login = memo((props: Props) => {
               </Typography>
               <GoogleLogin
                 className="google-login"
-                clientId="993135218200-to42da2tiergmovtoa2uln2vn5k3789a.apps.googleusercontent.com"
+                clientId={process.env.REACT_APP_GOOGLE_APP_CLIENT_ID || ''}
                 buttonText="Login with Google"
                 onSuccess={d => handleLogin(d['tokenId'])}
                 onFailure={d => console.log(d)}
