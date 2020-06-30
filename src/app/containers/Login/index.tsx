@@ -6,6 +6,7 @@
 
 import React, { memo } from 'react';
 import { Helmet } from 'react-helmet-async';
+import GoogleLogin from 'react-google-login';
 // import { useTranslation } from 'react-i18next';
 import styled from 'styled-components/macro';
 import {
@@ -16,7 +17,6 @@ import {
   Typography,
 } from '@material-ui/core';
 import { RouteComponentProps } from 'react-router-dom';
-import { LoginManager } from 'app/components/LoginManager';
 import { useInjectSaga } from 'utils/redux-injectors';
 import { loginSaga } from './saga';
 import auth from 'utils/auth';
@@ -45,7 +45,13 @@ export const Login = memo((props: Props) => {
               <Typography variant="h6" className="card-header">
                 Login to DooTooday
               </Typography>
-              <LoginManager />
+              <GoogleLogin
+                clientId="993135218200-vtom5mj6hhtki1nd9nd5p7rovr702e99.apps.googleusercontent.com"
+                buttonText="Login with Google"
+                onSuccess={d => console.log(d)}
+                onFailure={d => console.log(d)}
+                cookiePolicy={'single_host_origin'}
+              />
               <Button
                 onClick={() =>
                   auth.login(() => {
