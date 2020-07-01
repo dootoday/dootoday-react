@@ -89,10 +89,3 @@ export const Logout = () => {
   Cookies.remove(AUTH_COOKIE_NAME);
   Cookies.remove(DAY_LEFT_KEY);
 };
-
-// To refresh toke
-(() => {
-  setInterval(() => {
-    RefreshToken();
-  }, 60 * 30 * 1000);
-})();

@@ -1,14 +1,15 @@
 import { takeLatest, put, call, all } from 'redux-saga/effects';
 import { actions } from './slice';
 import { GetUserAPI } from 'utils/api';
+import http from 'utils/httpcodes';
 
 function* getUserDetails() {
   const { data, status } = yield call(GetUserAPI);
-  if (status === 200) {
+  if (status === http.StatusOK) {
     yield put(
       actions.getUserDetailsSuccess({
         firstName: data.first_name,
-        lastName: data.lkast_name,
+        lastName: data.last_name,
         email: data.email,
         avatar: data.avatar,
       }),
