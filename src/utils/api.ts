@@ -1,4 +1,5 @@
 import axios, { AxiosResponse } from 'axios';
+import { GetAuthToken } from './auth';
 import {
   LoginResponse,
   LoginRequest,
@@ -28,14 +29,8 @@ export const Refresh = (
 };
 
 export const GetUserAPI = (): Promise<AxiosResponse<UserResponse>> => {
-  return Promise.resolve({
-    status: 200,
-    data: {
-      first_name: 'Sudipta',
-      last_name: 'Sen',
-      avatar:
-        'https://lh3.googleusercontent.com/ogw/ADGmqu_Kyb2t-HtuUkC-nlleRQFJ0RiCW6Ce1omDcvDv=s32-c-mo',
-      email: 'sanborn.sen@gmail.com',
-    },
-  } as AxiosResponse);
+  console.log('API: making request to get user details..');
+  const url = BASE_URL + '/v1/user';
+  const headers = { Authorization: 'Bearer ' + GetAuthToken() };
+  return axios.get(url, { headers });
 };
