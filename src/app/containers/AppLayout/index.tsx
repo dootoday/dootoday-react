@@ -4,22 +4,31 @@
  *
  */
 
-import React, { memo } from 'react';
+import React, { memo, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 // import { useTranslation } from 'react-i18next';
 import styled from 'styled-components/macro';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import { useHistory } from 'react-router-dom';
-import { AppBar, Toolbar, Button } from '@material-ui/core';
+import { AppBar, Toolbar, Avatar, IconButton } from '@material-ui/core';
 import { Route } from 'react-router-dom';
 import { HomePage } from '../HomePage';
 import { Logout as LogoutRequest } from 'utils/auth';
+import { useInjectReducer, useInjectSaga } from 'utils/redux-injectors';
+import { reducer, slicekey, actions } from './slice';
+import { useSelector, useDispatch } from 'react-redux';
+import { userFetchedSelector, userSelector } from './selector';
+import appLayoutSaga from './saga';
 
 interface Props {}
 
 export const AppLayout = memo((props: Props) => {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   // const { t, i18n } = useTranslation();
+  useInjectReducer({ key: slicekey, reducer: reducer });
+  useInjectSaga({ key: slicekey, saga: appLayoutSaga });
+  const userFetched = useSelector(userFetchedSelector);
+  const userDetails = useSelector(userSelector);
+  const dispatch = useDispatch();
   const history = useHistory();
 
   const handleLogout = () => {
@@ -37,6 +46,12 @@ export const AppLayout = memo((props: Props) => {
     },
   });
 
+  useEffect(() => {
+    if (!userFetched) {
+      dispatch(actions.getUserDetailsRequest());
+    }
+  }, [dispatch, userFetched]);
+
   return (
     <>
       <Helmet>
@@ -44,19 +59,28 @@ export const AppLayout = memo((props: Props) => {
         <meta name="description" content="Description of AppLayout" />
       </Helmet>
       <ThemeProvider theme={theme}>
-        <Div>
-          <AppBar position="static" elevation={0}>
-            <Toolbar variant="dense" className="tool-bar">
-              <img
-                className="header-logo"
-                src="https://dootoday-assets.s3.ap-south-1.amazonaws.com/logo-bw-horiz.png"
-                alt="dootoday"
-              />
-              <Button onClick={handleLogout}>Logout</Button>
-            </Toolbar>
-          </AppBar>
-          <Route exact path="/" render={() => <HomePage theme={theme} />} />
-        </Div>
+        {userFetched && (
+          <Div>
+            <AppBar position="static" elevation={0}>
+              <Toolbar variant="dense" className="tool-bar">
+                <img
+                  className="header-logo"
+                  src="https://dootoday-assets.s3.ap-south-1.amazonaws.com/logo-bw-horiz.png"
+                  alt="dootoday"
+                />
+                <IconButton onClick={handleLogout}>
+                  <Avatar
+                    variant="rounded"
+                    className="avatar-logo"
+                    alt={userDetails?.firstName}
+                    src={userDetails?.avatar}
+                  />
+                </IconButton>
+              </Toolbar>
+            </AppBar>
+            <Route exact path="/" render={() => <HomePage theme={theme} />} />
+          </Div>
+        )}
       </ThemeProvider>
     </>
   );
@@ -70,6 +94,10 @@ const Div = styled.div`
 
     .header-logo {
       height: 25px;
+    }
+    .avatar-logo {
+      height: 20px;
+      width: 20px;
     }
   }
 `;
