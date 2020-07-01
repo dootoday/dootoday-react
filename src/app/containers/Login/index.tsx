@@ -9,7 +9,13 @@ import { Helmet } from 'react-helmet-async';
 import GoogleLogin from 'react-google-login';
 // import { useTranslation } from 'react-i18next';
 import styled from 'styled-components/macro';
-import { Container, Card, CardContent, Typography } from '@material-ui/core';
+import {
+  Container,
+  Card,
+  CardContent,
+  Typography,
+  CardMedia,
+} from '@material-ui/core';
 import { RouteComponentProps, useLocation } from 'react-router-dom';
 import { useInjectSaga } from 'utils/redux-injectors';
 import { loginSaga } from './saga';
@@ -61,10 +67,12 @@ export const Login = memo((props: Props) => {
       <Div>
         <Container fixed maxWidth="sm">
           <Card className="login-card">
+            <CardMedia
+              className="logo"
+              image="https://dootoday-assets.s3.ap-south-1.amazonaws.com/logo-200x200.png"
+              title="DooToday"
+            />
             <CardContent className="login-card-content">
-              <Typography variant="h6" className="card-header">
-                Login to DooTooday
-              </Typography>
               <GoogleLogin
                 className="google-login"
                 clientId={process.env.REACT_APP_GOOGLE_APP_CLIENT_ID || ''}
@@ -87,6 +95,11 @@ const Div = styled.div`
     width: 300px;
     margin-left: auto;
     margin-right: auto;
+
+    .logo {
+      height: 230px;
+      margin: 20px;
+    }
 
     .login-card-content {
       display: flex;
