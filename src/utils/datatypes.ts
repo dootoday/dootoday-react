@@ -20,3 +20,11 @@ export interface RefreshResponse {
   access_token: string;
   left_days: string;
 }
+
+// This is the interface for user response
+export interface UserResponse {
+  first_name: string;
+  last_name: string;
+  email: string;
+  avatar: string;
+}
