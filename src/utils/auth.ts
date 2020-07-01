@@ -76,6 +76,13 @@ export const IsAuthenticated = (): boolean => {
   return !!authToken;
 };
 
+// GetAuthToken :
+// This function returns the auth token
+export const GetAuthToken = (): boolean => {
+  const authToken = Cookies.get(AUTH_COOKIE_NAME);
+  return authToken;
+};
+
 // Logout : function to clear tokens
 export const Logout = () => {
   remove(REFRESH_LS_KEY);

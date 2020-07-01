@@ -98,6 +98,7 @@ const Div = styled.div`
     .avatar-logo {
       height: 20px;
       width: 20px;
+      border: 1px solid #fff;
     }
   }
 `;
