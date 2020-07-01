@@ -9,13 +9,7 @@ import { Helmet } from 'react-helmet-async';
 import GoogleLogin from 'react-google-login';
 // import { useTranslation } from 'react-i18next';
 import styled from 'styled-components/macro';
-import {
-  Container,
-  Card,
-  CardContent,
-  Typography,
-  CardMedia,
-} from '@material-ui/core';
+import { Container, Card, CardContent, CardMedia } from '@material-ui/core';
 import { RouteComponentProps, useLocation } from 'react-router-dom';
 import { useInjectSaga } from 'utils/redux-injectors';
 import { loginSaga } from './saga';
