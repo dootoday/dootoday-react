@@ -4,7 +4,7 @@
  *
  */
 
-import React, { memo, useEffect } from 'react';
+import React, { memo, useEffect, useState, useCallback, useRef } from 'react';
 import { Helmet } from 'react-helmet-async';
 // import { useTranslation } from 'react-i18next';
 import styled from 'styled-components/macro';
@@ -19,6 +19,7 @@ import { reducer, slicekey, actions } from './slice';
 import { useSelector, useDispatch } from 'react-redux';
 import { userFetchedSelector, userSelector } from './selector';
 import appLayoutSaga from './saga';
+import { RefreshToken } from 'utils/auth';
 
 interface Props {}
 
@@ -31,10 +32,10 @@ export const AppLayout = memo((props: Props) => {
   const dispatch = useDispatch();
   const history = useHistory();
 
-  const handleLogout = () => {
+  const handleLogout = useCallback(() => {
     LogoutRequest();
     history.push('/login');
-  };
+  }, [history]);
 
   const theme = createMuiTheme({
     palette: {
@@ -46,11 +47,41 @@ export const AppLayout = memo((props: Props) => {
     },
   });
 
+  const [refreshToken, setRefreshToken] = useState(false);
+  const refreshTimer = useRef(0);
+  const refreshTokenInterval = useCallback(
+    (userFetched: boolean) => {
+      RefreshToken().then(refreshed => {
+        if (refreshed) {
+          if (!userFetched) {
+            dispatch(actions.getUserDetailsRequest());
+          }
+        } else {
+          handleLogout();
+        }
+      });
+      refreshTimer.current = setTimeout(
+        refreshTokenInterval,
+        30 * 60 * 1000,
+        true,
+      );
+    },
+    [dispatch, handleLogout],
+  );
+
   useEffect(() => {
-    if (!userFetched) {
-      dispatch(actions.getUserDetailsRequest());
+    if (!refreshToken) {
+      refreshTokenInterval(!!userFetched);
+      setRefreshToken(true);
     }
-  }, [dispatch, userFetched]);
+  }, [refreshToken, refreshTokenInterval, userFetched]);
+
+  // This is equivalent to componentWillUnmount
+  useEffect(() => {
+    return function cleanup() {
+      clearTimeout(refreshTimer.current);
+    };
+  }, []);
 
   return (
     <>
