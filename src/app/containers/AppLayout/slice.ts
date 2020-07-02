@@ -25,6 +25,7 @@ const slice = createSlice({
         return { payload: userDetails };
       },
     },
+    deleteUserDetails: state => initialState,
   },
 });
 

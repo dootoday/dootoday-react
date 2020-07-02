@@ -7,7 +7,6 @@ export interface LoginRequest {
 export interface LoginResponse {
   access_token: string;
   refresh_token: string;
-  left_days: string;
 }
 
 // This is the interface for Refresh request
@@ -18,7 +17,6 @@ export interface RefreshRequest {
 // This is interface for refresh response
 export interface RefreshResponse {
   access_token: string;
-  left_days: string;
 }
 
 // This is the interface for user response
@@ -27,4 +25,5 @@ export interface UserResponse {
   last_name: string;
   email: string;
   avatar: string;
+  left_days: number;
 }
