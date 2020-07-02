@@ -12,10 +12,10 @@ import { Switch, Route, BrowserRouter } from 'react-router-dom';
 
 import { GlobalStyle } from 'styles/global-styles';
 
-import { AppLayout } from './containers/AppLayout/Loadable';
-import { Login } from './containers/Login/Loadable';
-import { NotFoundPage } from './components/NotFoundPage/Loadable';
-import { ProtectedRoute } from './components/ProtectedRoute';
+import { AppLayout } from 'app/containers/AppLayout/Loadable';
+import { Login } from 'app/containers/Login/Loadable';
+import { NotFoundPage } from 'app/components/NotFoundPage/Loadable';
+import { ProtectedRoute } from 'app/components/ProtectedRoute';
 
 export function App() {
   return (
@@ -29,7 +29,7 @@ export function App() {
 
       <Switch>
         <Route exact path="/login" component={Login} />
-        <ProtectedRoute exact path="/" component={AppLayout} />
+        <ProtectedRoute path="/" component={AppLayout} />
         <Route component={NotFoundPage} />
       </Switch>
       <GlobalStyle />

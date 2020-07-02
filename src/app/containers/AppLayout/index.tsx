@@ -20,6 +20,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { userFetchedSelector, userSelector } from './selector';
 import appLayoutSaga from './saga';
 import { RefreshToken } from 'utils/auth';
+import { SubscribePage } from 'app/containers/SubscribePage/Loadable';
 
 interface Props {}
 
@@ -91,15 +92,15 @@ export const AppLayout = memo((props: Props) => {
         <meta name="description" content="Description of AppLayout" />
       </Helmet>
       <ThemeProvider theme={theme}>
-        {userFetched && (
-          <Div>
-            <AppBar position="static" elevation={0}>
-              <Toolbar variant="dense" className="tool-bar">
-                <img
-                  className="header-logo"
-                  src="https://dootoday-assets.s3.ap-south-1.amazonaws.com/logo-bw-horiz.png"
-                  alt="dootoday"
-                />
+        <Div>
+          <AppBar position="static" elevation={0}>
+            <Toolbar variant="dense" className="tool-bar">
+              <img
+                className="header-logo"
+                src="https://dootoday-assets.s3.ap-south-1.amazonaws.com/logo-bw-horiz.png"
+                alt="dootoday"
+              />
+              {userFetched && (
                 <IconButton onClick={handleLogout}>
                   <Avatar
                     variant="rounded"
@@ -108,11 +109,16 @@ export const AppLayout = memo((props: Props) => {
                     src={userDetails?.avatar}
                   />
                 </IconButton>
-              </Toolbar>
-            </AppBar>
-            <Route exact path="/" render={() => <HomePage theme={theme} />} />
-          </Div>
-        )}
+              )}
+            </Toolbar>
+          </AppBar>
+          <Route exact path="/" render={() => <HomePage theme={theme} />} />
+          <Route
+            exact
+            path="/subscribe"
+            component={() => <SubscribePage theme={theme} />}
+          />
+        </Div>
       </ThemeProvider>
     </>
   );
