@@ -79,9 +79,10 @@ export const AppLayout = memo((props: Props) => {
   // This is equivalent to componentWillUnmount
   useEffect(() => {
     return function cleanup() {
+      dispatch(actions.deleteUserDetails());
       clearTimeout(refreshTimer.current);
     };
-  }, []);
+  }, [dispatch]);
 
   return (
     <>

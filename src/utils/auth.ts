@@ -8,7 +8,6 @@ import { Refresh as RefreshAPI, Login as LoginAPI } from 'utils/api';
 
 const AUTH_COOKIE_NAME = 'dootoday_auth_token';
 const REFRESH_LS_KEY = 'dootoday_refresh_token';
-const DAY_LEFT_KEY = 'dootoday_days_left';
 const EXPIRE_IN_DAYS = 1;
 
 // RefreshToken :
@@ -28,9 +27,6 @@ export const RefreshToken = (): Promise<boolean> => {
         if (resp.status === 200) {
           const data = resp.data;
           Cookies.set(AUTH_COOKIE_NAME, data.access_token, {
-            expires: EXPIRE_IN_DAYS,
-          });
-          Cookies.set(DAY_LEFT_KEY, data.left_days, {
             expires: EXPIRE_IN_DAYS,
           });
         } else {
@@ -53,9 +49,6 @@ export const Login = (tokenID: string): Promise<boolean> => {
       if (resp.status === 200) {
         const data = resp.data;
         Cookies.set(AUTH_COOKIE_NAME, data.access_token, {
-          expires: EXPIRE_IN_DAYS,
-        });
-        Cookies.set(DAY_LEFT_KEY, data.left_days, {
           expires: EXPIRE_IN_DAYS,
         });
         set(REFRESH_LS_KEY, data.refresh_token);
@@ -87,5 +80,4 @@ export const GetAuthToken = (): boolean => {
 export const Logout = () => {
   remove(REFRESH_LS_KEY);
   Cookies.remove(AUTH_COOKIE_NAME);
-  Cookies.remove(DAY_LEFT_KEY);
 };
