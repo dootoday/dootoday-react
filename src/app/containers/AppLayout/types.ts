@@ -5,6 +5,7 @@ export interface UserDetails {
   lastName: string;
   email: string;
   avatar: string;
+  leftDays: number;
 }
 
 export interface AppLayoutState {

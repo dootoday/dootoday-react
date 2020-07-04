@@ -12,6 +12,7 @@ function* getUserDetails() {
         lastName: data.last_name,
         email: data.email,
         avatar: data.avatar,
+        leftDays: data.left_days,
       }),
     );
   }
