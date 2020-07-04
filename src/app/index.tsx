@@ -12,7 +12,7 @@ import { Switch, Route, BrowserRouter } from 'react-router-dom';
 
 import { GlobalStyle } from 'styles/global-styles';
 
-import { AppLayout } from 'app/containers/AppLayout/Loadable';
+import { AppLayout } from 'app/containers/AppLayout';
 import { Login } from 'app/containers/Login/Loadable';
 import { NotFoundPage } from 'app/components/NotFoundPage/Loadable';
 import { ProtectedRoute } from 'app/components/ProtectedRoute';

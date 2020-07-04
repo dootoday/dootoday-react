@@ -9,6 +9,7 @@ export const initialState: ContainerState = {
     lastName: '',
     email: '',
     avatar: '',
+    leftDays: 0,
   },
 };
 

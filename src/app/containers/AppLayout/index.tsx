@@ -11,7 +11,7 @@ import styled from 'styled-components/macro';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import { useHistory } from 'react-router-dom';
 import { AppBar, Toolbar, Avatar, IconButton } from '@material-ui/core';
-import { Route } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 import { HomePage } from '../HomePage';
 import { Logout as LogoutRequest } from 'utils/auth';
 import { useInjectReducer, useInjectSaga } from 'utils/redux-injectors';
@@ -112,12 +112,14 @@ export const AppLayout = memo((props: Props) => {
               )}
             </Toolbar>
           </AppBar>
-          <Route exact path="/" render={() => <HomePage theme={theme} />} />
-          <Route
-            exact
-            path="/subscribe"
-            component={() => <SubscribePage theme={theme} />}
-          />
+          <Switch>
+            <Route exact path="/" render={() => <HomePage theme={theme} />} />
+            <Route
+              exact
+              path="/subscribe"
+              component={() => <SubscribePage theme={theme} />}
+            />
+          </Switch>
         </Div>
       </ThemeProvider>
     </>
