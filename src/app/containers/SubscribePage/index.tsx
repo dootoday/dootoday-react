@@ -4,7 +4,7 @@
  *
  */
 
-import React, { memo } from 'react';
+import React, { memo, useState, useRef } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useSelector, useDispatch } from 'react-redux';
 import styled from 'styled-components/macro';
@@ -19,15 +19,19 @@ import {
   Container,
   Grid,
   Typography,
+  Card,
+  CardContent,
+  TextField,
+  Button,
 } from '@material-ui/core';
 import {
   userFetchedSelector,
   userSelector,
 } from 'app/containers/AppLayout/selector';
+import { ApplyPromoAPI } from 'utils/api';
 
 interface Props {
   theme?: Theme;
-  show?: boolean;
 }
 
 export const SubscribePage = memo((props: Props) => {
@@ -52,6 +56,38 @@ export const SubscribePage = memo((props: Props) => {
     }
     return '';
   };
+  const [promoInp, setPromoInp] = useState<{
+    value: string;
+    error: string;
+    submitting: boolean;
+  }>({
+    value: '',
+    error: '',
+    submitting: false,
+  });
+
+  const [successMessage, setSuccessMessage] = useState<string>('');
+  const promoInputRef = useRef() as React.MutableRefObject<HTMLInputElement>;
+  const handlePromoSubmit = () => {
+    setPromoInp({ ...promoInp, ...{ submitting: true } });
+    ApplyPromoAPI(promoInp.value)
+      .then(resp => {
+        setPromoInp({
+          ...promoInp,
+          ...{ submitting: false, error: '', value: '' },
+        });
+        promoInputRef.current.blur();
+        // give some message that the promo is applied
+        setSuccessMessage('Your promo is applied successfully!');
+      })
+      .catch(err => {
+        setPromoInp({
+          ...promoInp,
+          ...{ submitting: false, error: err.response.data.error },
+        });
+      });
+  };
+
   return (
     <>
       <Helmet>
@@ -77,6 +113,59 @@ export const SubscribePage = memo((props: Props) => {
                 </Grid>
               )}
             </Grid>
+            <Grid item xs={12}>
+              <Grid container justify="center" spacing={0}>
+                <Card className="promo-card">
+                  <CardContent>
+                    <Grid
+                      container
+                      direction="column"
+                      alignItems="center"
+                      spacing={0}
+                    >
+                      <Typography variant="h6">Use your promo code</Typography>
+                      <TextField
+                        inputRef={promoInputRef}
+                        error={!!promoInp.error}
+                        fullWidth={true}
+                        id="promo-input"
+                        label="Promo"
+                        autoComplete="off"
+                        variant="outlined"
+                        helperText={promoInp.error}
+                        value={promoInp.value}
+                        className="promo-inp"
+                        onKeyDown={e =>
+                          e.key === 'Enter' && handlePromoSubmit()
+                        }
+                        onChange={v =>
+                          setPromoInp({
+                            ...promoInp,
+                            ...{ value: v.target.value },
+                          })
+                        }
+                      />
+                      {!!successMessage && (
+                        <span className={`promo-success`}>
+                          <Typography>{successMessage}</Typography>
+                        </span>
+                      )}
+                      <Button
+                        fullWidth={true}
+                        variant="contained"
+                        color="primary"
+                        size="large"
+                        className="promo-submit"
+                        onClick={handlePromoSubmit}
+                        disabled={promoInp.value === '' || promoInp.submitting}
+                      >
+                        Apply
+                      </Button>
+                    </Grid>
+                  </CardContent>
+                </Card>
+              </Grid>
+            </Grid>
           </Grid>
         </Container>
       </Div>
@@ -98,6 +187,20 @@ const Div = styled.div<{ theme: Theme }>`
 
     &.error {
       background-color: ${props => props.theme.palette.error.light};
+    }
+  }
+
+  .promo-card {
+    min-width: 370px;
+    .promo-inp {
+      margin-top: 20px;
+    }
+    .promo-submit {
+      margin-top: 10px;
+    }
+    .promo-success {
+      color: ${props => props.theme.palette.success.main};
+      margin-top: 10px;
     }
   }
 `;

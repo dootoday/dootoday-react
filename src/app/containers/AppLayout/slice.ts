@@ -26,6 +26,15 @@ const slice = createSlice({
         return { payload: userDetails };
       },
     },
+    updateLeftDays: {
+      reducer: (state, action: PayloadAction<{ days: number }>) => {
+        state.userDetails.leftDays += action.payload.days;
+        return state;
+      },
+      prepare: (days: number) => {
+        return { payload: { days } };
+      },
+    },
     deleteUserDetails: state => initialState,
   },
 });

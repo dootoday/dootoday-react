@@ -34,3 +34,10 @@ export const GetUserAPI = (): Promise<AxiosResponse<UserResponse>> => {
   const headers = { Authorization: 'Bearer ' + GetAuthToken() };
   return axios.get(url, { headers });
 };
+
+export const ApplyPromoAPI = (code: string): Promise<AxiosResponse> => {
+  console.log('API: making request to apply promo..');
+  const url = BASE_URL + '/v1/apply-promo';
+  const headers = { Authorization: 'Bearer ' + GetAuthToken() };
+  return axios.post(url, { code }, { headers });
+};
