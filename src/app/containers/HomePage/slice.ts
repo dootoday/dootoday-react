@@ -91,6 +91,29 @@ const homePageSlice = createSlice({
       },
       prepare: (task: TaskResponse) => ({ payload: task }),
     },
+    deleteTaskRequest: {
+      reducer: state => state,
+      prepare: (id: number) => {
+        return { payload: { id } };
+      },
+    },
+    deleteTaskSuccess: {
+      reducer: (state, action: PayloadAction<{ taskID: number }>) => {
+        const { taskID } = action.payload;
+        for (let i = 0; i < state.dailyTask.length; i++) {
+          for (let j = 0; j < state.dailyTask[i].tasks.length; j++) {
+            if (state.dailyTask[i].tasks[j].id === taskID.toString()) {
+              state.dailyTask[i].tasks = state.dailyTask[i].tasks.filter(
+                (_, idx) => idx !== j,
+              );
+              break;
+            }
+          }
+        }
+        return state;
+      },
+      prepare: (taskID: number) => ({ payload: { taskID } }),
+    },
   },
 });
 

@@ -53,6 +53,8 @@ export const HomePage = memo((props: Props) => {
     const { markdown, isDone, id } = task;
     if (!!markdown) {
       dispatch(actions.updateTaskRequest(id, markdown, isDone));
+    } else {
+      dispatch(actions.deleteTaskRequest(id));
     }
   };
 
