@@ -44,12 +44,21 @@ export const ApplyPromoAPI = (code: string): Promise<AxiosResponse> => {
   return axios.post(url, { code }, { headers });
 };
 
-export const GetTaskOnDateAPI = (
+export const GetTasksOnDateAPI = (
   fromdate: string,
   todate: string,
 ): Promise<AxiosResponse<ColumnResponse>> => {
   console.log('API: making request get tasks..');
   const url = `${BASE_URL}/v1/tasks?from=${fromdate}&to=${todate}`;
+  const headers = { Authorization: 'Bearer ' + GetAuthToken() };
+  return axios.get(url, { headers });
+};
+
+export const GetTasksOnColumnAPI = (): Promise<
+  AxiosResponse<ColumnResponse>
+> => {
+  console.log('API: making request get tasks..');
+  const url = `${BASE_URL}/v1/columns`;
   const headers = { Authorization: 'Bearer ' + GetAuthToken() };
   return axios.get(url, { headers });
 };

@@ -8,7 +8,9 @@ import { Task } from 'app/components/TaskItem';
 // The initial state of the HomePage container
 export const initialState: ContainerState = {
   dailyTask: [] as Column[],
+  columnTask: [] as Column[],
   dailyTaskStart: 10,
+  columnTaskStart: 0,
 };
 
 const homePageSlice = createSlice({
@@ -31,9 +33,34 @@ const homePageSlice = createSlice({
         return { payload: colTasks.map(c => ColMapper(c)) };
       },
     },
+    getColumnTaskRequest: {
+      reducer: state => state,
+      prepare: (date: string) => {
+        return { payload: { date } };
+      },
+    },
+    getColumnTaksSuccess: {
+      reducer: (state, action: PayloadAction<Column[]>) => {
+        state.columnTask = action.payload;
+        state.columnTaskStart = 0;
+        return state;
+      },
+      prepare: (colTasks: ColumnResponse[]) => {
+        return { payload: colTasks.map(c => ColMapper(c)) };
+      },
+    },
     moveDailyTask: {
       reducer: (state, action: PayloadAction<{ by: number }>) => {
         state.dailyTaskStart = state.dailyTaskStart + action.payload.by;
+        return state;
+      },
+      prepare: (by: number) => {
+        return { payload: { by } };
+      },
+    },
+    moveColumnTask: {
+      reducer: (state, action: PayloadAction<{ by: number }>) => {
+        state.columnTaskStart = state.columnTaskStart + action.payload.by;
         return state;
       },
       prepare: (by: number) => {
@@ -63,6 +90,11 @@ const homePageSlice = createSlice({
           const idx = state.dailyTask.findIndex(t => t.id === task.date);
           if (idx > -1) {
             state.dailyTask[idx].tasks.push(TaskMapper(task));
+          }
+        } else {
+          const idx = state.columnTask.findIndex(t => t.id === task.column_id);
+          if (idx > -1) {
+            state.columnTask[idx].tasks.push(TaskMapper(task));
           }
         }
         return state;
@@ -111,6 +143,16 @@ const homePageSlice = createSlice({
             }
           }
         }
+        for (let i = 0; i < state.columnTask.length; i++) {
+          for (let j = 0; j < state.columnTask[i].tasks.length; j++) {
+            if (state.columnTask[i].tasks[j].id === taskID.toString()) {
+              state.columnTask[i].tasks = state.columnTask[i].tasks.filter(
+                (_, idx) => idx !== j,
+              );
+              break;
+            }
+          }
+        }
         return state;
       },
       prepare: (taskID: number) => ({ payload: { taskID } }),
@@ -128,9 +170,24 @@ const homePageSlice = createSlice({
             break;
           }
         }
+        for (let i = 0; i < state.columnTask.length; i++) {
+          if (state.columnTask[i].id === source.colID) {
+            task = state.columnTask[i].tasks[source.idx];
+            state.columnTask[i].tasks = state.columnTask[i].tasks.filter(
+              (_, index) => index !== source.idx,
+            );
+            break;
+          }
+        }
         for (let i = 0; i < state.dailyTask.length; i++) {
           if (state.dailyTask[i].id === destination.colID) {
             state.dailyTask[i].tasks.splice(destination.idx, 0, task);
+            break;
+          }
+        }
+        for (let i = 0; i < state.columnTask.length; i++) {
+          if (state.columnTask[i].id === destination.colID) {
+            state.columnTask[i].tasks.splice(destination.idx, 0, task);
             break;
           }
         }
@@ -148,7 +205,7 @@ const homePageSlice = createSlice({
         if (new Date(col).toString() !== 'Invalid Date') {
           return { payload: { date: col, task_ids: ids } };
         } else {
-          return { payload: { colum_id: col, task_ids: ids } };
+          return { payload: { column_id: col, task_ids: ids } };
         }
       },
     },
