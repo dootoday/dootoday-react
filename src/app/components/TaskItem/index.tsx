@@ -162,7 +162,10 @@ const Div = styled.div<{ theme: Theme; highlight: boolean }>`
   height: 25px;
   margin-bottom: 0px;
   margin-top: 0px;
-  color: ${props => (props.highlight ? props.theme.palette.primary.dark : '')};
+  color: ${props =>
+    props.highlight
+      ? props.theme.palette.primary.dark
+      : props.theme.palette.secondary.dark};
 
   .done {
     text-decoration: line-through;
@@ -180,7 +183,9 @@ const Div = styled.div<{ theme: Theme; highlight: boolean }>`
     width: 100%;
     padding-left: 2px;
     color: ${props =>
-      props.highlight ? props.theme.palette.primary.dark : ''};
+      props.highlight
+        ? props.theme.palette.primary.dark
+        : props.theme.palette.secondary.dark};
   }
   .md {
     width: 100%;
