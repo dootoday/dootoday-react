@@ -1,7 +1,12 @@
 import { all, call, put, takeLatest } from 'redux-saga/effects';
 import { actions } from './slice';
 import http from 'utils/httpcodes';
-import { GetTaskOnDateAPI, CreateTaskAPI, UpdateTaskAPI } from 'utils/api';
+import {
+  GetTaskOnDateAPI,
+  CreateTaskAPI,
+  UpdateTaskAPI,
+  DeleteTaskAPI,
+} from 'utils/api';
 import { GetDateRange } from 'utils/mappers';
 
 // export function* doSomething() {}
@@ -36,10 +41,19 @@ function* updateTask(action) {
   }
 }
 
+function* deleteTask(action) {
+  const { id } = action.payload;
+  const { status } = yield call(DeleteTaskAPI, id);
+  if (status === http.StatusOK) {
+    yield put(actions.deleteTaskSuccess(id));
+  }
+}
+
 export function* homePageSaga() {
   yield all([
     takeLatest(actions.getDailyTaskRequest.type, getDailyTasks),
     takeLatest(actions.createTaskRequest.type, createTask),
     takeLatest(actions.updateTaskRequest.type, updateTask),
+    takeLatest(actions.deleteTaskRequest.type, deleteTask),
   ]);
 }

@@ -71,8 +71,15 @@ export const UpdateTaskAPI = (
   markdown: string,
   is_done: boolean,
 ): Promise<AxiosResponse<TaskResponse>> => {
-  console.log('API: making request creating task..');
+  console.log('API: making request updating task..');
   const url = `${BASE_URL}/v1/task/${id}`;
   const headers = { Authorization: 'Bearer ' + GetAuthToken() };
   return axios.post(url, { markdown, is_done }, { headers });
+};
+
+export const DeleteTaskAPI = (id: string): Promise<AxiosResponse> => {
+  console.log('API: making request deleting task..');
+  const url = `${BASE_URL}/v1/task/${id}`;
+  const headers = { Authorization: 'Bearer ' + GetAuthToken() };
+  return axios.delete(url, { headers });
 };
