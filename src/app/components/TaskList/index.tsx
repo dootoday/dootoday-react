@@ -197,7 +197,10 @@ const Div = styled.div<{ theme: Theme; highlight: boolean }>`
   display: flex;
   flex-direction: column;
   height: 100%;
-  color: ${props => (props.highlight ? props.theme.palette.primary.dark : '')};
+  color: ${props =>
+    props.highlight
+      ? props.theme.palette.primary.dark
+      : props.theme.palette.secondary.dark};
 
   .header {
     left: 0;
@@ -217,7 +220,9 @@ const Div = styled.div<{ theme: Theme; highlight: boolean }>`
       text-transform: uppercase;
       text-align: center;
       color: ${props =>
-        props.highlight ? props.theme.palette.primary.dark : ''};
+        props.highlight
+          ? props.theme.palette.primary.dark
+          : props.theme.palette.secondary.dark};
     }
 
     @media (min-width: 48.0625em) {

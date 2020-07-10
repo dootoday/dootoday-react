@@ -42,8 +42,13 @@ export const AppLayout = memo((props: Props) => {
     palette: {
       primary: {
         main: '#0d6c8c',
-        dark: '#073646',
-        light: '#2dbceb',
+        dark: '#257b98',
+        light: '#c2dae2',
+      },
+      secondary: {
+        main: '#262626',
+        dark: '#404040',
+        light: '#b2b2b2',
       },
     },
   });

@@ -23,6 +23,7 @@ const homePageSlice = createSlice({
     getDailyTaksSuccess: {
       reducer: (state, action: PayloadAction<Column[]>) => {
         state.dailyTask = action.payload;
+        state.dailyTaskStart = 10;
         return state;
       },
       prepare: (colTasks: ColumnResponse[]) => {
