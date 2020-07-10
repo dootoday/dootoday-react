@@ -132,6 +132,7 @@ export const HomePage = memo((props: Props) => {
             taskColumns={colTaskCols}
             startIndex={colTaskStartPos}
             theme={theme}
+            colTitleEditable={true}
             onMoveRequest={move => dispatch(actions.moveColumnTask(move))}
             onTaskAdd={createTaskOnColumn}
             onTaskUpdate={updateTask}

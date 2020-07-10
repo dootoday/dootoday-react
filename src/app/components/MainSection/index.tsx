@@ -82,6 +82,11 @@ interface Props {
    * onMoveToDateRequest: Move to a date request
    */
   onMoveToDateRequest?: (d: Date) => void;
+
+  /**
+   * onColumnUpdate: Column title change
+   */
+  onColumnUpdate?: (colID: string, title: string) => void;
 }
 
 export const MainSection = memo((props: Props) => {
@@ -96,6 +101,7 @@ export const MainSection = memo((props: Props) => {
     onMoveRequest,
     onHomeRequest,
     onMoveToDateRequest,
+    onColumnUpdate,
   } = props;
   const theme = props.theme || createMuiTheme();
   const [datePickerOpen, setDatePickerOpen] = useState(false);
@@ -119,7 +125,7 @@ export const MainSection = memo((props: Props) => {
   return (
     <Section
       startIndex={calculateStartIndex(startIndex, false)}
-      startIndexMob={calculateStartIndex(startIndex, true)}
+      startIndexMob={calculateStartIndex(startIndex, true) + 1}
       totalLength={taskColumns.length}
     >
       <nav className="main-nav left">
@@ -171,6 +177,9 @@ export const MainSection = memo((props: Props) => {
                     titleEditable={!!colTitleEditable}
                     onTaskAdd={onTaskAdd}
                     onTaskUpdate={onTaskUpdate}
+                    onTitleChange={(title: string) =>
+                      onColumnUpdate && onColumnUpdate(taskColumn.id, title)
+                    }
                   />
                 </li>
               );
@@ -333,8 +342,7 @@ const Section = styled.section<{
       z-index: 2;
 
       .icon {
-        .secondary-arrow,
-        .tertiary-arrow {
+        .secondary-arrow {
           display: none;
         }
       }
