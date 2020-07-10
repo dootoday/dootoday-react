@@ -12,7 +12,7 @@ import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import { useHistory } from 'react-router-dom';
 import { AppBar, Toolbar, Avatar, IconButton } from '@material-ui/core';
 import { Route, Switch } from 'react-router-dom';
-import { HomePage } from '../HomePage';
+import { HomePage } from 'app/containers/HomePage';
 import { Logout as LogoutRequest } from 'utils/auth';
 import { useInjectReducer, useInjectSaga } from 'utils/redux-injectors';
 import { reducer, slicekey, actions } from './slice';

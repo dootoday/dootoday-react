@@ -27,3 +27,21 @@ export interface UserResponse {
   avatar: string;
   left_days: number;
 }
+
+// This is the interface for the task repsonse
+export interface TaskResponse {
+  id: number;
+  markdown: string;
+  is_done: boolean;
+  column_id: string;
+  date: string;
+  order: number;
+}
+
+// This is the column response
+export interface ColumnResponse {
+  id: string;
+  name: string;
+  meta: string;
+  tasks: TaskResponse[];
+}
