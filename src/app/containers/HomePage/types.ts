@@ -12,4 +12,10 @@ export interface HomePageState {
   dailyTaskStart: number;
 }
 
+export interface dragNDropPayload {
+  taskID: string;
+  source: { colID: string; idx: number };
+  destination: { colID: string; idx: number };
+}
+
 export type ContainerState = HomePageState;

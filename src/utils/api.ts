@@ -83,3 +83,10 @@ export const DeleteTaskAPI = (id: string): Promise<AxiosResponse> => {
   const headers = { Authorization: 'Bearer ' + GetAuthToken() };
   return axios.delete(url, { headers });
 };
+
+export const ReposTaskAPI = (data): Promise<AxiosResponse> => {
+  console.log('API: making request respos task..');
+  const url = `${BASE_URL}/v1/repos`;
+  const headers = { Authorization: 'Bearer ' + GetAuthToken() };
+  return axios.post(url, data, { headers });
+};

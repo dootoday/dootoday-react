@@ -1,8 +1,9 @@
 import { PayloadAction } from '@reduxjs/toolkit';
 import { createSlice } from 'utils/@reduxjs/toolkit';
-import { ContainerState, Column } from './types';
+import { ContainerState, Column, dragNDropPayload } from './types';
 import { ColumnResponse, TaskResponse } from 'utils/datatypes';
 import { ColMapper, Today, TaskMapper } from 'utils/mappers';
+import { Task } from 'app/components/TaskItem';
 
 // The initial state of the HomePage container
 export const initialState: ContainerState = {
@@ -113,6 +114,43 @@ const homePageSlice = createSlice({
         return state;
       },
       prepare: (taskID: number) => ({ payload: { taskID } }),
+    },
+    reposRequestLocal: {
+      reducer: (state, action: PayloadAction<dragNDropPayload>) => {
+        const { source, destination } = action.payload;
+        let task = {} as Task;
+        for (let i = 0; i < state.dailyTask.length; i++) {
+          if (state.dailyTask[i].id === source.colID) {
+            task = state.dailyTask[i].tasks[source.idx];
+            state.dailyTask[i].tasks = state.dailyTask[i].tasks.filter(
+              (_, index) => index !== source.idx,
+            );
+            break;
+          }
+        }
+        for (let i = 0; i < state.dailyTask.length; i++) {
+          if (state.dailyTask[i].id === destination.colID) {
+            state.dailyTask[i].tasks.splice(destination.idx, 0, task);
+            break;
+          }
+        }
+        return state;
+      },
+      prepare: (data: dragNDropPayload) => {
+        return { payload: data };
+      },
+    },
+
+    reposRequest: {
+      reducer: state => state,
+      prepare: (data: { col: string; ids: number[] }) => {
+        const { col, ids } = data;
+        if (new Date(col).toString() !== 'Invalid Date') {
+          return { payload: { date: col, task_ids: ids } };
+        } else {
+          return { payload: { colum_id: col, task_ids: ids } };
+        }
+      },
     },
   },
 });

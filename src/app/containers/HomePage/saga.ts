@@ -6,6 +6,7 @@ import {
   CreateTaskAPI,
   UpdateTaskAPI,
   DeleteTaskAPI,
+  ReposTaskAPI,
 } from 'utils/api';
 import { GetDateRange } from 'utils/mappers';
 
@@ -49,11 +50,16 @@ function* deleteTask(action) {
   }
 }
 
+function* reposTask(action) {
+  yield call(ReposTaskAPI, action.payload);
+}
+
 export function* homePageSaga() {
   yield all([
     takeLatest(actions.getDailyTaskRequest.type, getDailyTasks),
     takeLatest(actions.createTaskRequest.type, createTask),
     takeLatest(actions.updateTaskRequest.type, updateTask),
     takeLatest(actions.deleteTaskRequest.type, deleteTask),
+    takeLatest(actions.reposRequest.type, reposTask),
   ]);
 }
