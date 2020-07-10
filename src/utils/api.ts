@@ -6,6 +6,7 @@ import {
   RefreshResponse,
   RefreshRequest,
   UserResponse,
+  ColumnResponse,
 } from './datatypes';
 
 const BASE_URL = process.env.REACT_APP_BASE_API_URL;
@@ -40,4 +41,14 @@ export const ApplyPromoAPI = (code: string): Promise<AxiosResponse> => {
   const url = BASE_URL + '/v1/apply-promo';
   const headers = { Authorization: 'Bearer ' + GetAuthToken() };
   return axios.post(url, { code }, { headers });
+};
+
+export const GetTaskOnDateAPI = (
+  fromdate: string,
+  todate: string,
+): Promise<AxiosResponse<ColumnResponse>> => {
+  console.log('API: making request get tasks..');
+  const url = `${BASE_URL}/v1/tasks?from=${fromdate}&to=${todate}`;
+  const headers = { Authorization: 'Bearer ' + GetAuthToken() };
+  return axios.get(url, { headers });
 };
