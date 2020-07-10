@@ -7,13 +7,19 @@ import { ColMapper } from 'utils/mappers';
 // The initial state of the HomePage container
 export const initialState: ContainerState = {
   dailyTask: [] as Column[],
+  dailyTaskStart: 10,
 };
 
 const homePageSlice = createSlice({
   name: 'homePage',
   initialState,
   reducers: {
-    getDailyTaskRequest: state => state,
+    getDailyTaskRequest: {
+      reducer: state => state,
+      prepare: (date: string) => {
+        return { payload: { date } };
+      },
+    },
     getDailyTaksSuccess: {
       reducer: (state, action: PayloadAction<Column[]>) => {
         state.dailyTask = action.payload;
@@ -21,6 +27,15 @@ const homePageSlice = createSlice({
       },
       prepare: (colTasks: ColumnResponse[]) => {
         return { payload: colTasks.map(c => ColMapper(c)) };
+      },
+    },
+    moveDailyTask: {
+      reducer: (state, action: PayloadAction<{ by: number }>) => {
+        state.dailyTaskStart = state.dailyTaskStart + action.payload.by;
+        return state;
+      },
+      prepare: (by: number) => {
+        return { payload: { by } };
       },
     },
   },

@@ -14,3 +14,8 @@ export const selectDailyTask = createSelector(
   [selectHomePage],
   state => state.dailyTask,
 );
+
+export const selectDailyTaskStart = createSelector(
+  [selectHomePage],
+  state => state.dailyTaskStart,
+);

@@ -9,6 +9,7 @@ export type Task = ITask;
 
 export interface HomePageState {
   dailyTask: Column[];
+  dailyTaskStart: number;
 }
 
 export type ContainerState = HomePageState;

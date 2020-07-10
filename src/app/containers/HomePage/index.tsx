@@ -14,8 +14,9 @@ import { DragDropContext } from 'react-beautiful-dnd';
 
 import { useInjectReducer, useInjectSaga } from 'utils/redux-injectors';
 import { reducer, sliceKey, actions } from './slice';
-import { selectDailyTask } from './selectors';
+import { selectDailyTask, selectDailyTaskStart } from './selectors';
 import { homePageSaga } from './saga';
+import { Today, MapDateToString } from 'utils/mappers';
 
 interface Props {
   theme?: Theme;
@@ -27,10 +28,20 @@ export const HomePage = memo((props: Props) => {
   const dispatch = useDispatch();
   const theme = props.theme || createMuiTheme();
   const taskCols = useSelector(selectDailyTask);
+  const dailyTaskStartPos = useSelector(selectDailyTaskStart);
 
   useEffect(() => {
-    dispatch(actions.getDailyTaskRequest());
+    dispatch(actions.getDailyTaskRequest(Today()));
   }, [dispatch]);
+
+  const moveToHomeLocation = () => {
+    const idx = taskCols.findIndex(col => col.active);
+    if (idx > 0) {
+      dispatch(actions.moveDailyTask(idx - 1 - dailyTaskStartPos));
+    } else {
+      dispatch(actions.getDailyTaskRequest(Today()));
+    }
+  };
 
   return (
     <>
@@ -42,10 +53,15 @@ export const HomePage = memo((props: Props) => {
         <DragDropContext onDragEnd={e => console.log(e)}>
           <MainSection
             taskColumns={taskCols}
-            startIndex={1}
+            startIndex={dailyTaskStartPos}
             showDateNav={true}
             showHomeNav={true}
             theme={theme}
+            onMoveRequest={move => dispatch(actions.moveDailyTask(move))}
+            onHomeRequest={moveToHomeLocation}
+            onMoveToDateRequest={move =>
+              dispatch(actions.getDailyTaskRequest(MapDateToString(move)))
+            }
           ></MainSection>
         </DragDropContext>
       </Div>

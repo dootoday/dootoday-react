@@ -237,7 +237,7 @@ const Section = styled.section<{
 
   @media (min-width: 48.0625em) {
     grid-template-columns: 3.5555555556rem 1fr 3.5555555556rem;
-    margin-top: 80px;
+    margin-top: 50px;
   }
 
   .main-content {
