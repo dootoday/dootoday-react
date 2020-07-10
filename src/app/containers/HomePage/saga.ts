@@ -2,11 +2,12 @@ import { all, call, put, takeLatest } from 'redux-saga/effects';
 import { actions } from './slice';
 import http from 'utils/httpcodes';
 import {
-  GetTaskOnDateAPI,
+  GetTasksOnDateAPI,
   CreateTaskAPI,
   UpdateTaskAPI,
   DeleteTaskAPI,
   ReposTaskAPI,
+  GetTasksOnColumnAPI,
 } from 'utils/api';
 import { GetDateRange } from 'utils/mappers';
 
@@ -14,9 +15,16 @@ import { GetDateRange } from 'utils/mappers';
 
 function* getDailyTasks(action) {
   const [startDate, endDate] = GetDateRange(action.payload.date);
-  const { data, status } = yield call(GetTaskOnDateAPI, startDate, endDate);
+  const { data, status } = yield call(GetTasksOnDateAPI, startDate, endDate);
   if (status === http.StatusOK) {
     yield put(actions.getDailyTaksSuccess(data));
+  }
+}
+
+function* getColumnTasks(action) {
+  const { data, status } = yield call(GetTasksOnColumnAPI);
+  if (status === http.StatusOK) {
+    yield put(actions.getColumnTaksSuccess(data));
   }
 }
 
@@ -57,6 +65,7 @@ function* reposTask(action) {
 export function* homePageSaga() {
   yield all([
     takeLatest(actions.getDailyTaskRequest.type, getDailyTasks),
+    takeLatest(actions.getColumnTaskRequest.type, getColumnTasks),
     takeLatest(actions.createTaskRequest.type, createTask),
     takeLatest(actions.updateTaskRequest.type, updateTask),
     takeLatest(actions.deleteTaskRequest.type, deleteTask),

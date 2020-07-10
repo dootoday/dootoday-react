@@ -14,7 +14,12 @@ import { DragDropContext, OnDragEndResponder } from 'react-beautiful-dnd';
 
 import { useInjectReducer, useInjectSaga } from 'utils/redux-injectors';
 import { reducer, sliceKey, actions } from './slice';
-import { selectDailyTask, selectDailyTaskStart } from './selectors';
+import {
+  selectDailyTask,
+  selectDailyTaskStart,
+  selectColumnTask,
+  selectColTaskStart,
+} from './selectors';
 import { homePageSaga } from './saga';
 import { Today, MapDateToString } from 'utils/mappers';
 import { dragNDropPayload } from './types';
@@ -28,15 +33,18 @@ export const HomePage = memo((props: Props) => {
   useInjectSaga({ key: sliceKey, saga: homePageSaga });
   const dispatch = useDispatch();
   const theme = props.theme || createMuiTheme();
-  const taskCols = useSelector(selectDailyTask);
+  const dailyTaskCols = useSelector(selectDailyTask);
+  const colTaskCols = useSelector(selectColumnTask);
   const dailyTaskStartPos = useSelector(selectDailyTaskStart);
+  const colTaskStartPos = useSelector(selectColTaskStart);
 
   useEffect(() => {
     dispatch(actions.getDailyTaskRequest(Today()));
+    dispatch(actions.getColumnTaskRequest(Today()));
   }, [dispatch]);
 
   const moveToHomeLocation = () => {
-    const idx = taskCols.findIndex(col => col.active);
+    const idx = dailyTaskCols.findIndex(col => col.active);
     if (idx > 0) {
       dispatch(actions.moveDailyTask(idx - 1 - dailyTaskStartPos));
     } else {
@@ -50,6 +58,12 @@ export const HomePage = memo((props: Props) => {
     }
   };
 
+  const createTaskOnColumn = (task, col) => {
+    if (!!task) {
+      dispatch(actions.createTaskRequest(task, '', col, false));
+    }
+  };
+
   const updateTask = task => {
     const { markdown, isDone, id } = task;
     if (!!markdown) {
@@ -60,24 +74,36 @@ export const HomePage = memo((props: Props) => {
   };
 
   const handleDragNDrop = (event: OnDragEndResponder) => {
-    const payload: dragNDropPayload = {
-      taskID: event.draggableId,
-      source: {
-        colID: event.source.droppableId,
-        idx: event.source.index,
-      },
-      destination: {
-        colID: event.destination.droppableId,
-        idx: event.destination.index,
-      },
-    };
-    const colIdx = taskCols.findIndex(c => c.id === payload.destination.colID);
-    const ids = taskCols[colIdx].tasks.map(t => parseInt(t.id));
-    ids.splice(payload.destination.idx, 0, parseInt(payload.taskID));
-    dispatch(
-      actions.reposRequest({ col: payload.destination.colID, ids: ids }),
-    );
-    dispatch(actions.reposRequestLocal(payload));
+    try {
+      const payload: dragNDropPayload = {
+        taskID: event.draggableId,
+        source: {
+          colID: event.source.droppableId,
+          idx: event.source.index,
+        },
+        destination: {
+          colID: event.destination.droppableId,
+          idx: event.destination.index,
+        },
+      };
+      const allTasks = [...dailyTaskCols, ...colTaskCols];
+      let colIdx = allTasks.findIndex(c => c.id === payload.destination.colID);
+      const ids = allTasks[colIdx].tasks.map(t => parseInt(t.id));
+      // remove id from the source and the destination is same
+      const finalids =
+        payload.destination.colID === payload.source.colID
+          ? ids.filter(i => i !== parseInt(payload.taskID))
+          : ids;
+      finalids.splice(payload.destination.idx, 0, parseInt(payload.taskID));
+      dispatch(
+        actions.reposRequest({ col: payload.destination.colID, ids: finalids }),
+      );
+      dispatch(actions.reposRequestLocal(payload));
+    } catch (e) {
+      if (process.env.NODE_ENV !== 'production') {
+        console.error(e);
+      }
+    }
   };
 
   return (
@@ -89,7 +115,7 @@ export const HomePage = memo((props: Props) => {
       <Div>
         <DragDropContext onDragEnd={handleDragNDrop}>
           <MainSection
-            taskColumns={taskCols}
+            taskColumns={dailyTaskCols}
             startIndex={dailyTaskStartPos}
             showDateNav={true}
             showHomeNav={true}
@@ -100,6 +126,14 @@ export const HomePage = memo((props: Props) => {
               dispatch(actions.getDailyTaskRequest(MapDateToString(move)))
             }
             onTaskAdd={createTaskOnDate}
+            onTaskUpdate={updateTask}
+          ></MainSection>
+          <MainSection
+            taskColumns={colTaskCols}
+            startIndex={colTaskStartPos}
+            theme={theme}
+            onMoveRequest={move => dispatch(actions.moveColumnTask(move))}
+            onTaskAdd={createTaskOnColumn}
             onTaskUpdate={updateTask}
           ></MainSection>
         </DragDropContext>

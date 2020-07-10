@@ -9,7 +9,9 @@ export type Task = ITask;
 
 export interface HomePageState {
   dailyTask: Column[];
+  columnTask: Column[];
   dailyTaskStart: number;
+  columnTaskStart: number;
 }
 
 export interface dragNDropPayload {
