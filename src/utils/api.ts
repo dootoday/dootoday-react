@@ -7,6 +7,7 @@ import {
   RefreshRequest,
   UserResponse,
   ColumnResponse,
+  TaskResponse,
 } from './datatypes';
 
 const BASE_URL = process.env.REACT_APP_BASE_API_URL;
@@ -51,4 +52,27 @@ export const GetTaskOnDateAPI = (
   const url = `${BASE_URL}/v1/tasks?from=${fromdate}&to=${todate}`;
   const headers = { Authorization: 'Bearer ' + GetAuthToken() };
   return axios.get(url, { headers });
+};
+
+export const CreateTaskAPI = (
+  markdown: string,
+  date: string,
+  column_id: string,
+  is_done: boolean,
+): Promise<AxiosResponse<TaskResponse>> => {
+  console.log('API: making request creating task..');
+  const url = `${BASE_URL}/v1/task`;
+  const headers = { Authorization: 'Bearer ' + GetAuthToken() };
+  return axios.post(url, { markdown, date, column_id, is_done }, { headers });
+};
+
+export const UpdateTaskAPI = (
+  id: string,
+  markdown: string,
+  is_done: boolean,
+): Promise<AxiosResponse<TaskResponse>> => {
+  console.log('API: making request creating task..');
+  const url = `${BASE_URL}/v1/task/${id}`;
+  const headers = { Authorization: 'Bearer ' + GetAuthToken() };
+  return axios.post(url, { markdown, is_done }, { headers });
 };

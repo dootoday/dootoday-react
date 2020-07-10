@@ -43,6 +43,19 @@ export const HomePage = memo((props: Props) => {
     }
   };
 
+  const createTaskOnDate = (task, date) => {
+    if (!!task) {
+      dispatch(actions.createTaskRequest(task, date, '', false));
+    }
+  };
+
+  const updateTask = task => {
+    const { markdown, isDone, id } = task;
+    if (!!markdown) {
+      dispatch(actions.updateTaskRequest(id, markdown, isDone));
+    }
+  };
+
   return (
     <>
       <Helmet>
@@ -62,6 +75,8 @@ export const HomePage = memo((props: Props) => {
             onMoveToDateRequest={move =>
               dispatch(actions.getDailyTaskRequest(MapDateToString(move)))
             }
+            onTaskAdd={createTaskOnDate}
+            onTaskUpdate={updateTask}
           ></MainSection>
         </DragDropContext>
       </Div>
