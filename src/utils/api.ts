@@ -99,3 +99,13 @@ export const ReposTaskAPI = (data): Promise<AxiosResponse> => {
   const headers = { Authorization: 'Bearer ' + GetAuthToken() };
   return axios.post(url, data, { headers });
 };
+
+export const UpdateColumnAPI = (
+  id: string,
+  name: string,
+): Promise<AxiosResponse<TaskResponse>> => {
+  console.log('API: making request updating column..');
+  const url = `${BASE_URL}/v1/column/${id}`;
+  const headers = { Authorization: 'Bearer ' + GetAuthToken() };
+  return axios.post(url, { name }, { headers });
+};
