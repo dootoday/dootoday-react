@@ -4,9 +4,10 @@
  *
  */
 import React, { memo, useState, useEffect, useRef } from 'react';
-import { Typography } from '@material-ui/core';
+import { Typography, IconButton } from '@material-ui/core';
 import { Draggable, Droppable } from 'react-beautiful-dnd';
 import { createMuiTheme, Theme } from '@material-ui/core/styles';
+import DeleteIcon from '@material-ui/icons/Delete';
 import styled from 'styled-components/macro';
 import { Task, TaskItem } from '../TaskItem';
 
@@ -49,6 +50,11 @@ interface Props {
   highlight?: boolean;
 
   /**
+   * allowDelete: is the column allowed to be deleted
+   */
+  allowDelete?: boolean;
+
+  /**
    * theme: Theme object of material UI
    */
   theme?: Theme;
@@ -71,6 +77,11 @@ interface Props {
    * updated on the list
    */
   onTaskUpdate?: (task: Task, listID: string) => void;
+
+  /**
+   * This event is called when a list is requested to delete
+   */
+  onListDelete?: () => void;
 }
 
 export const TaskList = memo((props: Props) => {
@@ -80,9 +91,11 @@ export const TaskList = memo((props: Props) => {
     meta,
     titleEditable,
     tasks,
+    allowDelete,
     onTitleChange,
     onTaskAdd,
     onTaskUpdate,
+    onListDelete,
   } = props;
   const theme = props.theme || createMuiTheme();
   const highlight = !!props.highlight;
@@ -127,6 +140,15 @@ export const TaskList = memo((props: Props) => {
     <Div {...{ theme, highlight }}>
       <section>
         <header className="header">
+          {allowDelete && (
+            <IconButton
+              size="small"
+              className="del-icon"
+              onClick={() => allowDelete && onListDelete && onListDelete()}
+            >
+              <DeleteIcon fontSize="small" />
+            </IconButton>
+          )}
           {!editingTitle && (
             <Typography variant="h6" onClick={onClickTitle}>
               {titleValue}
@@ -202,6 +224,14 @@ const Div = styled.div<{ theme: Theme; highlight: boolean }>`
       ? props.theme.palette.primary.dark
       : props.theme.palette.secondary.dark};
 
+  &:hover {
+    .header {
+      .del-icon {
+        opacity: 0.8;
+      }
+    }
+  }
+
   .header {
     left: 0;
     margin-bottom: 2.7777777778em;
@@ -209,6 +239,16 @@ const Div = styled.div<{ theme: Theme; highlight: boolean }>`
     text-transform: uppercase;
     top: 0;
     width: 100%;
+
+    .del-icon {
+      opacity: 0;
+      position: absolute;
+      right: -15px;
+
+      @media (max-width: 48.0625em) {
+        display: none;
+      }
+    }
 
     h6 {
       white-space: nowrap;

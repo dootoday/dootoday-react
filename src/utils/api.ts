@@ -118,3 +118,12 @@ export const CreateColumnAPI = (
   const headers = { Authorization: 'Bearer ' + GetAuthToken() };
   return axios.post(url, { name }, { headers });
 };
+
+export const DeleteColumnAPI = (
+  id: string,
+): Promise<AxiosResponse<TaskResponse>> => {
+  console.log('API: making request deleting column..');
+  const url = `${BASE_URL}/v1/column/${id}`;
+  const headers = { Authorization: 'Bearer ' + GetAuthToken() };
+  return axios.delete(url, { headers });
+};

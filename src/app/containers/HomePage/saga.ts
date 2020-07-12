@@ -10,6 +10,7 @@ import {
   GetTasksOnColumnAPI,
   UpdateColumnAPI,
   CreateColumnAPI,
+  DeleteColumnAPI,
 } from 'utils/api';
 import { GetDateRange } from 'utils/mappers';
 
@@ -80,6 +81,14 @@ function* createColumn(action) {
   }
 }
 
+function* deleteColumn(action) {
+  const { id } = action.payload;
+  const { status } = yield call(DeleteColumnAPI, id);
+  if (status === http.StatusOK) {
+    yield put(actions.colDeleteSuccess(id));
+  }
+}
+
 export function* homePageSaga() {
   yield all([
     takeLatest(actions.getDailyTaskRequest.type, getDailyTasks),
@@ -90,5 +99,6 @@ export function* homePageSaga() {
     takeLatest(actions.reposRequest.type, reposTask),
     takeLatest(actions.colUpdateRequest.type, updateColumn),
     takeLatest(actions.colCreateRequest.type, createColumn),
+    takeLatest(actions.colDeleteRequest.type, deleteColumn),
   ]);
 }
