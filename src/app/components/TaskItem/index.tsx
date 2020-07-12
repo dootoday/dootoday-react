@@ -4,10 +4,9 @@
  *
  */
 import React, { memo, useState, useRef, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
 import styled from 'styled-components/macro';
 import { createMuiTheme, Theme } from '@material-ui/core/styles';
-import { Typography, IconButton, Grid } from '@material-ui/core';
+import { Typography, IconButton } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
 import ReactMarkdown from 'react-markdown';
 import cx from 'classnames';
@@ -71,7 +70,6 @@ export const TaskItem = memo((props: Props) => {
     isJustInput ? justEditingTaskState : task,
   );
   const inputRef = useRef() as React.MutableRefObject<HTMLInputElement>;
-  const dispatch = useDispatch();
   let timeouts: number[] = [];
   const handleDoublieClick = () => {
     if (timeouts.length) {
@@ -132,34 +130,30 @@ export const TaskItem = memo((props: Props) => {
     <>
       <Div {...{ theme, highlight }}>
         {!editing && (
-          <Grid container spacing={1}>
-            <Grid item xs={11}>
-              <Typography
-                onDoubleClick={handleDoublieClick}
-                onClick={handleClick}
-                variant={'caption'}
-                className={cx({ done: taskState.isDone })}
+          <div className="task-item">
+            <Typography
+              onDoubleClick={handleDoublieClick}
+              onClick={handleClick}
+              variant={'caption'}
+              className={cx({ done: taskState.isDone })}
+            >
+              <ReactMarkdown
+                className="md"
+                disallowedTypes={['break', 'delete']}
+                linkTarget={'_blank'}
+                source={taskState.markdown}
+              />
+            </Typography>
+            {taskState.isDone && (
+              <IconButton
+                aria-label="delete"
+                className={cx('icon-button', 'icon-button-delete')}
+                onClick={handleDelete}
               >
-                <ReactMarkdown
-                  className={'md'}
-                  disallowedTypes={['break', 'delete']}
-                  linkTarget={'_blank'}
-                  source={taskState.markdown}
-                />
-              </Typography>
-            </Grid>
-            <Grid item xs={1}>
-              {taskState.isDone && (
-                <IconButton
-                  aria-label="delete"
-                  className="icon-button-delete"
-                  onClick={handleDelete}
-                >
-                  <DeleteIcon fontSize="inherit" />
-                </IconButton>
-              )}
-            </Grid>
-          </Grid>
+                <DeleteIcon fontSize="inherit" />
+              </IconButton>
+            )}
+          </div>
         )}
         {(editing || isJustInput) && (
           <input
@@ -210,9 +204,24 @@ const Div = styled.div<{ theme: Theme; highlight: boolean }>`
         ? props.theme.palette.primary.dark
         : props.theme.palette.secondary.dark};
   }
-  .icon-button-delete {
+  .icon-button {
     padding: 0;
     font-size: 16px;
+    position: absolute;
+    right: 0;
+    top: 1px;
+  }
+  .task-item {
+    position: relative;
+    .icon-button-delete {
+      display: none;
+    }
+    :hover {
+      background-color: ${props => props.theme.palette.primary.light};
+      .icon-button-delete {
+        display: block;
+      }
+    }
   }
   .md {
     width: 100%;
@@ -224,7 +233,6 @@ const Div = styled.div<{ theme: Theme; highlight: boolean }>`
       overflow: visible;
       text-overflow: unset;
       white-space: initial;
-      background-color: ${props => props.theme.palette.primary.light};
       cursor: grab;
       position: relative;
     }
@@ -278,6 +286,17 @@ const Div = styled.div<{ theme: Theme; highlight: boolean }>`
       }
       li {
         font-size: 0.95rem;
+      }
+    }
+  }
+  @media only screen and (max-width: 768px) {
+    .icon-button {
+      right: 1px;
+      top: 5px;
+    }
+    .task-item {
+      .icon-button-delete {
+        display: block;
       }
     }
   }
