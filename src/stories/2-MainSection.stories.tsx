@@ -89,6 +89,7 @@ export const MainSec = () => (
     <MainSection
       taskColumns={taskCols}
       startIndex={number('Start At', 9)}
+      startIndexMob={0}
       showDateNav={true}
       showHomeNav={true}
       theme={theme}

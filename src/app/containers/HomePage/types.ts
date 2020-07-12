@@ -11,7 +11,9 @@ export interface HomePageState {
   dailyTask: Column[];
   columnTask: Column[];
   dailyTaskStart: number;
+  dailyTaskStartMob: number;
   columnTaskStart: number;
+  columnTaskStartMob: number;
 }
 
 export interface dragNDropPayload {

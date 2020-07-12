@@ -20,12 +20,12 @@ export const selectColumnTask = createSelector(
   state => state.columnTask,
 );
 
-export const selectDailyTaskStart = createSelector(
-  [selectHomePage],
-  state => state.dailyTaskStart,
-);
+export const selectDailyTaskStart = createSelector([selectHomePage], state => ({
+  pc: state.dailyTaskStart,
+  mob: state.dailyTaskStartMob,
+}));
 
-export const selectColTaskStart = createSelector(
-  [selectHomePage],
-  state => state.columnTaskStart,
-);
+export const selectColTaskStart = createSelector([selectHomePage], state => ({
+  pc: state.columnTaskStart,
+  mob: state.columnTaskStartMob,
+}));

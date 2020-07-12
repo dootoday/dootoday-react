@@ -10,7 +10,9 @@ export const initialState: ContainerState = {
   dailyTask: [] as Column[],
   columnTask: [] as Column[],
   dailyTaskStart: 10,
+  dailyTaskStartMob: 11,
   columnTaskStart: 0,
+  columnTaskStartMob: 0,
 };
 
 const homePageSlice = createSlice({
@@ -49,9 +51,35 @@ const homePageSlice = createSlice({
         return { payload: colTasks.map(c => ColMapper(c)) };
       },
     },
+    moveDailyTaskToHome: {
+      reducer: (state, action: PayloadAction<{ idx: number }>) => {
+        const idx = action.payload.idx;
+        state.dailyTaskStartMob = idx;
+        if (idx > state.columnTask.length - 5) {
+          state.dailyTaskStart = state.dailyTask.length - 5;
+        }
+        return state;
+      },
+      prepare: (idx: number) => {
+        return { payload: { idx } };
+      },
+    },
     moveDailyTask: {
       reducer: (state, action: PayloadAction<{ by: number }>) => {
         state.dailyTaskStart = state.dailyTaskStart + action.payload.by;
+        if (state.dailyTaskStart > state.dailyTask.length - 5) {
+          state.dailyTaskStart = state.dailyTask.length - 5;
+        }
+        if (state.dailyTaskStart < 0) {
+          state.dailyTaskStart = 0;
+        }
+        state.dailyTaskStartMob = state.dailyTaskStartMob + action.payload.by;
+        if (state.dailyTaskStartMob > state.dailyTask.length - 1) {
+          state.dailyTaskStartMob = state.dailyTask.length - 1;
+        }
+        if (state.dailyTaskStartMob < 0) {
+          state.dailyTaskStartMob = 0;
+        }
         return state;
       },
       prepare: (by: number) => {
@@ -61,6 +89,19 @@ const homePageSlice = createSlice({
     moveColumnTask: {
       reducer: (state, action: PayloadAction<{ by: number }>) => {
         state.columnTaskStart = state.columnTaskStart + action.payload.by;
+        if (state.columnTaskStart > state.columnTask.length - 5) {
+          state.columnTaskStart = state.columnTask.length - 5;
+        }
+        if (state.columnTaskStart < 0) {
+          state.columnTaskStart = 0;
+        }
+        state.columnTaskStartMob = state.columnTaskStartMob + action.payload.by;
+        if (state.columnTaskStartMob > state.columnTask.length - 1) {
+          state.columnTaskStartMob = state.columnTask.length - 1;
+        }
+        if (state.columnTaskStartMob < 0) {
+          state.columnTaskStartMob = 0;
+        }
         return state;
       },
       prepare: (by: number) => {
@@ -240,6 +281,7 @@ const homePageSlice = createSlice({
     colCreateSuccess: {
       reducer: (state, action: PayloadAction<Column>) => {
         state.columnTask.push(action.payload);
+        state.columnTaskStartMob = state.columnTask.length - 1;
         state.columnTaskStart = state.columnTask.length - 5;
         return state;
       },
