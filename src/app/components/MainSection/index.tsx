@@ -38,6 +38,11 @@ interface Props {
   startIndex: number;
 
   /**
+   * startIndexMob: This is the starting point in the mobile screen
+   */
+  startIndexMob: number;
+
+  /**
    * colTitleEditable: If the column titles are editable
    */
   colTitleEditable?: boolean;
@@ -104,6 +109,7 @@ export const MainSection = memo((props: Props) => {
     taskColumns,
     colTitleEditable,
     startIndex,
+    startIndexMob,
     showHomeNav,
     showDateNav,
     colDeleteAllowed,
@@ -117,18 +123,6 @@ export const MainSection = memo((props: Props) => {
   } = props;
   const theme = props.theme || createMuiTheme();
   const [datePickerOpen, setDatePickerOpen] = useState(false);
-
-  const calculateStartIndex = (startIndex: number, mobile: boolean): number => {
-    const screenlimit = mobile ? 1 : 5;
-    if (startIndex > taskColumns.length - screenlimit) {
-      return taskColumns.length - screenlimit;
-    }
-    if (startIndex < 0) {
-      return 0;
-    }
-    return startIndex;
-  };
-
   const handleDateChange = (date: any) => {
     onMoveToDateRequest && onMoveToDateRequest(date as Date);
     setDatePickerOpen(false);
@@ -136,8 +130,8 @@ export const MainSection = memo((props: Props) => {
 
   return (
     <Section
-      startIndex={calculateStartIndex(startIndex, false)}
-      startIndexMob={calculateStartIndex(startIndex, true) + 1}
+      startIndex={startIndex}
+      startIndexMob={startIndexMob}
       totalLength={taskColumns.length}
     >
       <nav className="main-nav left">
@@ -277,7 +271,7 @@ const Section = styled.section<{
       grid-auto-columns: calc(20 * 1%);
       grid-template-rows: 100%;
       padding-left: 0;
-      min-height: 25.1111111111rem;
+      min-height: 28.1111111111rem;
       transition: all 0.5s ease-in-out, -webkit-all 0.5s ease-in-out;
       z-index: 0;
       position: relative;
@@ -320,14 +314,23 @@ const Section = styled.section<{
       .primary-arrow,
       .secondary-arrow {
         &.left {
-          display: ${props => (props.startIndex === 0 ? 'none' : '')};
+          display: ${props => (props.startIndexMob <= 0 ? 'none' : '')};
+          @media (min-width: 48em) {
+            display: ${props => (props.startIndex <= 0 ? 'none' : '')};
+          }
         }
         &.right {
           display: ${props =>
-            props.startIndexMob === props.totalLength - 1 ? 'none' : ''};
+            props.totalLength <= 1 ||
+            props.startIndexMob === props.totalLength - 1
+              ? 'none'
+              : ''};
           @media (min-width: 48em) {
             display: ${props =>
-              props.startIndex === props.totalLength - 5 ? 'none' : ''};
+              props.totalLength <= 5 ||
+              props.startIndex === props.totalLength - 5
+                ? 'none'
+                : ''};
           }
         }
       }

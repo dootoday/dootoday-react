@@ -48,7 +48,7 @@ export const HomePage = memo((props: Props) => {
   const moveToHomeLocation = () => {
     const idx = dailyTaskCols.findIndex(col => col.active);
     if (idx > 0) {
-      dispatch(actions.moveDailyTask(idx - 1 - dailyTaskStartPos));
+      dispatch(actions.moveDailyTaskToHome(idx));
     } else {
       dispatch(actions.getDailyTaskRequest(Today()));
     }
@@ -130,7 +130,8 @@ export const HomePage = memo((props: Props) => {
         <DragDropContext onDragEnd={handleDragNDrop}>
           <MainSection
             taskColumns={dailyTaskCols}
-            startIndex={dailyTaskStartPos}
+            startIndex={dailyTaskStartPos.pc}
+            startIndexMob={dailyTaskStartPos.mob}
             showDateNav={true}
             showHomeNav={true}
             theme={theme}
@@ -153,7 +154,8 @@ export const HomePage = memo((props: Props) => {
           </div>
           <MainSection
             taskColumns={colTaskCols}
-            startIndex={colTaskStartPos}
+            startIndex={colTaskStartPos.pc}
+            startIndexMob={colTaskStartPos.mob}
             theme={theme}
             colTitleEditable={true}
             colDeleteAllowed={true}
