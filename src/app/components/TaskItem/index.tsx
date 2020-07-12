@@ -4,6 +4,7 @@
  *
  */
 import React, { memo, useState, useRef, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import styled from 'styled-components/macro';
 import { createMuiTheme, Theme } from '@material-ui/core/styles';
 import { Typography, IconButton, Grid } from '@material-ui/core';
@@ -70,6 +71,7 @@ export const TaskItem = memo((props: Props) => {
     isJustInput ? justEditingTaskState : task,
   );
   const inputRef = useRef() as React.MutableRefObject<HTMLInputElement>;
+  const dispatch = useDispatch();
   let timeouts: number[] = [];
   const handleDoublieClick = () => {
     if (timeouts.length) {
@@ -101,7 +103,8 @@ export const TaskItem = memo((props: Props) => {
     }
   };
   const handleDelete = () => {
-    console.log(taskState);
+    const newState = { ...taskState, ...{ markdown: '' } };
+    onTaskUpdate && onTaskUpdate(newState);
   };
   const onKeyPress = (event: any) => {
     if (event.key === 'Enter') {
