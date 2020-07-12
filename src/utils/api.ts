@@ -109,3 +109,12 @@ export const UpdateColumnAPI = (
   const headers = { Authorization: 'Bearer ' + GetAuthToken() };
   return axios.post(url, { name }, { headers });
 };
+
+export const CreateColumnAPI = (
+  name: string,
+): Promise<AxiosResponse<TaskResponse>> => {
+  console.log('API: making request for creating new column..');
+  const url = `${BASE_URL}/v1/column`;
+  const headers = { Authorization: 'Bearer ' + GetAuthToken() };
+  return axios.post(url, { name }, { headers });
+};

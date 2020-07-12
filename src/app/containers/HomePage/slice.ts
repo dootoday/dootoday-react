@@ -229,6 +229,24 @@ const homePageSlice = createSlice({
         return { payload: { id, name } };
       },
     },
+
+    colCreateRequest: {
+      reducer: state => state,
+      prepare: (name: string) => {
+        return { payload: { name } };
+      },
+    },
+
+    colCreateSuccess: {
+      reducer: (state, action: PayloadAction<Column>) => {
+        state.columnTask.push(action.payload);
+        state.columnTaskStart = state.columnTask.length - 5;
+        return state;
+      },
+      prepare: (colTask: ColumnResponse) => {
+        return { payload: ColMapper(colTask) };
+      },
+    },
   },
 });
 

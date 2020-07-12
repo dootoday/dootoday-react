@@ -308,10 +308,10 @@ const Section = styled.section<{
         }
         &.right {
           display: ${props =>
-            props.startIndex === props.totalLength - 5 ? 'none' : ''};
-          @media (max-width: 48em) {
+            props.startIndexMob === props.totalLength - 1 ? 'none' : ''};
+          @media (min-width: 48em) {
             display: ${props =>
-              props.startIndexMob === props.totalLength - 1 ? 'none' : ''};
+              props.startIndex === props.totalLength - 5 ? 'none' : ''};
           }
         }
       }
