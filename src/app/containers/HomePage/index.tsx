@@ -109,11 +109,15 @@ export const HomePage = memo((props: Props) => {
   };
 
   const handleCreateColumn = () => {
-    dispatch(actions.colCreateRequest('*New*'));
+    dispatch(actions.colCreateRequest('*Edit*'));
   };
 
   const handleColumnUpdate = (colID: string, title: string) => {
     dispatch(actions.colUpdateRequest(colID, title));
+  };
+
+  const handleColumnDelete = (colID: string) => {
+    dispatch(actions.colDeleteRequest(colID));
   };
 
   return (
@@ -152,10 +156,12 @@ export const HomePage = memo((props: Props) => {
             startIndex={colTaskStartPos}
             theme={theme}
             colTitleEditable={true}
+            colDeleteAllowed={true}
             onMoveRequest={move => dispatch(actions.moveColumnTask(move))}
             onTaskAdd={createTaskOnColumn}
             onTaskUpdate={updateTask}
             onColumnUpdate={handleColumnUpdate}
+            onColumnDelete={handleColumnDelete}
           ></MainSection>
         </DragDropContext>
       </Div>

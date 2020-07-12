@@ -53,6 +53,11 @@ interface Props {
   showDateNav?: boolean;
 
   /**
+   * colDeleteAllowed: Columns allowed to be deleted
+   */
+  colDeleteAllowed?: boolean;
+
+  /**
    * theme: Theme object of material UI
    */
   theme?: Theme;
@@ -87,6 +92,11 @@ interface Props {
    * onColumnUpdate: Column title change
    */
   onColumnUpdate?: (colID: string, title: string) => void;
+
+  /**
+   * onColumnDelete : when a column is requested to delete
+   */
+  onColumnDelete?: (colID: string) => void;
 }
 
 export const MainSection = memo((props: Props) => {
@@ -96,12 +106,14 @@ export const MainSection = memo((props: Props) => {
     startIndex,
     showHomeNav,
     showDateNav,
+    colDeleteAllowed,
     onTaskAdd,
     onTaskUpdate,
     onMoveRequest,
     onHomeRequest,
     onMoveToDateRequest,
     onColumnUpdate,
+    onColumnDelete,
   } = props;
   const theme = props.theme || createMuiTheme();
   const [datePickerOpen, setDatePickerOpen] = useState(false);
@@ -175,10 +187,14 @@ export const MainSection = memo((props: Props) => {
                     highlight={!!taskColumn.active}
                     theme={theme}
                     titleEditable={!!colTitleEditable}
+                    allowDelete={colDeleteAllowed}
                     onTaskAdd={onTaskAdd}
                     onTaskUpdate={onTaskUpdate}
                     onTitleChange={(title: string) =>
                       onColumnUpdate && onColumnUpdate(taskColumn.id, title)
+                    }
+                    onListDelete={() =>
+                      onColumnDelete && onColumnDelete(taskColumn.id)
                     }
                   />
                 </li>

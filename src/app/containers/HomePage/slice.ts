@@ -247,6 +247,25 @@ const homePageSlice = createSlice({
         return { payload: ColMapper(colTask) };
       },
     },
+
+    colDeleteRequest: {
+      reducer: state => state,
+      prepare: (id: string) => {
+        return { payload: { id } };
+      },
+    },
+
+    colDeleteSuccess: {
+      reducer: (state, action: PayloadAction<{ id: string }>) => {
+        state.columnTask = state.columnTask.filter(
+          c => c.id !== action.payload.id,
+        );
+        return state;
+      },
+      prepare: (id: string) => {
+        return { payload: { id } };
+      },
+    },
   },
 });
 
