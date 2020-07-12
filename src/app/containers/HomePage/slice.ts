@@ -29,6 +29,7 @@ const homePageSlice = createSlice({
       reducer: (state, action: PayloadAction<Column[]>) => {
         state.dailyTask = action.payload;
         state.dailyTaskStart = 10;
+        state.dailyTaskStartMob = 11;
         return state;
       },
       prepare: (colTasks: ColumnResponse[]) => {
@@ -55,7 +56,8 @@ const homePageSlice = createSlice({
       reducer: (state, action: PayloadAction<{ idx: number }>) => {
         const idx = action.payload.idx;
         state.dailyTaskStartMob = idx;
-        if (idx > state.columnTask.length - 5) {
+        state.dailyTaskStart = idx - 1;
+        if (idx > state.dailyTask.length - 5) {
           state.dailyTaskStart = state.dailyTask.length - 5;
         }
         return state;
