@@ -8,6 +8,7 @@ import {
   DeleteTaskAPI,
   ReposTaskAPI,
   GetTasksOnColumnAPI,
+  UpdateColumnAPI,
 } from 'utils/api';
 import { GetDateRange } from 'utils/mappers';
 
@@ -62,6 +63,14 @@ function* reposTask(action) {
   yield call(ReposTaskAPI, action.payload);
 }
 
+function* updateColumn(action) {
+  const { id, name } = action.payload;
+  const { status } = yield call(UpdateColumnAPI, id, name);
+  if (status === http.StatusOK) {
+    yield put(actions.colUpdateSuccess(id, name));
+  }
+}
+
 export function* homePageSaga() {
   yield all([
     takeLatest(actions.getDailyTaskRequest.type, getDailyTasks),
@@ -70,5 +79,6 @@ export function* homePageSaga() {
     takeLatest(actions.updateTaskRequest.type, updateTask),
     takeLatest(actions.deleteTaskRequest.type, deleteTask),
     takeLatest(actions.reposRequest.type, reposTask),
+    takeLatest(actions.colUpdateRequest.type, updateColumn),
   ]);
 }

@@ -209,6 +209,26 @@ const homePageSlice = createSlice({
         }
       },
     },
+
+    colUpdateRequest: {
+      reducer: state => state,
+      prepare: (id: string, name: string) => {
+        return { payload: { id, name } };
+      },
+    },
+
+    colUpdateSuccess: {
+      reducer: (state, action: PayloadAction<{ id: string; name: string }>) => {
+        const idx = state.columnTask.findIndex(c => c.id === action.payload.id);
+        if (idx > -1) {
+          state.columnTask[idx].title = action.payload.name;
+        }
+        return state;
+      },
+      prepare: (id: string, name: string) => {
+        return { payload: { id, name } };
+      },
+    },
   },
 });
 

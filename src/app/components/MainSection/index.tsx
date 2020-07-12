@@ -241,12 +241,12 @@ const Section = styled.section<{
 }>`
   display: grid;
   grid-template-columns: 1fr;
-  margin-top: 50px;
+  margin-top: 30px;
   position: relative;
 
   @media (min-width: 48.0625em) {
     grid-template-columns: 3.5555555556rem 1fr 3.5555555556rem;
-    margin-top: 50px;
+    margin-top: 40px;
   }
 
   .main-content {

@@ -106,13 +106,17 @@ export const HomePage = memo((props: Props) => {
     }
   };
 
+  const handleColumnUpdate = (colID: string, title: string) => {
+    dispatch(actions.colUpdateRequest(colID, title));
+  };
+
   return (
     <>
       <Helmet>
         <title>HomePage</title>
         <meta name="description" content="Description of HomePage" />
       </Helmet>
-      <Div>
+      <Div theme={theme}>
         <DragDropContext onDragEnd={handleDragNDrop}>
           <MainSection
             taskColumns={dailyTaskCols}
@@ -128,6 +132,7 @@ export const HomePage = memo((props: Props) => {
             onTaskAdd={createTaskOnDate}
             onTaskUpdate={updateTask}
           ></MainSection>
+          <div className="separator"></div>
           <MainSection
             taskColumns={colTaskCols}
             startIndex={colTaskStartPos}
@@ -136,6 +141,7 @@ export const HomePage = memo((props: Props) => {
             onMoveRequest={move => dispatch(actions.moveColumnTask(move))}
             onTaskAdd={createTaskOnColumn}
             onTaskUpdate={updateTask}
+            onColumnUpdate={handleColumnUpdate}
           ></MainSection>
         </DragDropContext>
       </Div>
@@ -143,4 +149,9 @@ export const HomePage = memo((props: Props) => {
   );
 });
 
-const Div = styled.div``;
+const Div = styled.div<{ theme: Theme }>`
+  .separator {
+    height: 30px;
+    background-color: ${props => props.theme.palette.primary.light};
+  }
+`;
