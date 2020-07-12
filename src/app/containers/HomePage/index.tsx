@@ -9,6 +9,7 @@ import { Helmet } from 'react-helmet-async';
 import { useSelector, useDispatch } from 'react-redux';
 import styled from 'styled-components/macro';
 import { Theme, createMuiTheme } from '@material-ui/core/styles';
+import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import { MainSection } from 'app/components/MainSection/Loadable';
 import { DragDropContext, OnDragEndResponder } from 'react-beautiful-dnd';
 
@@ -23,6 +24,7 @@ import {
 import { homePageSaga } from './saga';
 import { Today, MapDateToString } from 'utils/mappers';
 import { dragNDropPayload } from './types';
+import { IconButton } from '@material-ui/core';
 
 interface Props {
   theme?: Theme;
@@ -106,6 +108,10 @@ export const HomePage = memo((props: Props) => {
     }
   };
 
+  const handleCreateColumn = () => {
+    dispatch(actions.colCreateRequest('New Column'));
+  };
+
   const handleColumnUpdate = (colID: string, title: string) => {
     dispatch(actions.colUpdateRequest(colID, title));
   };
@@ -132,7 +138,15 @@ export const HomePage = memo((props: Props) => {
             onTaskAdd={createTaskOnDate}
             onTaskUpdate={updateTask}
           ></MainSection>
-          <div className="separator"></div>
+          <div className="separator">
+            <IconButton
+              size="small"
+              className="add-icon"
+              onClick={handleCreateColumn}
+            >
+              <AddCircleOutlineIcon />
+            </IconButton>
+          </div>
           <MainSection
             taskColumns={colTaskCols}
             startIndex={colTaskStartPos}
@@ -151,7 +165,13 @@ export const HomePage = memo((props: Props) => {
 
 const Div = styled.div<{ theme: Theme }>`
   .separator {
-    height: 30px;
+    height: 40px;
     background-color: ${props => props.theme.palette.primary.light};
+    display: flex;
+    justify-content: flex-end;
+
+    .add-icon {
+      margin-right: 12px;
+    }
   }
 `;

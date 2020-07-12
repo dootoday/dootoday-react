@@ -9,6 +9,7 @@ import {
   ReposTaskAPI,
   GetTasksOnColumnAPI,
   UpdateColumnAPI,
+  CreateColumnAPI,
 } from 'utils/api';
 import { GetDateRange } from 'utils/mappers';
 
@@ -71,6 +72,14 @@ function* updateColumn(action) {
   }
 }
 
+function* createColumn(action) {
+  const { name } = action.payload;
+  const { status, data } = yield call(CreateColumnAPI, name);
+  if (status === http.StatusOK) {
+    yield put(actions.colCreateSuccess(data));
+  }
+}
+
 export function* homePageSaga() {
   yield all([
     takeLatest(actions.getDailyTaskRequest.type, getDailyTasks),
@@ -80,5 +89,6 @@ export function* homePageSaga() {
     takeLatest(actions.deleteTaskRequest.type, deleteTask),
     takeLatest(actions.reposRequest.type, reposTask),
     takeLatest(actions.colUpdateRequest.type, updateColumn),
+    takeLatest(actions.colCreateRequest.type, createColumn),
   ]);
 }

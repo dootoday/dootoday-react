@@ -210,6 +210,12 @@ const Div = styled.div<{ theme: Theme; highlight: boolean }>`
     top: 0;
     width: 100%;
 
+    h6 {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
     .title_editor {
       border: none;
       font-size: 1.25rem;
@@ -219,6 +225,7 @@ const Div = styled.div<{ theme: Theme; highlight: boolean }>`
       letter-spacing: 0.0075em;
       text-transform: uppercase;
       text-align: center;
+      width: 100%;
       color: ${props =>
         props.highlight
           ? props.theme.palette.primary.dark
