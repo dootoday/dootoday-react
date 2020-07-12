@@ -109,7 +109,7 @@ export const HomePage = memo((props: Props) => {
   };
 
   const handleCreateColumn = () => {
-    dispatch(actions.colCreateRequest('New Column'));
+    dispatch(actions.colCreateRequest('*New*'));
   };
 
   const handleColumnUpdate = (colID: string, title: string) => {
