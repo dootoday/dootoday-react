@@ -1,0 +1,26 @@
+{
+  "files": {
+    "static/js/0.936a4dc5.chunk.js": "/dootoday-react/static/js/0.936a4dc5.chunk.js",
+    "main.js": "/dootoday-react/static/js/main.a30b72d3.chunk.js",
+    "runtime-main.js": "/dootoday-react/static/js/runtime-main.4e40ceaa.js",
+    "static/css/3.d54bb455.chunk.css": "/dootoday-react/static/css/3.d54bb455.chunk.css",
+    "static/js/3.268ee6f2.chunk.js": "/dootoday-react/static/js/3.268ee6f2.chunk.js",
+    "static/js/4.24082c6a.chunk.js": "/dootoday-react/static/js/4.24082c6a.chunk.js",
+    "static/js/5.3df79af4.chunk.js": "/dootoday-react/static/js/5.3df79af4.chunk.js",
+    "static/js/6.86d1ba3b.chunk.js": "/dootoday-react/static/js/6.86d1ba3b.chunk.js",
+    "static/js/7.d91a711f.chunk.js": "/dootoday-react/static/js/7.d91a711f.chunk.js",
+    "static/js/8.e61cb62d.chunk.js": "/dootoday-react/static/js/8.e61cb62d.chunk.js",
+    "static/js/9.5dd3a19f.chunk.js": "/dootoday-react/static/js/9.5dd3a19f.chunk.js",
+    "index.html": "/dootoday-react/index.html",
+    "precache-manifest.9899a2ebb9dd36759390b93b1eca3871.js": "/dootoday-react/precache-manifest.9899a2ebb9dd36759390b93b1eca3871.js",
+    "service-worker.js": "/dootoday-react/service-worker.js",
+    "static/js/3.268ee6f2.chunk.js.LICENSE.txt": "/dootoday-react/static/js/3.268ee6f2.chunk.js.LICENSE.txt",
+    "static/js/4.24082c6a.chunk.js.LICENSE.txt": "/dootoday-react/static/js/4.24082c6a.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.4e40ceaa.js",
+    "static/css/3.d54bb455.chunk.css",
+    "static/js/3.268ee6f2.chunk.js",
+    "static/js/main.a30b72d3.chunk.js"
+  ]
+}
