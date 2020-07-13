@@ -21,10 +21,10 @@ export function App() {
   return (
     <BrowserRouter>
       <Helmet
-        titleTemplate="DooToday - Your personal task manager"
-        defaultTitle="DooToday - Your personal task manager"
+        titleTemplate="DooToday - Daily task simplified"
+        defaultTitle="DooToday - Daily task simplified"
       >
-        <meta name="description" content="Your personal task manager" />
+        <meta name="description" content="Daily task simplified" />
       </Helmet>
 
       <Switch>

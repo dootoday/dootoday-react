@@ -28,6 +28,7 @@ import { IconButton } from '@material-ui/core';
 
 interface Props {
   theme?: Theme;
+  userFetched?: boolean;
 }
 
 export const HomePage = memo((props: Props) => {
@@ -35,15 +36,18 @@ export const HomePage = memo((props: Props) => {
   useInjectSaga({ key: sliceKey, saga: homePageSaga });
   const dispatch = useDispatch();
   const theme = props.theme || createMuiTheme();
+  const { userFetched } = props;
   const dailyTaskCols = useSelector(selectDailyTask);
   const colTaskCols = useSelector(selectColumnTask);
   const dailyTaskStartPos = useSelector(selectDailyTaskStart);
   const colTaskStartPos = useSelector(selectColTaskStart);
 
   useEffect(() => {
-    dispatch(actions.getDailyTaskRequest(Today()));
-    dispatch(actions.getColumnTaskRequest(Today()));
-  }, [dispatch]);
+    if (userFetched) {
+      dispatch(actions.getDailyTaskRequest(Today()));
+      dispatch(actions.getColumnTaskRequest(Today()));
+    }
+  }, [dispatch, userFetched]);
 
   const moveToHomeLocation = () => {
     const idx = dailyTaskCols.findIndex(col => col.active);

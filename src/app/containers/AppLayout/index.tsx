@@ -118,7 +118,13 @@ export const AppLayout = memo((props: Props) => {
             </Toolbar>
           </AppBar>
           <Switch>
-            <Route exact path="/" render={() => <HomePage theme={theme} />} />
+            <Route
+              exact
+              path="/"
+              render={() => (
+                <HomePage userFetched={userFetched} theme={theme} />
+              )}
+            />
             <Route
               exact
               path="/subscribe"
