@@ -169,6 +169,16 @@ const Div = styled.div<{ theme: Theme; highlight: boolean }>`
 
   .done {
     text-decoration: line-through;
+    color: ${props =>
+      props.highlight
+        ? props.theme.palette.primary.light
+        : props.theme.palette.secondary.light};
+    :hover {
+      color: ${props =>
+        props.highlight
+          ? props.theme.palette.primary.dark
+          : props.theme.palette.secondary.dark};
+    }
   }
   .input {
     font-size: 0.75rem;
