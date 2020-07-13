@@ -21,6 +21,7 @@ import { userFetchedSelector, userSelector } from './selector';
 import appLayoutSaga from './saga';
 import { RefreshToken } from 'utils/auth';
 import { SubscribePage } from 'app/containers/SubscribePage/Loadable';
+import AppFooter from 'app/components/AppFooter';
 
 interface Props {}
 
@@ -131,6 +132,7 @@ export const AppLayout = memo((props: Props) => {
               component={() => <SubscribePage theme={theme} />}
             />
           </Switch>
+          <AppFooter />
         </Div>
       </ThemeProvider>
     </>
