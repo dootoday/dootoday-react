@@ -102,6 +102,10 @@ export const TaskList = memo((props: Props) => {
   const [editingTitle, setEditingTitle] = useState(false);
   const [titleValue, chageTitleValue] = useState(title);
   const inputRef = useRef() as React.MutableRefObject<HTMLInputElement>;
+  const newTaskRef = useRef() as React.MutableRefObject<{
+    focusInput: () => void;
+    blurInput: () => void;
+  }>;
   const onClickTitle = (event: any) => {
     event.preventDefault();
     if (titleEditable) {
@@ -129,6 +133,9 @@ export const TaskList = memo((props: Props) => {
   };
   const handleTaskUpdate = (task: Task) => {
     onTaskUpdate && onTaskUpdate(task, id);
+  };
+  const handleBodyClick = () => {
+    newTaskRef.current.focusInput();
   };
   useEffect(() => {
     if (editingTitle) {
@@ -171,7 +178,7 @@ export const TaskList = memo((props: Props) => {
           <Typography variant="caption">{meta}</Typography>
         </header>
       </section>
-      <section className="body">
+      <section className="body" onClick={handleBodyClick}>
         <Droppable droppableId={id}>
           {provided => (
             <ul {...provided.droppableProps} ref={provided.innerRef}>
@@ -204,7 +211,7 @@ export const TaskList = memo((props: Props) => {
                   highlight={highlight}
                   onTaskUpdate={handleTaskAdd}
                   isJustInput={true}
-                  placeHolder="Add a new task here"
+                  ref={newTaskRef}
                 />
               </li>
             </ul>
@@ -265,6 +272,7 @@ const Div = styled.div<{ theme: Theme; highlight: boolean }>`
       letter-spacing: 0.0075em;
       text-transform: uppercase;
       text-align: center;
+      outline: none;
       width: 100%;
       color: ${props =>
         props.highlight

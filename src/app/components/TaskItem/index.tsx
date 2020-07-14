@@ -3,7 +3,14 @@
  * TaskItem
  *
  */
-import React, { memo, useState, useRef, useEffect } from 'react';
+import React, {
+  memo,
+  useState,
+  useRef,
+  useEffect,
+  forwardRef,
+  useImperativeHandle,
+} from 'react';
 import styled from 'styled-components/macro';
 import { createMuiTheme, Theme } from '@material-ui/core/styles';
 import { Typography } from '@material-ui/core';
@@ -54,109 +61,122 @@ interface Props {
   onTaskUpdate?: (task: Task) => void;
 }
 
-export const TaskItem = memo((props: Props) => {
-  const { task, isEditable, isJustInput, placeHolder, onTaskUpdate } = props;
-  const theme = props.theme || createMuiTheme();
-  const highlight = !!props.highlight;
-  const [editing, setEditing] = useState(!!isJustInput);
-  const justEditingTaskState: Task = {
-    id: task.id,
-    markdown: '',
-    isDone: false,
-  };
-  const [taskState, setTaskState] = useState<Task>(
-    isJustInput ? justEditingTaskState : task,
-  );
-  const inputRef = useRef() as React.MutableRefObject<HTMLInputElement>;
-  let timeouts: number[] = [];
-  const handleDoublieClick = () => {
-    if (timeouts.length) {
-      timeouts.forEach(to => {
-        clearTimeout(to);
-      });
-      timeouts = [];
-    }
-    if (isEditable) {
-      setEditing(true);
-    }
-  };
-  const handleClick = () => {
-    timeouts.push(
-      setTimeout(() => {
-        const newState = { ...taskState, ...{ isDone: !taskState.isDone } };
-        setTaskState(newState);
-        onTaskUpdate && onTaskUpdate(newState);
-      }, 400),
+export const TaskItem = memo(
+  forwardRef((props: Props, ref) => {
+    const { task, isEditable, isJustInput, placeHolder, onTaskUpdate } = props;
+    const theme = props.theme || createMuiTheme();
+    const highlight = !!props.highlight;
+    const [editing, setEditing] = useState(!!isJustInput);
+    const justEditingTaskState: Task = {
+      id: task.id,
+      markdown: '',
+      isDone: false,
+    };
+    const [taskState, setTaskState] = useState<Task>(
+      isJustInput ? justEditingTaskState : task,
     );
-  };
-  const onBlur = (event: any) => {
-    event.preventDefault();
-    onTaskUpdate && onTaskUpdate({ ...taskState });
-    if (isJustInput) {
-      setTaskState(justEditingTaskState);
-    } else {
-      setEditing(false);
-    }
-  };
-  const onKeyPress = (event: any) => {
-    if (event.key === 'Enter') {
+    const inputRef = useRef() as React.MutableRefObject<HTMLInputElement>;
+    let timeouts: number[] = [];
+    const handleDoublieClick = () => {
+      if (timeouts.length) {
+        timeouts.forEach(to => {
+          clearTimeout(to);
+        });
+        timeouts = [];
+      }
+      if (isEditable) {
+        setEditing(true);
+      }
+    };
+    const handleClick = e => {
+      e.preventDefault();
+      e.stopPropagation();
+      timeouts.push(
+        setTimeout(() => {
+          const newState = { ...taskState, ...{ isDone: !taskState.isDone } };
+          setTaskState(newState);
+          onTaskUpdate && onTaskUpdate(newState);
+        }, 400),
+      );
+    };
+    const onBlur = (event: any) => {
       event.preventDefault();
+      onTaskUpdate && onTaskUpdate({ ...taskState });
       if (isJustInput) {
-        onTaskUpdate && onTaskUpdate({ ...taskState });
         setTaskState(justEditingTaskState);
       } else {
-        inputRef.current.blur();
+        setEditing(false);
       }
-    }
-    if (event.key === 'Escape') {
-      event.preventDefault();
-      setEditing(!!isJustInput);
-      setTaskState(isJustInput ? justEditingTaskState : task);
-    }
-  };
-  useEffect(() => {
-    if (editing && !isJustInput) {
-      inputRef.current.focus();
-      inputRef.current.select();
-    }
-  }, [editing, inputRef, isJustInput]);
-  return (
-    <>
-      <Div {...{ theme, highlight }}>
-        {!editing && (
-          <Typography
-            onDoubleClick={handleDoublieClick}
-            onClick={handleClick}
-            variant={'caption'}
-            className={taskState.isDone ? 'done' : ''}
-          >
-            <ReactMarkdown
-              className={'md'}
-              disallowedTypes={['break', 'delete']}
-              linkTarget={'_blank'}
-              source={taskState.markdown}
+    };
+    const onKeyPress = (event: any) => {
+      if (event.key === 'Enter') {
+        event.preventDefault();
+        if (isJustInput) {
+          onTaskUpdate && onTaskUpdate({ ...taskState });
+          setTaskState(justEditingTaskState);
+        } else {
+          inputRef.current.blur();
+        }
+      }
+      if (event.key === 'Escape') {
+        event.preventDefault();
+        setEditing(!!isJustInput);
+        setTaskState(isJustInput ? justEditingTaskState : task);
+      }
+    };
+    useEffect(() => {
+      if (editing && !isJustInput) {
+        inputRef.current.focus();
+        inputRef.current.select();
+      }
+    }, [editing, inputRef, isJustInput]);
+    useImperativeHandle(ref, () => ({
+      focusInput: () => {
+        inputRef.current.focus();
+        inputRef.current.select();
+      },
+      blurInput: () => {
+        inputRef.current.blur();
+      },
+    }));
+    return (
+      <>
+        <Div {...{ theme, highlight }}>
+          {!editing && (
+            <Typography
+              onDoubleClick={handleDoublieClick}
+              onClick={handleClick}
+              variant={'caption'}
+              className={taskState.isDone ? 'done' : ''}
+            >
+              <ReactMarkdown
+                className={'md'}
+                disallowedTypes={['break', 'delete']}
+                linkTarget={'_blank'}
+                source={taskState.markdown}
+              />
+            </Typography>
+          )}
+          {(editing || isJustInput) && (
+            <input
+              name="task"
+              ref={inputRef}
+              className="input"
+              value={taskState.markdown || ''}
+              placeholder={!!isJustInput ? placeHolder : ''}
+              autoComplete="off"
+              onChange={e =>
+                setTaskState({ ...taskState, ...{ markdown: e.target.value } })
+              }
+              onBlur={onBlur}
+              onKeyDown={onKeyPress}
             />
-          </Typography>
-        )}
-        {(editing || isJustInput) && (
-          <input
-            name="task"
-            ref={inputRef}
-            className="input"
-            value={taskState.markdown || ''}
-            placeholder={!!isJustInput ? placeHolder : ''}
-            autoComplete="off"
-            onChange={e =>
-              setTaskState({ ...taskState, ...{ markdown: e.target.value } })
-            }
-            onBlur={onBlur}
-            onKeyDown={onKeyPress}
-          />
-        )}
-      </Div>
-    </>
-  );
-});
+          )}
+        </Div>
+      </>
+    );
+  }),
+);
 
 const Div = styled.div<{ theme: Theme; highlight: boolean }>`
   height: 25px;
