@@ -181,7 +181,11 @@ export const TaskList = memo((props: Props) => {
       <section className="body" onClick={handleBodyClick}>
         <Droppable droppableId={id}>
           {provided => (
-            <ul {...provided.droppableProps} ref={provided.innerRef}>
+            <ul
+              onClick={e => e.stopPropagation()}
+              {...provided.droppableProps}
+              ref={provided.innerRef}
+            >
               {!!tasks &&
                 !!tasks.length &&
                 tasks.map((task, index) => (
