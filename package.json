@@ -81,7 +81,7 @@
     "prettify": "prettier --write",
     "storybook": "start-storybook -p 9009 -s public",
     "build-storybook": "build-storybook -s public",
-    "deploy": "aws s3 sync build/ s3://doo.today --acl public-read"
+    "deploy": "aws s3 sync build/ s3://doo.today --delete --acl public-read"
   },
   "browserslist": {
     "production": [
