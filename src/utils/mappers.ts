@@ -76,5 +76,5 @@ export const GetDateRange = (start: string): string[] => {
 };
 
 export const GetDateByDays = (startDate: Date, addDay: number): Date => {
-  return new Date(new Date().setDate(startDate.getDate() + addDay));
+  return new Date(new Date(startDate).setDate(startDate.getDate() + addDay));
 };
