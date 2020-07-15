@@ -80,7 +80,8 @@
     "generate": "cross-env TS_NODE_PROJECT='./internals/ts-node.tsconfig.json' plop --plopfile internals/generators/plopfile.ts",
     "prettify": "prettier --write",
     "storybook": "start-storybook -p 9009 -s public",
-    "build-storybook": "build-storybook -s public"
+    "build-storybook": "build-storybook -s public",
+    "deploy": "aws s3 sync build/ s3://doo.today --acl public-read"
   },
   "browserslist": {
     "production": [
