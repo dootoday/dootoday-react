@@ -4,13 +4,13 @@
  *
  */
 
-import React, { memo, useState, useRef } from 'react';
+import React, { memo, useState, useRef, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useSelector, useDispatch } from 'react-redux';
 import styled from 'styled-components/macro';
 
 import { useInjectReducer, useInjectSaga } from 'utils/redux-injectors';
-import { reducer, sliceKey } from './slice';
+import { reducer, sliceKey, actions } from './slice';
 import { selectSubscribePage } from './selectors';
 import { subscribePageSaga } from './saga';
 import {
@@ -28,7 +28,7 @@ import {
   userFetchedSelector,
   userSelector,
 } from 'app/containers/AppLayout/selector';
-import { ApplyPromoAPI } from 'utils/api';
+import { plansSelector, promoValidSelector } from './selectors';
 
 interface Props {
   theme?: Theme;
@@ -42,9 +42,9 @@ export const SubscribePage = memo((props: Props) => {
   const subscribePage = useSelector(selectSubscribePage);
   const userFetched = useSelector(userFetchedSelector);
   const userDetails = useSelector(userSelector);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const plans = useSelector(plansSelector);
+  const inValidPromo = useSelector(promoValidSelector);
   const dispatch = useDispatch();
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const theme = props.theme || createMuiTheme();
   const calcLeftDaysClass = (leftDays: number | undefined) => {
     leftDays = leftDays || 0;
@@ -66,28 +66,13 @@ export const SubscribePage = memo((props: Props) => {
     submitting: false,
   });
 
-  const [successMessage, setSuccessMessage] = useState<string>('');
   const promoInputRef = useRef() as React.MutableRefObject<HTMLInputElement>;
   const handlePromoSubmit = () => {
-    setPromoInp({ ...promoInp, ...{ submitting: true } });
-    ApplyPromoAPI(promoInp.value)
-      .then(resp => {
-        setPromoInp({
-          ...promoInp,
-          ...{ submitting: false, error: '', value: '' },
-        });
-        promoInputRef.current.blur();
-        // give some message that the promo is applied
-        setSuccessMessage('Your promo is applied successfully!');
-      })
-      .catch(err => {
-        setPromoInp({
-          ...promoInp,
-          ...{ submitting: false, error: err.response.data.error },
-        });
-      });
+    dispatch(actions.getPlansRequest(promoInputRef.current.value));
   };
-
+  useEffect(() => {
+    dispatch(actions.getPlansRequest(''));
+  }, [dispatch]);
   return (
     <>
       <Helmet>
@@ -138,6 +123,7 @@ export const SubscribePage = memo((props: Props) => {
                         onKeyDown={e =>
                           e.key === 'Enter' && handlePromoSubmit()
                         }
+                        onBlur={e => handlePromoSubmit()}
                         onChange={v =>
                           setPromoInp({
                             ...promoInp,
@@ -145,9 +131,11 @@ export const SubscribePage = memo((props: Props) => {
                           })
                         }
                       />
-                      {!!successMessage && (
-                        <span className={`promo-success`}>
-                          <Typography>{successMessage}</Typography>
+                      {inValidPromo && (
+                        <span className={`promo-error`}>
+                          <Typography>
+                            This is an invalid promo code.
+                          </Typography>
                         </span>
                       )}
                       <Button
@@ -166,6 +154,94 @@ export const SubscribePage = memo((props: Props) => {
                 </Card>
               </Grid>
             </Grid>
+            {plans.map(p => {
+              const { plan, orderDetails } = p;
+              return (
+                <Grid item xs={12} key={plan.plan_id}>
+                  <Grid container justify="center" spacing={0}>
+                    <Card className="promo-card">
+                      <CardContent>
+                        {!!!orderDetails && (
+                          <Button
+                            fullWidth
+                            color="secondary"
+                            onClick={() =>
+                              dispatch(actions.getOrderRequest(plan.plan_id))
+                            }
+                          >
+                            {`Subscribe - ${plan.name} - ${
+                              plan.offer_amount / 100
+                            }`}
+                          </Button>
+                        )}
+                        {!!orderDetails && (
+                          <form
+                            method="POST"
+                            action="https://api.razorpay.com/v1/checkout/embedded"
+                          >
+                            <input
+                              type="hidden"
+                              name="key_id"
+                              value={orderDetails.key_id}
+                            />
+                            <input
+                              type="hidden"
+                              name="order_id"
+                              value={orderDetails.order_id}
+                            />
+                            <input
+                              type="hidden"
+                              name="name"
+                              value={orderDetails.name}
+                            />
+                            <input
+                              type="hidden"
+                              name="description"
+                              value={orderDetails.description}
+                            />
+                            <input
+                              type="hidden"
+                              name="image"
+                              value={orderDetails.image}
+                            />
+                            <input
+                              type="hidden"
+                              name="prefill[name]"
+                              value={orderDetails.user_full_name}
+                            />
+                            <input
+                              type="hidden"
+                              name="prefill[contact]"
+                              value={orderDetails.user_phone}
+                            />
+                            <input
+                              type="hidden"
+                              name="prefill[email]"
+                              value={orderDetails.user_email}
+                            />
+                            <input
+                              type="hidden"
+                              name="callback_url"
+                              value={orderDetails.callback_url}
+                            />
+                            <input
+                              type="hidden"
+                              name="cancel_url"
+                              value={orderDetails.cancel_url}
+                            />
+                            <Button fullWidth color="primary" type="submit">
+                              {`Purchase - ${plan.name} - ${
+                                plan.offer_amount / 100
+                              }`}
+                            </Button>
+                          </form>
+                        )}
+                      </CardContent>
+                    </Card>
+                  </Grid>
+                </Grid>
+              );
+            })}
           </Grid>
         </Container>
       </Div>
@@ -198,8 +274,8 @@ const Div = styled.div<{ theme: Theme }>`
     .promo-submit {
       margin-top: 10px;
     }
-    .promo-success {
-      color: ${props => props.theme.palette.success.main};
+    .promo-error {
+      color: ${props => props.theme.palette.error.main};
       margin-top: 10px;
     }
   }

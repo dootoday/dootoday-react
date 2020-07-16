@@ -8,6 +8,8 @@ import {
   UserResponse,
   ColumnResponse,
   TaskResponse,
+  OrderResponse,
+  PlanResponse,
 } from './datatypes';
 
 const BASE_URL = process.env.REACT_APP_BASE_API_URL;
@@ -35,13 +37,6 @@ export const GetUserAPI = (): Promise<AxiosResponse<UserResponse>> => {
   const url = BASE_URL + '/v1/user';
   const headers = { Authorization: 'Bearer ' + GetAuthToken() };
   return axios.get(url, { headers });
-};
-
-export const ApplyPromoAPI = (code: string): Promise<AxiosResponse> => {
-  console.log('API: making request to apply promo..');
-  const url = BASE_URL + '/v1/apply-promo';
-  const headers = { Authorization: 'Bearer ' + GetAuthToken() };
-  return axios.post(url, { code }, { headers });
 };
 
 export const GetTasksOnDateAPI = (
@@ -126,4 +121,22 @@ export const DeleteColumnAPI = (
   const url = `${BASE_URL}/v1/column/${id}`;
   const headers = { Authorization: 'Bearer ' + GetAuthToken() };
   return axios.delete(url, { headers });
+};
+
+export const PlansAPI = (
+  code: string = '',
+): Promise<AxiosResponse<PlanResponse[]>> => {
+  console.log('API: making request to get plans..');
+  const url = `${BASE_URL}/v1/plans?code=${code}`;
+  const headers = { Authorization: 'Bearer ' + GetAuthToken() };
+  return axios.get(url, { headers });
+};
+
+export const SubscribeAPI = (
+  planId: string,
+): Promise<AxiosResponse<OrderResponse>> => {
+  console.log('API: making request to subscribe..');
+  const url = `${BASE_URL}/v1/subscribe/${planId}`;
+  const headers = { Authorization: 'Bearer ' + GetAuthToken() };
+  return axios.post(url, {}, { headers });
 };

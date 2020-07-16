@@ -45,3 +45,25 @@ export interface ColumnResponse {
   meta: string;
   tasks: TaskResponse[];
 }
+
+export interface OrderResponse {
+  key_id: string;
+  order_id: string;
+  name: string;
+  description: string;
+  image: string;
+  user_full_name: string;
+  user_email: string;
+  user_phone: string;
+  callback_url: string;
+  cancel_url: string;
+  amount: string;
+}
+
+export interface PlanResponse {
+  plan_id: number;
+  name: string;
+  description: string;
+  amount: number;
+  offer_amount: number;
+}
