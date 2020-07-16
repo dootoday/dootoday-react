@@ -78,7 +78,7 @@ export const SubscribePage = memo((props: Props) => {
   }, [dispatch]);
 
   const [cs] = useQueryParam('cs');
-
+  console.log(cs);
   return (
     <>
       <Helmet>
@@ -103,7 +103,7 @@ export const SubscribePage = memo((props: Props) => {
                   </span>
                 </Grid>
               )}
-              {cs !== '' && (
+              {!!cs && (
                 <Grid container justify="center" spacing={0}>
                   <span
                     className={`subscribe-note ${
