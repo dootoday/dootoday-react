@@ -43,7 +43,6 @@ const subscribePageSlice = createSlice({
         action: PayloadAction<{ planId: number; order: OrderResponse }>,
       ) => {
         const { planId, order } = action.payload;
-        console.log('####-2', planId, order);
         return {
           plans: [
             ...state.plans.map(p => {
