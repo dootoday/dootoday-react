@@ -57,7 +57,7 @@ export interface OrderResponse {
   user_phone: string;
   callback_url: string;
   cancel_url: string;
-  amount: string;
+  amount: number;
 }
 
 export interface PlanResponse {

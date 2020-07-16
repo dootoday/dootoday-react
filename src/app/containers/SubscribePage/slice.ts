@@ -19,6 +19,7 @@ const subscribePageSlice = createSlice({
         return { payload: { promo_code: code } };
       },
     },
+    getPlansError: state => ({ plans: state.plans, invalidPromo: true }),
     getPlansSuccess: {
       reducer: (state, action: PayloadAction<PlanResponse[]>) => {
         const plans = action.payload;

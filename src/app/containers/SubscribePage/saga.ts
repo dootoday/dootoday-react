@@ -7,6 +7,8 @@ export function* getPlans(action) {
   const { data, status } = yield call(PlansAPI, action.payload.promo_code);
   if (status === http.StatusOK) {
     yield put(actions.getPlansSuccess(data));
+  } else {
+    yield put(actions.getPlansError());
   }
 }
 

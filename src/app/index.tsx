@@ -9,6 +9,7 @@
 import * as React from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Switch, Route, BrowserRouter } from 'react-router-dom';
+import { QueryParamProvider } from 'use-query-params';
 
 import { GlobalStyle } from 'styles/global-styles';
 
@@ -20,19 +21,21 @@ import { ProtectedRoute } from 'app/components/ProtectedRoute';
 export function App() {
   return (
     <BrowserRouter>
-      <Helmet
-        titleTemplate="DooToday - Daily task simplified"
-        defaultTitle="DooToday - Daily task simplified"
-      >
-        <meta name="description" content="Daily task simplified" />
-      </Helmet>
+      <QueryParamProvider ReactRouterRoute={Route}>
+        <Helmet
+          titleTemplate="DooToday - Daily task simplified"
+          defaultTitle="DooToday - Daily task simplified"
+        >
+          <meta name="description" content="Daily task simplified" />
+        </Helmet>
 
-      <Switch>
-        <Route exact path="/login" component={Login} />
-        <ProtectedRoute path="/" component={AppLayout} />
-        <Route component={NotFoundPage} />
-      </Switch>
-      <GlobalStyle />
+        <Switch>
+          <Route exact path="/login" component={Login} />
+          <ProtectedRoute path="/" component={AppLayout} />
+          <Route component={NotFoundPage} />
+        </Switch>
+        <GlobalStyle />
+      </QueryParamProvider>
     </BrowserRouter>
   );
 }
