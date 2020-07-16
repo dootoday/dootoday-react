@@ -73,12 +73,19 @@ export const SubscribePage = memo((props: Props) => {
   const handlePromoSubmit = () => {
     dispatch(actions.getPlansRequest(promoInputRef.current.value));
   };
+
   useEffect(() => {
     dispatch(actions.getPlansRequest(''));
   }, [dispatch]);
 
-  const [cs] = useQueryParam('cs');
-  console.log(cs);
+  const [cs, setCS] = useQueryParam('cs');
+
+  useEffect(() => {
+    if (!!cs) {
+      setTimeout(() => setCS(undefined), 4000);
+    }
+  }, [cs, setCS]);
+
   return (
     <>
       <Helmet>
