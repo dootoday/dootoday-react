@@ -9,7 +9,7 @@ import { Helmet } from 'react-helmet-async';
 // import { useTranslation } from 'react-i18next';
 import styled from 'styled-components/macro';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
-import { useHistory } from 'react-router-dom';
+import { useHistory, Link } from 'react-router-dom';
 import { AppBar, Toolbar, Avatar, IconButton } from '@material-ui/core';
 import { Route, Switch } from 'react-router-dom';
 import { HomePage } from 'app/containers/HomePage';
@@ -101,11 +101,13 @@ export const AppLayout = memo((props: Props) => {
         <Div>
           <AppBar position="static" elevation={0}>
             <Toolbar variant="dense" className="tool-bar">
-              <img
-                className="header-logo"
-                src="https://dootoday-assets.s3.ap-south-1.amazonaws.com/logo-bw-horiz.png"
-                alt="dootoday"
-              />
+              <Link to="/">
+                <img
+                  className="header-logo"
+                  src="https://dootoday-assets.s3.ap-south-1.amazonaws.com/logo-bw-horiz.png"
+                  alt="dootoday"
+                />
+              </Link>
               {userFetched && (
                 <IconButton onClick={handleLogout}>
                   <Avatar
