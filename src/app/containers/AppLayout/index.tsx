@@ -10,7 +10,18 @@ import { Helmet } from 'react-helmet-async';
 import styled from 'styled-components/macro';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import { useHistory, Link } from 'react-router-dom';
-import { AppBar, Toolbar, Avatar, IconButton } from '@material-ui/core';
+import {
+  AppBar,
+  Toolbar,
+  Avatar,
+  IconButton,
+  Popper,
+  Grow,
+  Paper,
+  ClickAwayListener,
+  MenuList,
+  MenuItem,
+} from '@material-ui/core';
 import { Route, Switch } from 'react-router-dom';
 import { HomePage } from 'app/containers/HomePage';
 import { Logout as LogoutRequest } from 'utils/auth';
@@ -27,12 +38,36 @@ interface Props {}
 
 export const AppLayout = memo((props: Props) => {
   // const { t, i18n } = useTranslation();
+  const [open, setOpen] = React.useState(false);
+  const anchorRef = React.useRef<HTMLButtonElement>(null);
   useInjectReducer({ key: slicekey, reducer: reducer });
   useInjectSaga({ key: slicekey, saga: appLayoutSaga });
   const userFetched = useSelector(userFetchedSelector);
   const userDetails = useSelector(userSelector);
   const dispatch = useDispatch();
   const history = useHistory();
+
+  const handleToggle = () => {
+    setOpen(prevOpen => !prevOpen);
+  };
+
+  const handleClose = (event: React.MouseEvent<EventTarget>) => {
+    if (
+      anchorRef.current &&
+      anchorRef.current.contains(event.target as HTMLElement)
+    ) {
+      return;
+    }
+
+    setOpen(false);
+  };
+
+  function handleListKeyDown(event: React.KeyboardEvent) {
+    if (event.key === 'Tab') {
+      event.preventDefault();
+      setOpen(false);
+    }
+  }
 
   const handleLogout = useCallback(() => {
     LogoutRequest();
@@ -109,14 +144,55 @@ export const AppLayout = memo((props: Props) => {
                 />
               </Link>
               {userFetched && (
-                <IconButton onClick={handleLogout}>
-                  <Avatar
-                    variant="rounded"
-                    className="avatar-logo"
-                    alt={userDetails?.firstName}
-                    src={userDetails?.avatar}
-                  />
-                </IconButton>
+                <>
+                  <IconButton
+                    onClick={handleToggle}
+                    ref={anchorRef}
+                    aria-controls={open ? 'menu-list-grow' : undefined}
+                    aria-haspopup="true"
+                  >
+                    <Avatar
+                      variant="rounded"
+                      className="avatar-logo"
+                      alt={userDetails?.firstName}
+                      src={userDetails?.avatar}
+                    />
+                  </IconButton>
+                  <Popper
+                    open={open}
+                    anchorEl={anchorRef.current}
+                    role={undefined}
+                    transition
+                    disablePortal
+                    style={{
+                      zIndex: 3,
+                    }}
+                  >
+                    {({ TransitionProps, placement }) => (
+                      <Grow
+                        {...TransitionProps}
+                        style={{
+                          transformOrigin:
+                            placement === 'bottom'
+                              ? 'center top'
+                              : 'center bottom',
+                        }}
+                      >
+                        <Paper>
+                          <ClickAwayListener onClickAway={handleClose}>
+                            <MenuList
+                              autoFocusItem={open}
+                              id="menu-list-grow"
+                              onKeyDown={handleListKeyDown}
+                            >
+                              <MenuItem onClick={handleLogout}>Logout</MenuItem>
+                            </MenuList>
+                          </ClickAwayListener>
+                        </Paper>
+                      </Grow>
+                    )}
+                  </Popper>
+                </>
               )}
             </Toolbar>
           </AppBar>
