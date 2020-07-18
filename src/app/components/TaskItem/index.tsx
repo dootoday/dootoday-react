@@ -139,6 +139,18 @@ export const TaskItem = memo(
         inputRef.current.blur();
       },
     }));
+    const LinkRenderer = props => {
+      return (
+        <a
+          href={props.href}
+          target="_blank"
+          rel="noopener noreferrer"
+          onClick={e => e.stopPropagation()}
+        >
+          {props.children}
+        </a>
+      );
+    };
     return (
       <>
         <Div {...{ theme, highlight }}>
@@ -152,8 +164,8 @@ export const TaskItem = memo(
               <ReactMarkdown
                 className={'md'}
                 disallowedTypes={['break', 'delete']}
-                linkTarget={'_blank'}
                 source={taskState.markdown}
+                renderers={{ link: LinkRenderer }}
               />
             </Typography>
           )}
