@@ -9,7 +9,7 @@ const AppFooter: React.FC = () => {
     <Footer>
       <div className="footer-container">
         Made with <FavoriteIcon className="icon favorite-icon" /> in India{' '}
-        <CopyrightIcon className="icon" /> {year} DooToday All rights reversed
+        <CopyrightIcon className="icon" /> {year} DooToday All rights reserved
       </div>
     </Footer>
   );
