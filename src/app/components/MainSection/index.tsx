@@ -272,7 +272,7 @@ const Section = styled.section<{
       grid-template-rows: 100%;
       padding-left: 0;
       min-height: 28.1111111111rem;
-      transition: all 0.5s ease-in-out, -webkit-all 0.5s ease-in-out;
+      transition: left 0.5s ease-in-out, right 0.5s ease-in-out;
       z-index: 0;
       position: relative;
       left: ${props => -(props.startIndex * 20)}%;
