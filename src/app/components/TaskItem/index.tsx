@@ -15,6 +15,7 @@ import styled from 'styled-components/macro';
 import { createMuiTheme, Theme } from '@material-ui/core/styles';
 import { Typography } from '@material-ui/core';
 import ReactMarkdown from 'react-markdown';
+import emoji from 'emoji-dictionary';
 
 export interface Task {
   id: string;
@@ -151,6 +152,9 @@ export const TaskItem = memo(
         </a>
       );
     };
+    const emojiSupport = text =>
+      text.value.replace(/:\w+:/gi, name => emoji.getUnicode(name) || '');
+
     return (
       <>
         <Div {...{ theme, highlight }}>
@@ -165,7 +169,7 @@ export const TaskItem = memo(
                 className={'md'}
                 disallowedTypes={['break', 'delete']}
                 source={taskState.markdown}
-                renderers={{ link: LinkRenderer }}
+                renderers={{ link: LinkRenderer, text: emojiSupport }}
               />
             </Typography>
           )}

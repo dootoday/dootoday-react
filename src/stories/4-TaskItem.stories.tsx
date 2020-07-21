@@ -98,6 +98,17 @@ export const taskItem = () => (
       placeHolder="Add a new task here"
       onTaskUpdate={action('task added')}
     />
+
+    <TaskItem
+      task={{
+        id: 'some-id',
+        markdown: 'This is a tsak with emoji :smiley:',
+        isDone: false,
+      }}
+      theme={theme}
+      isEditable={true}
+      onTaskUpdate={action('task updated')}
+    />
   </>
 );
 
