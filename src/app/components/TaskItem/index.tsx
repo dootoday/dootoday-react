@@ -153,7 +153,7 @@ export const TaskItem = memo(
       );
     };
     const emojiSupport = text =>
-      text.value.replace(/:\w+:/gi, name => emoji.getUnicode(name) || '');
+      text.value.replace(/:\w+:/gi, name => emoji.getUnicode(name) || name);
 
     return (
       <>
