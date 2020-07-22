@@ -37,6 +37,7 @@ import appLayoutSaga from './saga';
 import { RefreshToken } from 'utils/auth';
 import { SubscribePage } from 'app/containers/SubscribePage/Loadable';
 import AppFooter from 'app/components/AppFooter';
+import { SettingsPage } from 'app/containers/SettingsPage/Loadable';
 
 interface Props {}
 
@@ -194,6 +195,7 @@ export const AppLayout = memo((props: Props) => {
                 <HomePage userFetched={userFetched} theme={theme} />
               )}
             />
+            <Route exact path="/me" component={() => <SettingsPage />} />
             <Route
               exact
               path="/subscribe"
