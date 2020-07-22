@@ -1,6 +1,7 @@
 import { PayloadAction } from '@reduxjs/toolkit';
 import { createSlice } from '@reduxjs/toolkit';
 import { ContainerState, UserDetails } from './types';
+import { GetStoredTheme } from 'utils/theme';
 
 export const initialState: ContainerState = {
   userfetched: false,
@@ -10,6 +11,7 @@ export const initialState: ContainerState = {
     email: '',
     avatar: '',
     leftDays: 0,
+    theme: GetStoredTheme(),
   },
 };
 
@@ -20,7 +22,10 @@ const slice = createSlice({
     getUserDetailsRequest: state => state,
     getUserDetailsSuccess: {
       reducer: (state, action: PayloadAction<UserDetails>) => {
-        return { userfetched: true, userDetails: { ...action.payload } };
+        return {
+          userfetched: true,
+          userDetails: { ...state.userDetails, ...action.payload },
+        };
       },
       prepare: (userDetails: UserDetails) => {
         return { payload: userDetails };
