@@ -10,7 +10,9 @@ import {
   TaskResponse,
   OrderResponse,
   PlanResponse,
+  ThemeResponse,
 } from './datatypes';
+import { themepresets } from './theme';
 
 export const BASE_URL = process.env.REACT_APP_BASE_API_URL;
 
@@ -139,4 +141,22 @@ export const SubscribeAPI = (
   const url = `${BASE_URL}/v1/subscribe/${planId}`;
   const headers = { Authorization: 'Bearer ' + GetAuthToken() };
   return axios.post(url, {}, { headers });
+};
+
+export const GetThemesAPI = (): Promise<AxiosResponse<ThemeResponse[]>> => {
+  return Promise.resolve({
+    status: 200,
+    data: [
+      {
+        id: 1,
+        name: 'Red',
+        theme: themepresets.red,
+      },
+      {
+        id: 2,
+        name: 'Brown',
+        theme: themepresets.brown,
+      },
+    ],
+  } as AxiosResponse);
 };

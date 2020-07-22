@@ -82,3 +82,9 @@ export interface AppTheme {
     };
   };
 }
+
+export interface ThemeResponse {
+  id: number;
+  name: string;
+  theme: AppTheme;
+}
