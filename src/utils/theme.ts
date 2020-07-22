@@ -3,7 +3,7 @@ import { AppTheme } from './datatypes';
 
 const THEME_LS_KEY = 'dootoday_theme';
 
-const themepresets = {
+export const themepresets = {
   default: {
     palette: {
       primary: {
