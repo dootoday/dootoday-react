@@ -67,3 +67,18 @@ export interface PlanResponse {
   amount: number;
   offer_amount: number;
 }
+
+export interface AppTheme {
+  palette: {
+    primary: {
+      main: string;
+      dark: string;
+      light: string;
+    };
+    secondary: {
+      main: string;
+      dark: string;
+      light: string;
+    };
+  };
+}

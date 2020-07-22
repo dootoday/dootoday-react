@@ -8,7 +8,7 @@ import React, { memo, useEffect, useState, useCallback, useRef } from 'react';
 import { Helmet } from 'react-helmet-async';
 // import { useTranslation } from 'react-i18next';
 import styled from 'styled-components/macro';
-import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
+import { ThemeProvider } from '@material-ui/core/styles';
 import { useHistory, Link } from 'react-router-dom';
 import {
   AppBar,
@@ -28,7 +28,11 @@ import { Logout as LogoutRequest } from 'utils/auth';
 import { useInjectReducer, useInjectSaga } from 'utils/redux-injectors';
 import { reducer, slicekey, actions } from './slice';
 import { useSelector, useDispatch } from 'react-redux';
-import { userFetchedSelector, userSelector } from './selector';
+import {
+  userFetchedSelector,
+  userSelector,
+  userThemeSelector,
+} from './selector';
 import appLayoutSaga from './saga';
 import { RefreshToken } from 'utils/auth';
 import { SubscribePage } from 'app/containers/SubscribePage/Loadable';
@@ -44,6 +48,7 @@ export const AppLayout = memo((props: Props) => {
   useInjectSaga({ key: slicekey, saga: appLayoutSaga });
   const userFetched = useSelector(userFetchedSelector);
   const userDetails = useSelector(userSelector);
+  const theme = useSelector(userThemeSelector);
   const dispatch = useDispatch();
   const history = useHistory();
 
@@ -73,21 +78,6 @@ export const AppLayout = memo((props: Props) => {
     LogoutRequest();
     history.push('/login');
   }, [history]);
-
-  const theme = createMuiTheme({
-    palette: {
-      primary: {
-        main: '#0d6c8c',
-        dark: '#257b98',
-        light: '#c2dae2',
-      },
-      secondary: {
-        main: '#262626',
-        dark: '#404040',
-        light: '#b2b2b2',
-      },
-    },
-  });
 
   const [refreshToken, setRefreshToken] = useState(false);
   const refreshTimer = useRef(0);
