@@ -15,8 +15,8 @@ const themesFromMaterialUI = (startID: number): ThemeResponse[] => {
           palette: {
             primary: {
               main: colors[key]['800'],
-              dark: colors[key]['A400'],
-              light: colors[key]['300'],
+              dark: colors[key]['900'],
+              light: colors[key]['100'],
             },
             secondary: {
               main: '#262626',
