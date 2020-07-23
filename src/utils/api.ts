@@ -146,6 +146,6 @@ export const SubscribeAPI = (
 export const GetThemesAPI = (): Promise<AxiosResponse<ThemeResponse[]>> => {
   return Promise.resolve({
     status: 200,
-    data: mockthemeresps,
+    data: [...mockthemeresps],
   } as AxiosResponse);
 };
