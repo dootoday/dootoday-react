@@ -77,9 +77,10 @@ export const themepresets = {
 };
 
 export const GetStoredTheme = (): AppTheme => {
-  let theme = get<AppTheme>(THEME_LS_KEY);
+  // let theme = get<AppTheme>(THEME_LS_KEY);
+  let theme;
   if (!theme) {
-    theme = themepresets.brown;
+    theme = themepresets.red;
     set(THEME_LS_KEY, theme);
   }
   return theme;
