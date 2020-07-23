@@ -190,6 +190,13 @@ export const AppLayout = memo((props: Props) => {
                               >
                                 <MenuItem>Subscription</MenuItem>
                               </Link>
+                              <Link
+                                to="/me/theme"
+                                className="menu-item"
+                                onClick={handleClose}
+                              >
+                                <MenuItem>Theme</MenuItem>
+                              </Link>
                               <MenuItem
                                 className="menu-item"
                                 onClick={handleLogout}

@@ -11,6 +11,7 @@ import { Route, Switch, NavLink } from 'react-router-dom';
 import styled from 'styled-components/macro';
 
 import { SubscribePage } from 'app/containers/SubscribePage';
+import { ThemePage } from 'app/containers/ThemePage';
 import { useInjectReducer, useInjectSaga } from 'utils/redux-injectors';
 import { reducer, sliceKey } from './slice';
 import { selectSettingsPage } from './selectors';
@@ -23,7 +24,6 @@ import {
   ListItemText,
   Theme,
   createMuiTheme,
-  Typography,
 } from '@material-ui/core';
 
 interface Props {
@@ -58,7 +58,7 @@ export const SettingsPage = memo((props: Props) => {
                   activeClassName="active"
                 >
                   <ListItem button className="nav-item">
-                    <Typography>Profile</Typography>
+                    <ListItemText primary="Profile" />
                   </ListItem>
                 </NavLink>
                 <NavLink
@@ -70,6 +70,15 @@ export const SettingsPage = memo((props: Props) => {
                     <ListItemText primary="Subscription" />
                   </ListItem>
                 </NavLink>
+                <NavLink
+                  to="/me/theme"
+                  className="nav-link"
+                  activeClassName="active"
+                >
+                  <ListItem button className="nav-item">
+                    <ListItemText primary="Theme" />
+                  </ListItem>
+                </NavLink>
               </List>
             </Grid>
             <Grid item container md={8} lg={8} sm={12}>
@@ -79,11 +88,7 @@ export const SettingsPage = memo((props: Props) => {
                   path="/me/subscription"
                   component={() => <SubscribePage theme={theme} />}
                 />
-                <Route
-                  exact
-                  path="/me/test"
-                  component={() => <div>Hello</div>}
-                />
+                <Route exact path="/me/theme" component={() => <ThemePage />} />
               </Switch>
             </Grid>
           </Grid>
