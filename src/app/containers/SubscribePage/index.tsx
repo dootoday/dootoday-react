@@ -305,7 +305,7 @@ export const SubscribePage = memo((props: Props) => {
 });
 
 const Div = styled.div<{ theme: Theme }>`
-  margin-top: 50px;
+  margin-top: 30px;
 
   .subscribe-note {
     background-color: ${props => props.theme.palette.primary.light};
