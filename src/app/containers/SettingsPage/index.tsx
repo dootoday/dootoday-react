@@ -109,7 +109,8 @@ const Div = styled.div<{ theme: Theme }>`
       color: ${props => props.theme.palette.primary.dark};
       &.active {
         .nav-item {
-          background-color: ${props => props.theme.palette.primary.light};
+          background-color: ${props => props.theme.palette.primary.main};
+          color: #ffffff;
         }
       }
     }
