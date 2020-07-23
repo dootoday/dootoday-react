@@ -1,7 +1,36 @@
 import { get, set } from 'local-storage';
-import { AppTheme } from './datatypes';
+import { AppTheme, ThemeResponse } from './datatypes';
+import * as colors from '@material-ui/core/colors';
 
 const THEME_LS_KEY = 'dootoday_theme';
+
+const themesFromMaterialUI = (startID: number): ThemeResponse[] => {
+  var output: ThemeResponse[] = [];
+  for (var key in colors) {
+    if (key !== 'common') {
+      output.push({
+        id: startID,
+        name: key,
+        theme: {
+          palette: {
+            primary: {
+              main: colors[key]['800'],
+              dark: colors[key]['A400'],
+              light: colors[key]['300'],
+            },
+            secondary: {
+              main: '#262626',
+              dark: '#404040',
+              light: '#b2b2b2',
+            },
+          },
+        },
+      } as ThemeResponse);
+      startID = startID + 1;
+    }
+  }
+  return output;
+};
 
 export const themepresets = {
   default: {
@@ -76,9 +105,37 @@ export const themepresets = {
   },
 };
 
+export const mockthemeresps = [
+  {
+    id: 1,
+    name: 'Red',
+    theme: themepresets.red,
+  },
+  {
+    id: 2,
+    name: 'Brown',
+    theme: themepresets.brown,
+  },
+  {
+    id: 3,
+    name: 'Default',
+    theme: themepresets.default,
+  },
+  {
+    id: 4,
+    name: 'Pink',
+    theme: themepresets.pink,
+  },
+  {
+    id: 5,
+    name: 'Green',
+    theme: themepresets.green,
+  },
+  ...themesFromMaterialUI(6),
+];
+
 export const GetStoredTheme = (): AppTheme => {
-  // let theme = get<AppTheme>(THEME_LS_KEY);
-  let theme;
+  let theme = get<AppTheme>(THEME_LS_KEY);
   if (!theme) {
     theme = themepresets.red;
     set(THEME_LS_KEY, theme);

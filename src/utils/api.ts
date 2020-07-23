@@ -12,7 +12,7 @@ import {
   PlanResponse,
   ThemeResponse,
 } from './datatypes';
-import { themepresets } from './theme';
+import { mockthemeresps } from './theme';
 
 export const BASE_URL = process.env.REACT_APP_BASE_API_URL;
 
@@ -146,17 +146,6 @@ export const SubscribeAPI = (
 export const GetThemesAPI = (): Promise<AxiosResponse<ThemeResponse[]>> => {
   return Promise.resolve({
     status: 200,
-    data: [
-      {
-        id: 1,
-        name: 'Red',
-        theme: themepresets.red,
-      },
-      {
-        id: 2,
-        name: 'Brown',
-        theme: themepresets.brown,
-      },
-    ],
+    data: mockthemeresps,
   } as AxiosResponse);
 };
