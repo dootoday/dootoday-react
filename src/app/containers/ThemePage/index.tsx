@@ -4,16 +4,18 @@
  *
  */
 
-import React, { memo } from 'react';
+import React, { memo, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useSelector, useDispatch } from 'react-redux';
 import styled from 'styled-components/macro';
 
 import { useInjectReducer, useInjectSaga } from 'utils/redux-injectors';
-import { reducer, sliceKey } from './slice';
-import { selectThemePage } from './selectors';
+import { reducer, sliceKey, actions } from './slice';
+import { selectThemePresets, selectSelectedThemeResponse } from './selectors';
 import { themePageSaga } from './saga';
-import { Theme, createMuiTheme, Container, Grid } from '@material-ui/core';
+import { Theme, createMuiTheme, Container } from '@material-ui/core';
+import { ThemePicker } from 'app/components/ThemePicker';
+import { ThemeResponse } from 'utils/datatypes';
 
 interface Props {
   theme?: Theme;
@@ -23,11 +25,16 @@ export const ThemePage = memo((props: Props) => {
   useInjectReducer({ key: sliceKey, reducer: reducer });
   useInjectSaga({ key: sliceKey, saga: themePageSaga });
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const themePage = useSelector(selectThemePage);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const themes = useSelector(selectThemePresets);
+  const selectedTheme = useSelector(selectSelectedThemeResponse);
   const dispatch = useDispatch();
   const theme = props.theme || createMuiTheme();
+  const handleSelectTheme = (theme: ThemeResponse) =>
+    dispatch(actions.selectTheme(theme));
+
+  useEffect(() => {
+    dispatch(actions.getThemes());
+  }, [dispatch]);
 
   return (
     <>
@@ -37,7 +44,11 @@ export const ThemePage = memo((props: Props) => {
       </Helmet>
       <Div theme={theme}>
         <Container>
-          <Grid container>This is the theme page</Grid>
+          <ThemePicker
+            themes={themes}
+            selectedTheme={selectedTheme}
+            onSelectTheme={handleSelectTheme}
+          ></ThemePicker>
         </Container>
       </Div>
     </>

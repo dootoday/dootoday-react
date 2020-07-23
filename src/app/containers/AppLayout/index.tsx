@@ -29,15 +29,12 @@ import { Logout as LogoutRequest } from 'utils/auth';
 import { useInjectReducer, useInjectSaga } from 'utils/redux-injectors';
 import { reducer, slicekey, actions } from './slice';
 import { useSelector, useDispatch } from 'react-redux';
-import {
-  userFetchedSelector,
-  userSelector,
-  userThemeSelector,
-} from './selector';
+import { userFetchedSelector, userSelector } from './selector';
 import appLayoutSaga from './saga';
 import { RefreshToken } from 'utils/auth';
 import AppFooter from 'app/components/AppFooter';
 import { SettingsPage } from 'app/containers/SettingsPage/Loadable';
+import { selectSelectedTheme } from 'app/containers/ThemePage/selectors';
 
 interface Props {}
 
@@ -49,7 +46,7 @@ export const AppLayout = memo((props: Props) => {
   useInjectSaga({ key: slicekey, saga: appLayoutSaga });
   const userFetched = useSelector(userFetchedSelector);
   const userDetails = useSelector(userSelector);
-  const theme = useSelector(userThemeSelector);
+  const theme = useSelector(selectSelectedTheme);
   const dispatch = useDispatch();
   const history = useHistory();
 

@@ -1,5 +1,5 @@
 import { get, set } from 'local-storage';
-import { AppTheme, ThemeResponse } from './datatypes';
+import { ThemeResponse } from './datatypes';
 import * as colors from '@material-ui/core/colors';
 
 const THEME_LS_KEY = 'dootoday_theme';
@@ -134,16 +134,16 @@ export const mockthemeresps = [
   ...themesFromMaterialUI(6),
 ];
 
-export const GetStoredTheme = (): AppTheme => {
-  let theme = get<AppTheme>(THEME_LS_KEY);
+export const GetStoredTheme = (): ThemeResponse => {
+  let theme = get<ThemeResponse>(THEME_LS_KEY);
   if (!theme) {
-    theme = themepresets.red;
+    theme = mockthemeresps[2];
     set(THEME_LS_KEY, theme);
   }
   return theme;
 };
 
-export const SetStoredTheme = (theme: AppTheme | undefined): void => {
+export const SetStoredTheme = (theme: ThemeResponse | undefined): void => {
   if (theme) {
     set(THEME_LS_KEY, theme);
   }

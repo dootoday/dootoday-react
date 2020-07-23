@@ -1,7 +1,6 @@
 import { PayloadAction } from '@reduxjs/toolkit';
 import { createSlice } from '@reduxjs/toolkit';
 import { ContainerState, UserDetails } from './types';
-import { GetStoredTheme } from 'utils/theme';
 
 export const initialState: ContainerState = {
   userfetched: false,
@@ -11,7 +10,6 @@ export const initialState: ContainerState = {
     email: '',
     avatar: '',
     leftDays: 0,
-    theme: GetStoredTheme(),
   },
 };
 
