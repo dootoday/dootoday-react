@@ -327,7 +327,7 @@ const Div = styled.div<{ theme: Theme }>`
   }
 
   .promo-card {
-    min-width: 370px;
+    width: 100%;
     .promo-inp {
       margin-top: 20px;
     }
@@ -337,6 +337,10 @@ const Div = styled.div<{ theme: Theme }>`
     .promo-error {
       color: ${props => props.theme.palette.error.main};
       margin-top: 10px;
+    }
+    @media (min-width: 48em) {
+      width: 370px;
+      width: 370px;
     }
   }
 `;

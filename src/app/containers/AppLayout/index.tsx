@@ -21,6 +21,7 @@ import {
   ClickAwayListener,
   MenuList,
   MenuItem,
+  Theme,
 } from '@material-ui/core';
 import { Route, Switch } from 'react-router-dom';
 import { HomePage } from 'app/containers/HomePage';
@@ -35,7 +36,6 @@ import {
 } from './selector';
 import appLayoutSaga from './saga';
 import { RefreshToken } from 'utils/auth';
-import { SubscribePage } from 'app/containers/SubscribePage/Loadable';
 import AppFooter from 'app/components/AppFooter';
 import { SettingsPage } from 'app/containers/SettingsPage/Loadable';
 
@@ -124,7 +124,7 @@ export const AppLayout = memo((props: Props) => {
         <meta name="description" content="Description of AppLayout" />
       </Helmet>
       <ThemeProvider theme={theme}>
-        <Div>
+        <Div theme={theme}>
           <AppBar position="static" elevation={0}>
             <Toolbar variant="dense" className="tool-bar">
               <Link to="/">
@@ -176,7 +176,26 @@ export const AppLayout = memo((props: Props) => {
                               id="menu-list-grow"
                               onKeyDown={handleListKeyDown}
                             >
-                              <MenuItem onClick={handleLogout}>Logout</MenuItem>
+                              <Link
+                                to="/me"
+                                className="menu-item"
+                                onClick={handleClose}
+                              >
+                                <MenuItem>Profile</MenuItem>
+                              </Link>
+                              <Link
+                                to="/me/subscription"
+                                className="menu-item"
+                                onClick={handleClose}
+                              >
+                                <MenuItem>Subscription</MenuItem>
+                              </Link>
+                              <MenuItem
+                                className="menu-item"
+                                onClick={handleLogout}
+                              >
+                                Logout
+                              </MenuItem>
                             </MenuList>
                           </ClickAwayListener>
                         </Paper>
@@ -195,11 +214,9 @@ export const AppLayout = memo((props: Props) => {
                 <HomePage userFetched={userFetched} theme={theme} />
               )}
             />
-            <Route exact path="/me" component={() => <SettingsPage />} />
             <Route
-              exact
-              path="/subscribe"
-              component={() => <SubscribePage theme={theme} />}
+              path="/me"
+              component={() => <SettingsPage theme={theme} />}
             />
           </Switch>
           <AppFooter />
@@ -209,7 +226,7 @@ export const AppLayout = memo((props: Props) => {
   );
 });
 
-const Div = styled.div`
+const Div = styled.div<{ theme: Theme }>`
   .tool-bar {
     min-height: 34px;
     display: flex;
@@ -222,6 +239,11 @@ const Div = styled.div`
       height: 20px;
       width: 20px;
       border: 1px solid #fff;
+    }
+
+    .menu-item {
+      text-decoration: none;
+      color: ${props => props.theme.palette.primary.dark};
     }
   }
 `;
