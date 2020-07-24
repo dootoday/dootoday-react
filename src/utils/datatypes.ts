@@ -66,6 +66,7 @@ export interface PlanResponse {
   description: string;
   amount: number;
   offer_amount: number;
+  duration: number;
 }
 
 export interface AppTheme {
