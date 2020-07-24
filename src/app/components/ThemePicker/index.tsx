@@ -54,8 +54,8 @@ export const ThemePicker = memo((props: Props) => {
 
 const Div = styled.div`
   .color-plate {
-    height: 40px;
-    width: 60px;
+    height: 50px;
+    width: 80px;
     &.active {
       border: 2px solid;
     }
