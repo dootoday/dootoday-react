@@ -181,6 +181,7 @@ export const SubscribePage = memo((props: Props) => {
                 {plans.map(p => (
                   <Grid item key={p.plan.plan_id} className="promo-item">
                     <SubscriptionPlan
+                      theme={theme}
                       plan={p}
                       onGetOrderDetails={(pl: PlanResponse) =>
                         dispatch(actions.getOrderRequest(pl.plan_id))
@@ -240,7 +241,7 @@ const Div = styled.div<{ theme: Theme }>`
   .promo-item {
     width: 100%;
     @media (min-width: 48em) {
-      width: 320px;
+      width: 280px;
     }
   }
 `;
