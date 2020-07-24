@@ -13,7 +13,13 @@ import { useInjectReducer, useInjectSaga } from 'utils/redux-injectors';
 import { reducer, sliceKey, actions } from './slice';
 import { selectThemePresets, selectSelectedThemeResponse } from './selectors';
 import { themePageSaga } from './saga';
-import { Theme, createMuiTheme, Container } from '@material-ui/core';
+import {
+  Theme,
+  createMuiTheme,
+  Container,
+  Typography,
+  Grid,
+} from '@material-ui/core';
 import { ThemePicker } from 'app/components/ThemePicker';
 import { ThemeResponse } from 'utils/datatypes';
 
@@ -44,11 +50,20 @@ export const ThemePage = memo((props: Props) => {
       </Helmet>
       <Div theme={theme}>
         <Container>
-          <ThemePicker
-            themes={themes}
-            selectedTheme={selectedTheme}
-            onSelectTheme={handleSelectTheme}
-          ></ThemePicker>
+          <Grid container justify="center">
+            <Grid item className="header">
+              <Typography variant="h6" component="h5" color="primary">
+                Pick your color
+              </Typography>
+            </Grid>
+            <Grid item>
+              <ThemePicker
+                themes={themes}
+                selectedTheme={selectedTheme}
+                onSelectTheme={handleSelectTheme}
+              ></ThemePicker>
+            </Grid>
+          </Grid>
         </Container>
       </Div>
     </>
@@ -57,4 +72,9 @@ export const ThemePage = memo((props: Props) => {
 
 const Div = styled.div<{ theme: Theme }>`
   margin-top: 30px;
+  margin-bottom: 30px;
+
+  .header {
+    margin-bottom: 30px;
+  }
 `;
