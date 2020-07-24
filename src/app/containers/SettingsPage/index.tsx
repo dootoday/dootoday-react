@@ -46,10 +46,10 @@ export const SettingsPage = memo((props: Props) => {
         <title>SettingsPage</title>
         <meta name="description" content="Description of SettingsPage" />
       </Helmet>
-      <Container maxWidth="md">
+      <Container maxWidth="lg">
         <Div theme={theme}>
           <Grid container spacing={1} direction="row">
-            <Grid item container md={4} lg={4} sm={12}>
+            <Grid item container md={3} lg={3} sm={12}>
               <List component="nav" className="nav-list" aria-label="settings">
                 <NavLink
                   exact
@@ -81,7 +81,7 @@ export const SettingsPage = memo((props: Props) => {
                 </NavLink>
               </List>
             </Grid>
-            <Grid item container md={8} lg={8} sm={12}>
+            <Grid item container md={9} lg={9} sm={12}>
               <Switch>
                 <Route
                   exact
