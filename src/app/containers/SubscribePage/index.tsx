@@ -8,7 +8,6 @@ import React, { memo, useState, useRef, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useSelector, useDispatch } from 'react-redux';
 import styled from 'styled-components/macro';
-import { v4 as uuidv4 } from 'uuid';
 import { useQueryParam } from 'use-query-params';
 
 import { useInjectReducer, useInjectSaga } from 'utils/redux-injectors';
@@ -25,13 +24,16 @@ import {
   CardContent,
   TextField,
   Button,
+  CardActions,
+  CardHeader,
 } from '@material-ui/core';
 import {
   userFetchedSelector,
   userSelector,
 } from 'app/containers/AppLayout/selector';
 import { plansSelector, promoValidSelector } from './selectors';
-import { BASE_URL } from 'utils/api';
+import { SubscriptionPlan } from 'app/components/SubscriptionPlan';
+import { PlanResponse } from 'utils/datatypes';
 
 interface Props {
   theme?: Theme;
@@ -127,174 +129,65 @@ export const SubscribePage = memo((props: Props) => {
               )}
             </Grid>
             <Grid item xs={12}>
-              <Grid container justify="center" spacing={0}>
-                <Card className="promo-card">
-                  <CardContent>
-                    <Grid
-                      container
-                      direction="column"
-                      alignItems="center"
-                      spacing={0}
-                    >
-                      <Typography variant="h6">Use your promo code</Typography>
-                      <TextField
-                        inputRef={promoInputRef}
-                        error={!!promoInp.error}
-                        fullWidth={true}
-                        id="promo-input"
-                        label="Promo"
-                        autoComplete="off"
-                        variant="outlined"
-                        helperText={promoInp.error}
-                        value={promoInp.value}
-                        className="promo-inp"
-                        onKeyDown={e =>
-                          e.key === 'Enter' && handlePromoSubmit()
-                        }
-                        onBlur={e => handlePromoSubmit()}
-                        onChange={v =>
-                          setPromoInp({
-                            ...promoInp,
-                            ...{ value: v.target.value },
-                          })
-                        }
-                      />
-                      {inValidPromo && (
-                        <span className={`promo-error`}>
-                          <Typography>
-                            This is an invalid promo code.
-                          </Typography>
-                        </span>
-                      )}
-                      <Button
-                        fullWidth={true}
-                        variant="contained"
-                        color="primary"
-                        size="large"
-                        className="promo-submit"
-                        onClick={handlePromoSubmit}
-                        disabled={promoInp.value === '' || promoInp.submitting}
-                      >
-                        Apply
-                      </Button>
-                    </Grid>
-                  </CardContent>
-                </Card>
-              </Grid>
+              <Card className="promo-card">
+                <CardHeader
+                  title="USE YOUR PROMO"
+                  titleTypographyProps={{ align: 'center' }}
+                />
+                <CardContent>
+                  <TextField
+                    inputRef={promoInputRef}
+                    error={!!promoInp.error}
+                    fullWidth={true}
+                    id="promo-input"
+                    label="Promo"
+                    autoComplete="off"
+                    variant="outlined"
+                    helperText={promoInp.error}
+                    value={promoInp.value}
+                    className="promo-inp"
+                    onKeyDown={e => e.key === 'Enter' && handlePromoSubmit()}
+                    onBlur={e => handlePromoSubmit()}
+                    onChange={v =>
+                      setPromoInp({
+                        ...promoInp,
+                        ...{ value: v.target.value },
+                      })
+                    }
+                  />
+                  {inValidPromo && (
+                    <span className={`promo-error`}>
+                      <Typography>This is an invalid promo code.</Typography>
+                    </span>
+                  )}
+                </CardContent>
+                <CardActions>
+                  <Button
+                    fullWidth={true}
+                    variant="contained"
+                    color="primary"
+                    size="large"
+                    className="promo-submit"
+                    onClick={handlePromoSubmit}
+                    disabled={promoInp.value === '' || promoInp.submitting}
+                  >
+                    Apply
+                  </Button>
+                </CardActions>
+              </Card>
             </Grid>
             <Grid item xs={12}>
-              <Grid container justify="center" spacing={0}>
-                <Card className="promo-card">
-                  <CardContent>
-                    {plans.map(p => {
-                      const { plan, orderDetails } = p;
-                      return (
-                        <div key={plan.plan_id}>
-                          {!!!orderDetails && (
-                            <Button
-                              fullWidth
-                              color="secondary"
-                              onClick={() =>
-                                dispatch(actions.getOrderRequest(plan.plan_id))
-                              }
-                            >
-                              {`Subscribe - ${plan.name} - ${
-                                plan.offer_amount / 100
-                              }`}
-                            </Button>
-                          )}
-                          {!!orderDetails && orderDetails.amount > 0 && (
-                            <form
-                              method="POST"
-                              action="https://api.razorpay.com/v1/checkout/embedded"
-                            >
-                              <input
-                                type="hidden"
-                                name="key_id"
-                                value={orderDetails.key_id}
-                              />
-                              <input
-                                type="hidden"
-                                name="order_id"
-                                value={orderDetails.order_id}
-                              />
-                              <input
-                                type="hidden"
-                                name="name"
-                                value={orderDetails.name}
-                              />
-                              <input
-                                type="hidden"
-                                name="description"
-                                value={orderDetails.description}
-                              />
-                              <input
-                                type="hidden"
-                                name="image"
-                                value={orderDetails.image}
-                              />
-                              <input
-                                type="hidden"
-                                name="prefill[name]"
-                                value={orderDetails.user_full_name}
-                              />
-                              <input
-                                type="hidden"
-                                name="prefill[contact]"
-                                value={orderDetails.user_phone}
-                              />
-                              <input
-                                type="hidden"
-                                name="prefill[email]"
-                                value={orderDetails.user_email}
-                              />
-                              <input
-                                type="hidden"
-                                name="callback_url"
-                                value={orderDetails.callback_url}
-                              />
-                              <input
-                                type="hidden"
-                                name="cancel_url"
-                                value={orderDetails.cancel_url}
-                              />
-                              <Button fullWidth color="primary" type="submit">
-                                {`Purchase - ${plan.name} - ${
-                                  plan.offer_amount / 100
-                                }`}
-                              </Button>
-                            </form>
-                          )}
-                          {!!orderDetails && orderDetails.amount <= 0 && (
-                            <form
-                              method="POST"
-                              action={`${BASE_URL}/v1/payment-success`}
-                            >
-                              <input
-                                type="hidden"
-                                name="razorpay_order_id"
-                                value={orderDetails.order_id}
-                              />
-                              <input
-                                type="hidden"
-                                name="razorpay_payment_id"
-                                value={uuidv4()}
-                              />
-                              <input
-                                type="hidden"
-                                name="razorpay_signature"
-                                value={uuidv4()}
-                              />
-                              <Button fullWidth color="primary" type="submit">
-                                {`Get it - ${plan.name}`}
-                              </Button>
-                            </form>
-                          )}
-                        </div>
-                      );
-                    })}
-                  </CardContent>
-                </Card>
+              <Grid container justify="center" spacing={3}>
+                {plans.map(p => (
+                  <Grid item key={p.plan.plan_id} className="promo-item">
+                    <SubscriptionPlan
+                      plan={p}
+                      onGetOrderDetails={(pl: PlanResponse) =>
+                        dispatch(actions.getOrderRequest(pl.plan_id))
+                      }
+                    />
+                  </Grid>
+                ))}
               </Grid>
             </Grid>
           </Grid>
@@ -306,6 +199,7 @@ export const SubscribePage = memo((props: Props) => {
 
 const Div = styled.div<{ theme: Theme }>`
   margin-top: 30px;
+  margin-bottom: 30px;
 
   .subscribe-note {
     background-color: ${props => props.theme.palette.primary.light};
@@ -328,6 +222,7 @@ const Div = styled.div<{ theme: Theme }>`
 
   .promo-card {
     width: 100%;
+    margin: auto;
     .promo-inp {
       margin-top: 20px;
     }
@@ -339,8 +234,13 @@ const Div = styled.div<{ theme: Theme }>`
       margin-top: 10px;
     }
     @media (min-width: 48em) {
-      width: 370px;
-      width: 370px;
+      width: 320px;
+    }
+  }
+  .promo-item {
+    width: 100%;
+    @media (min-width: 48em) {
+      width: 320px;
     }
   }
 `;

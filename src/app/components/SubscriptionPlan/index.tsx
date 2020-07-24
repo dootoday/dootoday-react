@@ -35,7 +35,7 @@ export const SubscriptionPlan = memo((props: Props) => {
     <Div>
       <Card>
         <CardHeader
-          title={plan.name}
+          title={plan.name.toUpperCase()}
           subheader={plan.description}
           titleTypographyProps={{ align: 'center' }}
           subheaderTypographyProps={{ align: 'center' }}
@@ -45,13 +45,13 @@ export const SubscriptionPlan = memo((props: Props) => {
             {plan.amount !== plan.offer_amount && (
               <Typography
                 className="actual-price"
-                variant="h4"
+                variant="h5"
                 color="textSecondary"
               >
                 ₹{plan.amount / 100}
               </Typography>
             )}
-            <Typography component="h2" variant="h3" color="textPrimary">
+            <Typography component="h2" variant="h4" color="textPrimary">
               ₹{plan.offer_amount / 100}
             </Typography>
             <Typography variant="h6" color="textSecondary">
@@ -114,8 +114,7 @@ const renderFreePurchaseButton = (od: OrderResponse) => (
 );
 
 const Div = styled.div`
-  max-width: 300px;
-
+  width: 100%;
   .actual-price {
     text-decoration: line-through;
   }
