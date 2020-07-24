@@ -13,12 +13,16 @@ import {
   Typography,
   CardActions,
   Button,
+  Theme,
+  createMuiTheme,
 } from '@material-ui/core';
 import { Plan } from 'app/containers/SubscribePage/types';
 import { OrderResponse, PlanResponse } from 'utils/datatypes';
 import { BASE_URL } from 'utils/api';
 
 interface Props {
+  theme?: Theme;
+
   // plan details
   plan: Plan;
 
@@ -31,9 +35,10 @@ export const SubscriptionPlan = memo((props: Props) => {
     onGetOrderDetails,
     plan: { plan, orderDetails },
   } = props;
+  const theme = props.theme || createMuiTheme();
   return (
-    <Div>
-      <Card>
+    <Div theme={theme}>
+      <Card className="plan-card">
         <CardHeader
           title={plan.name.toUpperCase()}
           subheader={plan.description}
@@ -113,10 +118,17 @@ const renderFreePurchaseButton = (od: OrderResponse) => (
   </Form>
 );
 
-const Div = styled.div`
+const Div = styled.div<{ theme: Theme }>`
   width: 100%;
-  .actual-price {
-    text-decoration: line-through;
+  .plan-card {
+    padding: 20px;
+    border: 2px solid #ffffff;
+    :hover {
+      border-color: ${props => props.theme.palette.primary.main};
+    }
+    .actual-price {
+      text-decoration: line-through;
+    }
   }
 `;
 
