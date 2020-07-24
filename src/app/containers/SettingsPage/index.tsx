@@ -51,6 +51,11 @@ export const SettingsPage = memo((props: Props) => {
           <Grid container spacing={1} direction="row">
             <Grid item container md={3} lg={3} sm={12}>
               <List component="nav" className="nav-list" aria-label="settings">
+                <NavLink exact to="/" className="nav-link">
+                  <ListItem button className="nav-item">
+                    <ListItemText primary="Home" />
+                  </ListItem>
+                </NavLink>
                 <NavLink
                   exact
                   to="/me"
