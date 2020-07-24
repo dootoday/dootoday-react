@@ -92,7 +92,7 @@ export const AppLayout = memo((props: Props) => {
       });
       refreshTimer.current = setTimeout(
         refreshTokenInterval,
-        30 * 60 * 1000,
+        24 * 60 * 60 * 1000,
         true,
       );
     },
