@@ -7,7 +7,7 @@ const Container = ({ children }) => <div style={{}}>{children}</div>;
 
 const inp = mockthemeresps;
 
-export const taskItem = () => (
+export const themePicker = () => (
   <>
     <ThemePicker
       themes={inp}
