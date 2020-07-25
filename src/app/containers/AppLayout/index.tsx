@@ -79,6 +79,12 @@ export const AppLayout = memo((props: Props) => {
     };
   }, [dispatch]);
 
+  useEffect(() => {
+    if (!!userDetails && !!userDetails.email && !!!userDetails.leftDays) {
+      history.push('/me/subscription');
+    }
+  }, [history, userDetails]);
+
   return (
     <>
       <Helmet>
@@ -93,30 +99,32 @@ export const AppLayout = memo((props: Props) => {
             userDetails={userDetails}
             handleLogout={handleLogout}
           />
-          <Switch>
-            <Route
-              exact
-              path="/"
-              render={props => {
-                if (!!userDetails && !!userDetails.leftDays) {
-                  return <HomePage userFetched={userFetched} theme={theme} />;
-                } else {
-                  return (
-                    <Redirect
-                      to={{
-                        pathname: '/me/subscription',
-                        state: { from: props.location.pathname },
-                      }}
-                    />
-                  );
-                }
-              }}
-            />
-            <Route
-              path="/me"
-              component={() => <SettingsPage theme={theme} />}
-            />
-          </Switch>
+          {!!userDetails && !!userDetails.email && (
+            <Switch>
+              <Route
+                exact
+                path="/"
+                render={props => {
+                  if (!!userDetails.leftDays) {
+                    return <HomePage userFetched={userFetched} theme={theme} />;
+                  } else {
+                    return (
+                      <Redirect
+                        to={{
+                          pathname: '/me/subscription',
+                          state: { from: props.location.pathname },
+                        }}
+                      />
+                    );
+                  }
+                }}
+              />
+              <Route
+                path="/me"
+                component={() => <SettingsPage theme={theme} />}
+              />
+            </Switch>
+          )}
           <AppFooter theme={theme} />
         </Div>
       </ThemeProvider>
