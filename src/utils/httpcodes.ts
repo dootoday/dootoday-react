@@ -4,6 +4,7 @@ export const http = {
   StatusCreated: 201,
   StatusAccepted: 202,
   StatusNoContent: 204,
+  StatusPartialContent: 206,
   StatusBadRequest: 400,
   StatusUnauthorized: 401,
   StatusForbidden: 403,

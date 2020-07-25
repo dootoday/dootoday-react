@@ -5,7 +5,7 @@ import http from 'utils/httpcodes';
 
 function* getUserDetails() {
   const { data, status } = yield call(GetUserAPI);
-  if (status === http.StatusOK) {
+  if (status === http.StatusOK || status === http.StatusPartialContent) {
     yield put(
       actions.getUserDetailsSuccess({
         firstName: data.first_name,
