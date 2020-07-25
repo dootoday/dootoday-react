@@ -21,6 +21,7 @@ import {
   Typography,
   TextField,
   Button,
+  Divider,
 } from '@material-ui/core';
 import {
   userFetchedSelector,
@@ -94,95 +95,84 @@ export const SubscribePage = memo((props: Props) => {
         <meta name="description" content="Description of SubscribePage" />
       </Helmet>
       <Div theme={theme}>
-        <Grid container spacing={3}>
-          <Grid item xs={8}>
-            <Grid container>
-              <Grid item xs={12}>
-                {userFetched && (
-                  <Grid container justify="center" spacing={0}>
-                    <span
-                      className={`subscribe-note ${calcLeftDaysClass(
-                        userDetails?.leftDays,
-                      )}`}
-                    >
-                      <Typography>
-                        <strong>Note:</strong>
-                        {` You have ${userDetails?.leftDays} days left on your subscription.`}
-                      </Typography>
-                    </span>
-                  </Grid>
-                )}
-                {!!cs && (
-                  <Grid container justify="center" spacing={0}>
-                    <span
-                      className={`subscribe-note ${
-                        cs === 'true' ? 'success' : 'error'
-                      }`}
-                    >
-                      <Typography>
-                        {`Your subscription is${
-                          cs === 'true' ? '' : ' not'
-                        } successful.`}
-                      </Typography>
-                    </span>
-                  </Grid>
-                )}
-              </Grid>
-              <Grid item xs={12}>
-                <Grid container justify="center" spacing={3}>
-                  {plans.map(p => (
-                    <Grid item key={p.plan.plan_id} className="promo-item">
-                      <SubscriptionPlan
-                        theme={theme}
-                        plan={p}
-                        onGetOrderDetails={(pl: PlanResponse) =>
-                          dispatch(actions.getOrderRequest(pl.plan_id))
-                        }
-                      />
-                    </Grid>
-                  ))}
+        <Grid container className="sub-container" spacing={3}>
+          <Grid item xs={12} sm={12} md={8} lg={8}>
+            <Grid container justify="center" spacing={3}>
+              {plans.map(p => (
+                <Grid item key={p.plan.plan_id} className="plan-item">
+                  <SubscriptionPlan
+                    theme={theme}
+                    plan={p}
+                    onGetOrderDetails={(pl: PlanResponse) =>
+                      dispatch(actions.getOrderRequest(pl.plan_id))
+                    }
+                  />
                 </Grid>
-              </Grid>
+              ))}
             </Grid>
           </Grid>
 
-          <Grid item xs={4}>
-            <Grid container spacing={1}>
-              <Grid item xs={8}>
-                <TextField
-                  inputRef={promoInputRef}
-                  size="small"
-                  error={inValidPromo}
-                  id="promo-input"
-                  label="Promo"
-                  autoComplete="off"
-                  variant="outlined"
-                  helperText={promoInpError}
-                  value={promoInp.value}
-                  className="promo-inp"
-                  onKeyDown={e => e.key === 'Enter' && handlePromoSubmit()}
-                  onBlur={e => handlePromoSubmit()}
-                  onChange={v =>
-                    setPromoInp({
-                      ...promoInp,
-                      ...{ value: v.target.value },
-                    })
-                  }
-                />
-              </Grid>
-              <Grid item xs={4}>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  size="medium"
-                  className="promo-submit"
-                  onClick={handlePromoSubmit}
-                  disabled={promoInp.value === '' || promoInp.submitting}
+          <Grid item xs={12} sm={12} md={4} lg={4} className="promo">
+            <div className="sub-note">
+              {userFetched && (
+                <Typography
+                  component="div"
+                  align="center"
+                  className={`subscribe-note ${calcLeftDaysClass(
+                    userDetails?.leftDays,
+                  )}`}
                 >
-                  Apply
-                </Button>
-              </Grid>
-            </Grid>
+                  <strong>Note:</strong>
+                  {` You have ${userDetails?.leftDays} days left on your subscription.`}
+                </Typography>
+              )}
+            </div>
+            <Divider />
+            <div className="promo-action">
+              <TextField
+                inputRef={promoInputRef}
+                size="small"
+                error={inValidPromo}
+                id="promo-input"
+                label="Promo"
+                autoComplete="off"
+                variant="outlined"
+                helperText={promoInpError}
+                value={promoInp.value}
+                className="promo-inp"
+                onKeyDown={e => e.key === 'Enter' && handlePromoSubmit()}
+                onBlur={e => handlePromoSubmit()}
+                onChange={v =>
+                  setPromoInp({
+                    ...promoInp,
+                    ...{ value: v.target.value },
+                  })
+                }
+              />
+              <Button
+                variant="contained"
+                color="primary"
+                size="small"
+                className="promo-submit"
+                onClick={handlePromoSubmit}
+                disabled={promoInp.value === '' || promoInp.submitting}
+              >
+                Apply
+              </Button>
+            </div>
+            <div className={`sub-note ${!!cs ? 'show' : 'hide'}`}>
+              <div
+                className={`subscribe-note ${
+                  cs === 'true' ? 'success' : 'error'
+                }`}
+              >
+                <Typography>
+                  {`Your subscription is${
+                    cs === 'true' ? '' : ' not'
+                  } successful.`}
+                </Typography>
+              </div>
+            </div>
           </Grid>
         </Grid>
       </Div>
@@ -193,34 +183,55 @@ export const SubscribePage = memo((props: Props) => {
 const Div = styled.div<{ theme: Theme }>`
   margin-top: 30px;
   margin-bottom: 30px;
-  display: flex;
-  .subscribe-note {
-    background-color: ${props => props.theme.palette.primary.light};
-    padding: 10px;
-    border-radius: 5px;
-    margin-bottom: 10px;
+  width: 100%;
+  .sub-container {
+    @media (max-width: 48em) {
+      flex-direction: column-reverse;
+    }
+    .promo {
+      .promo-submit {
+        margin: 1px 0px 0px 5px;
+      }
+      .promo-action {
+        margin: 15px 0px;
+        display: flex;
+        justify-content: center;
+      }
+      .sub-note {
+        margin-bottom: 15px;
+        &.hide {
+          opacity: 0;
+        }
+        &.show {
+          opacity: 1;
+        }
+        .subscribe-note {
+          background-color: ${props => props.theme.palette.primary.light};
+          padding: 10px;
+          border-radius: 5px;
+          max-width: 500px;
+          margin: auto;
 
-    &.warning {
-      background-color: ${props => props.theme.palette.warning.light};
+          &.warning {
+            background-color: ${props => props.theme.palette.warning.light};
+          }
+
+          &.error {
+            background-color: ${props => props.theme.palette.error.light};
+          }
+
+          &.success {
+            background-color: ${props => props.theme.palette.success.light};
+          }
+        }
+      }
     }
 
-    &.error {
-      background-color: ${props => props.theme.palette.error.light};
-    }
-
-    &.success {
-      background-color: ${props => props.theme.palette.success.light};
-    }
-  }
-
-  .promo-error {
-    color: ${props => props.theme.palette.error.main};
-    margin-top: 10px;
-  }
-  .promo-item {
-    width: 100%;
-    @media (min-width: 48em) {
-      width: 280px;
+    .plan-item {
+      width: 100%;
+      @media (min-width: 48em) {
+        width: 280px;
+      }
     }
   }
 `;
