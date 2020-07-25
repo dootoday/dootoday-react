@@ -17,15 +17,10 @@ import { subscribePageSaga } from './saga';
 import {
   Theme,
   createMuiTheme,
-  Container,
   Grid,
   Typography,
-  Card,
-  CardContent,
   TextField,
   Button,
-  CardActions,
-  CardHeader,
 } from '@material-ui/core';
 import {
   userFetchedSelector,
@@ -63,13 +58,13 @@ export const SubscribePage = memo((props: Props) => {
   };
   const [promoInp, setPromoInp] = useState<{
     value: string;
-    error: string;
     submitting: boolean;
   }>({
     value: '',
-    error: '',
     submitting: false,
   });
+
+  const [promoInpError, setPromoInpError] = useState('');
 
   const promoInputRef = useRef() as React.MutableRefObject<HTMLInputElement>;
   const handlePromoSubmit = () => {
@@ -79,6 +74,10 @@ export const SubscribePage = memo((props: Props) => {
   useEffect(() => {
     dispatch(actions.getPlansRequest(''));
   }, [dispatch]);
+
+  useEffect(() => {
+    setPromoInpError(inValidPromo ? 'This promo is invalid' : '');
+  }, [inValidPromo]);
 
   const [cs, setCS] = useQueryParam('cs');
 
@@ -95,104 +94,97 @@ export const SubscribePage = memo((props: Props) => {
         <meta name="description" content="Description of SubscribePage" />
       </Helmet>
       <Div theme={theme}>
-        <Container>
-          <Grid container spacing={3}>
-            <Grid item xs={12}>
-              {userFetched && (
-                <Grid container justify="center" spacing={0}>
-                  <span
-                    className={`subscribe-note ${calcLeftDaysClass(
-                      userDetails?.leftDays,
-                    )}`}
-                  >
-                    <Typography>
-                      <strong>Note:</strong>
-                      {` You have ${userDetails?.leftDays} days left on your subscription.`}
-                    </Typography>
-                  </span>
-                </Grid>
-              )}
-              {!!cs && (
-                <Grid container justify="center" spacing={0}>
-                  <span
-                    className={`subscribe-note ${
-                      cs === 'true' ? 'success' : 'error'
-                    }`}
-                  >
-                    <Typography>
-                      {`Your subscription is${
-                        cs === 'true' ? '' : ' not'
-                      } successful.`}
-                    </Typography>
-                  </span>
-                </Grid>
-              )}
-            </Grid>
-            <Grid item xs={12}>
-              <Card className="promo-card">
-                <CardHeader
-                  title="USE YOUR PROMO"
-                  titleTypographyProps={{ align: 'center' }}
-                />
-                <CardContent>
-                  <TextField
-                    inputRef={promoInputRef}
-                    error={!!promoInp.error}
-                    fullWidth={true}
-                    id="promo-input"
-                    label="Promo"
-                    autoComplete="off"
-                    variant="outlined"
-                    helperText={promoInp.error}
-                    value={promoInp.value}
-                    className="promo-inp"
-                    onKeyDown={e => e.key === 'Enter' && handlePromoSubmit()}
-                    onBlur={e => handlePromoSubmit()}
-                    onChange={v =>
-                      setPromoInp({
-                        ...promoInp,
-                        ...{ value: v.target.value },
-                      })
-                    }
-                  />
-                  {inValidPromo && (
-                    <span className={`promo-error`}>
-                      <Typography>This is an invalid promo code.</Typography>
+        <Grid container spacing={3}>
+          <Grid item xs={8}>
+            <Grid container>
+              <Grid item xs={12}>
+                {userFetched && (
+                  <Grid container justify="center" spacing={0}>
+                    <span
+                      className={`subscribe-note ${calcLeftDaysClass(
+                        userDetails?.leftDays,
+                      )}`}
+                    >
+                      <Typography>
+                        <strong>Note:</strong>
+                        {` You have ${userDetails?.leftDays} days left on your subscription.`}
+                      </Typography>
                     </span>
-                  )}
-                </CardContent>
-                <CardActions>
-                  <Button
-                    fullWidth={true}
-                    variant="contained"
-                    color="primary"
-                    size="large"
-                    className="promo-submit"
-                    onClick={handlePromoSubmit}
-                    disabled={promoInp.value === '' || promoInp.submitting}
-                  >
-                    Apply
-                  </Button>
-                </CardActions>
-              </Card>
-            </Grid>
-            <Grid item xs={12}>
-              <Grid container justify="center" spacing={3}>
-                {plans.map(p => (
-                  <Grid item key={p.plan.plan_id} className="promo-item">
-                    <SubscriptionPlan
-                      theme={theme}
-                      plan={p}
-                      onGetOrderDetails={(pl: PlanResponse) =>
-                        dispatch(actions.getOrderRequest(pl.plan_id))
-                      }
-                    />
                   </Grid>
-                ))}
+                )}
+                {!!cs && (
+                  <Grid container justify="center" spacing={0}>
+                    <span
+                      className={`subscribe-note ${
+                        cs === 'true' ? 'success' : 'error'
+                      }`}
+                    >
+                      <Typography>
+                        {`Your subscription is${
+                          cs === 'true' ? '' : ' not'
+                        } successful.`}
+                      </Typography>
+                    </span>
+                  </Grid>
+                )}
+              </Grid>
+              <Grid item xs={12}>
+                <Grid container justify="center" spacing={3}>
+                  {plans.map(p => (
+                    <Grid item key={p.plan.plan_id} className="promo-item">
+                      <SubscriptionPlan
+                        theme={theme}
+                        plan={p}
+                        onGetOrderDetails={(pl: PlanResponse) =>
+                          dispatch(actions.getOrderRequest(pl.plan_id))
+                        }
+                      />
+                    </Grid>
+                  ))}
+                </Grid>
               </Grid>
             </Grid>
           </Grid>
-        </Container>
+
+          <Grid item xs={4}>
+            <Grid container spacing={1}>
+              <Grid item xs={8}>
+                <TextField
+                  inputRef={promoInputRef}
+                  size="small"
+                  error={inValidPromo}
+                  id="promo-input"
+                  label="Promo"
+                  autoComplete="off"
+                  variant="outlined"
+                  helperText={promoInpError}
+                  value={promoInp.value}
+                  className="promo-inp"
+                  onKeyDown={e => e.key === 'Enter' && handlePromoSubmit()}
+                  onBlur={e => handlePromoSubmit()}
+                  onChange={v =>
+                    setPromoInp({
+                      ...promoInp,
+                      ...{ value: v.target.value },
+                    })
+                  }
+                />
+              </Grid>
+              <Grid item xs={4}>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  size="medium"
+                  className="promo-submit"
+                  onClick={handlePromoSubmit}
+                  disabled={promoInp.value === '' || promoInp.submitting}
+                >
+                  Apply
+                </Button>
+              </Grid>
+            </Grid>
+          </Grid>
+        </Grid>
       </Div>
     </>
   );
@@ -201,7 +193,7 @@ export const SubscribePage = memo((props: Props) => {
 const Div = styled.div<{ theme: Theme }>`
   margin-top: 30px;
   margin-bottom: 30px;
-
+  display: flex;
   .subscribe-note {
     background-color: ${props => props.theme.palette.primary.light};
     padding: 10px;
@@ -221,22 +213,9 @@ const Div = styled.div<{ theme: Theme }>`
     }
   }
 
-  .promo-card {
-    width: 100%;
-    margin: auto;
-    .promo-inp {
-      margin-top: 20px;
-    }
-    .promo-submit {
-      margin-top: 10px;
-    }
-    .promo-error {
-      color: ${props => props.theme.palette.error.main};
-      margin-top: 10px;
-    }
-    @media (min-width: 48em) {
-      width: 320px;
-    }
+  .promo-error {
+    color: ${props => props.theme.palette.error.main};
+    margin-top: 10px;
   }
   .promo-item {
     width: 100%;
