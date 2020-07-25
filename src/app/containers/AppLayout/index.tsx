@@ -99,7 +99,7 @@ export const AppLayout = memo((props: Props) => {
             userDetails={userDetails}
             handleLogout={handleLogout}
           />
-          {!!userDetails && userDetails.leftDays < 10 && (
+          {userFetched && !!userDetails && userDetails.leftDays < 10 && (
             <Typography
               component="div"
               variant="caption"
