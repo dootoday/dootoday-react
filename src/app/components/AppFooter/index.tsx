@@ -22,14 +22,14 @@ export const AppFooter = (props: Props) => {
             <Grid item>
               <Typography variant="caption">
                 <Link className="footer-link" to="/aboutus">
-                  About us
+                  Aboutus
                 </Link>
               </Typography>
             </Grid>
             <Grid item>
               <Typography variant="caption">
                 <Link className="footer-link" to="/privacy">
-                  Privacy Policy
+                  PrivacyPolicy
                 </Link>
               </Typography>
             </Grid>
