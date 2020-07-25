@@ -36,10 +36,10 @@ export function AboutUs(props: Props) {
                 <Grid item>
                   <Typography component="p" variant="body1">
                     You can accomplish your goals if you break it down in
-                    smaller smaller steps. But how do you go from a big long
-                    term goal to those smaller steps or simple tasks you can
-                    complete in a day? Hence your Daily Tasking is simplified
-                    here with the help of DooToday.
+                    smaller steps. But how do you go from a big long term goal
+                    to those smaller steps or simple tasks you can complete in a
+                    day? Hence your Daily Tasking is simplified here with the
+                    help of DooToday.
                   </Typography>
                 </Grid>
                 <Grid item>
