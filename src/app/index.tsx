@@ -17,6 +17,7 @@ import { AppLayout } from 'app/containers/AppLayout';
 import { Login } from 'app/containers/Login/Loadable';
 import { NotFoundPage } from 'app/components/NotFoundPage/Loadable';
 import { ProtectedRoute } from 'app/components/ProtectedRoute';
+import { AboutUs } from 'app/containers/AboutUs/Loadable';
 
 export function App() {
   return (
@@ -31,6 +32,7 @@ export function App() {
 
         <Switch>
           <Route exact path="/login" component={Login} />
+          <Route exact path="/aboutus" component={AboutUs} />
           <ProtectedRoute path="/" component={AppLayout} />
           <Route component={NotFoundPage} />
         </Switch>

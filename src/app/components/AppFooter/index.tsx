@@ -5,7 +5,7 @@ import styled from 'styled-components/macro';
 import { Grid, Typography } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 
-const AppFooter: React.FC = () => {
+export const AppFooter: React.FC = () => {
   const year = new Date().getFullYear();
   return (
     <Footer>
@@ -35,8 +35,6 @@ const AppFooter: React.FC = () => {
     </Footer>
   );
 };
-
-export default AppFooter;
 
 const Footer = styled.div`
   border-top: solid #9c9c9c2e 1px;
