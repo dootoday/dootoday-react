@@ -9,20 +9,8 @@ import { Helmet } from 'react-helmet-async';
 // import { useTranslation } from 'react-i18next';
 import styled from 'styled-components/macro';
 import { ThemeProvider } from '@material-ui/core/styles';
-import { useHistory, Link } from 'react-router-dom';
-import {
-  AppBar,
-  Toolbar,
-  Avatar,
-  IconButton,
-  Popper,
-  Grow,
-  Paper,
-  ClickAwayListener,
-  MenuList,
-  MenuItem,
-  Theme,
-} from '@material-ui/core';
+import { useHistory } from 'react-router-dom';
+import { Theme } from '@material-ui/core';
 import { Route, Switch } from 'react-router-dom';
 import { HomePage } from 'app/containers/HomePage';
 import { Logout as LogoutRequest } from 'utils/auth';
@@ -35,13 +23,12 @@ import { RefreshToken } from 'utils/auth';
 import AppFooter from 'app/components/AppFooter';
 import { SettingsPage } from 'app/containers/SettingsPage/Loadable';
 import { selectSelectedTheme } from 'app/containers/ThemePage/selectors';
+import { AppHeader } from 'app/components/AppHeader';
 
 interface Props {}
 
 export const AppLayout = memo((props: Props) => {
   // const { t, i18n } = useTranslation();
-  const [open, setOpen] = React.useState(false);
-  const anchorRef = React.useRef<HTMLButtonElement>(null);
   useInjectReducer({ key: slicekey, reducer: reducer });
   useInjectSaga({ key: slicekey, saga: appLayoutSaga });
   const userFetched = useSelector(userFetchedSelector);
@@ -49,28 +36,6 @@ export const AppLayout = memo((props: Props) => {
   const theme = useSelector(selectSelectedTheme);
   const dispatch = useDispatch();
   const history = useHistory();
-
-  const handleToggle = () => {
-    setOpen(prevOpen => !prevOpen);
-  };
-
-  const handleClose = (event: React.MouseEvent<EventTarget>) => {
-    if (
-      anchorRef.current &&
-      anchorRef.current.contains(event.target as HTMLElement)
-    ) {
-      return;
-    }
-
-    setOpen(false);
-  };
-
-  function handleListKeyDown(event: React.KeyboardEvent) {
-    if (event.key === 'Tab') {
-      event.preventDefault();
-      setOpen(false);
-    }
-  }
 
   const handleLogout = useCallback(() => {
     LogoutRequest();
@@ -122,94 +87,11 @@ export const AppLayout = memo((props: Props) => {
       </Helmet>
       <ThemeProvider theme={theme}>
         <Div theme={theme}>
-          <AppBar position="static" elevation={0}>
-            <Toolbar variant="dense" className="tool-bar">
-              <Link to="/">
-                <img
-                  className="header-logo"
-                  src="https://dootoday-assets.s3.ap-south-1.amazonaws.com/logo-bw-horiz.png"
-                  alt="dootoday"
-                />
-              </Link>
-              {userFetched && (
-                <>
-                  <IconButton
-                    onClick={handleToggle}
-                    ref={anchorRef}
-                    aria-controls={open ? 'menu-list-grow' : undefined}
-                    aria-haspopup="true"
-                  >
-                    <Avatar
-                      variant="rounded"
-                      className="avatar-logo"
-                      alt={userDetails?.firstName}
-                      src={userDetails?.avatar}
-                    />
-                  </IconButton>
-                  <Popper
-                    open={open}
-                    anchorEl={anchorRef.current}
-                    role={undefined}
-                    transition
-                    disablePortal
-                    style={{
-                      zIndex: 3,
-                    }}
-                  >
-                    {({ TransitionProps, placement }) => (
-                      <Grow
-                        {...TransitionProps}
-                        style={{
-                          transformOrigin:
-                            placement === 'bottom'
-                              ? 'center top'
-                              : 'center bottom',
-                        }}
-                      >
-                        <Paper>
-                          <ClickAwayListener onClickAway={handleClose}>
-                            <MenuList
-                              autoFocusItem={open}
-                              id="menu-list-grow"
-                              onKeyDown={handleListKeyDown}
-                            >
-                              <Link
-                                to="/me"
-                                className="menu-item"
-                                onClick={handleClose}
-                              >
-                                <MenuItem>Profile</MenuItem>
-                              </Link>
-                              <Link
-                                to="/me/subscription"
-                                className="menu-item"
-                                onClick={handleClose}
-                              >
-                                <MenuItem>Subscription</MenuItem>
-                              </Link>
-                              <Link
-                                to="/me/theme"
-                                className="menu-item"
-                                onClick={handleClose}
-                              >
-                                <MenuItem>Theme</MenuItem>
-                              </Link>
-                              <MenuItem
-                                className="menu-item"
-                                onClick={handleLogout}
-                              >
-                                Logout
-                              </MenuItem>
-                            </MenuList>
-                          </ClickAwayListener>
-                        </Paper>
-                      </Grow>
-                    )}
-                  </Popper>
-                </>
-              )}
-            </Toolbar>
-          </AppBar>
+          <AppHeader
+            userFetched={userFetched}
+            userDetails={userDetails}
+            handleLogout={handleLogout}
+          />
           <Switch>
             <Route
               exact
