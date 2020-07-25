@@ -16,6 +16,8 @@ import {
   MenuList,
   MenuItem,
   Avatar,
+  createMuiTheme,
+  Theme,
 } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import { UserDetails } from 'app/containers/AppLayout/types';
@@ -23,11 +25,13 @@ import { UserDetails } from 'app/containers/AppLayout/types';
 interface Props {
   userFetched?: boolean;
   userDetails?: UserDetails;
+  theme?: Theme;
   handleLogout?: () => void;
 }
 
 export const AppHeader = memo((props: Props) => {
   const { userFetched, userDetails, handleLogout } = props;
+  const theme = props.theme || createMuiTheme();
   const [open, setOpen] = useState(false);
   const anchorRef = useRef<HTMLButtonElement>(null);
   const handleClose = (event: React.MouseEvent<EventTarget>) => {
@@ -49,7 +53,7 @@ export const AppHeader = memo((props: Props) => {
     setOpen(prevOpen => !prevOpen);
   };
   return (
-    <Div>
+    <Div theme={theme}>
       <AppBar position="static" elevation={0}>
         <Toolbar variant="dense" className="tool-bar">
           <Link to="/">
@@ -140,4 +144,24 @@ export const AppHeader = memo((props: Props) => {
   );
 });
 
-const Div = styled.div``;
+const Div = styled.div<{ theme: Theme }>`
+  .tool-bar {
+    min-height: 44px;
+    display: flex;
+    justify-content: space-between;
+
+    .header-logo {
+      height: 25px;
+    }
+    .avatar-logo {
+      height: 20px;
+      width: 20px;
+      border: 1px solid #fff;
+    }
+
+    .menu-item {
+      text-decoration: none;
+      color: ${props => props.theme.palette.primary.dark};
+    }
+  }
+`;

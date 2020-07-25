@@ -20,7 +20,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { userFetchedSelector, userSelector } from './selector';
 import appLayoutSaga from './saga';
 import { RefreshToken } from 'utils/auth';
-import AppFooter from 'app/components/AppFooter';
+import { AppFooter } from 'app/components/AppFooter';
 import { SettingsPage } from 'app/containers/SettingsPage/Loadable';
 import { selectSelectedTheme } from 'app/containers/ThemePage/selectors';
 import { AppHeader } from 'app/components/AppHeader';
@@ -88,6 +88,7 @@ export const AppLayout = memo((props: Props) => {
       <ThemeProvider theme={theme}>
         <Div theme={theme}>
           <AppHeader
+            theme={theme}
             userFetched={userFetched}
             userDetails={userDetails}
             handleLogout={handleLogout}
@@ -112,24 +113,4 @@ export const AppLayout = memo((props: Props) => {
   );
 });
 
-const Div = styled.div<{ theme: Theme }>`
-  .tool-bar {
-    min-height: 34px;
-    display: flex;
-    justify-content: space-between;
-
-    .header-logo {
-      height: 25px;
-    }
-    .avatar-logo {
-      height: 20px;
-      width: 20px;
-      border: 1px solid #fff;
-    }
-
-    .menu-item {
-      text-decoration: none;
-      color: ${props => props.theme.palette.primary.dark};
-    }
-  }
-`;
+const Div = styled.div<{ theme: Theme }>``;

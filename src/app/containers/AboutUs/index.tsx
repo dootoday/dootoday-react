@@ -7,7 +7,8 @@
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
 import styled from 'styled-components/macro';
-import { Typography } from '@material-ui/core';
+import { Typography, Container } from '@material-ui/core';
+import { PublicLayout } from 'app/components/PublicLayout';
 
 interface Props {}
 
@@ -18,11 +19,15 @@ export function AboutUs(props: Props) {
         <title>AboutUs</title>
         <meta name="description" content="Description of AboutUs" />
       </Helmet>
-      <Div>
-        <Typography component="h2" variant="h3">
-          About US
-        </Typography>
-      </Div>
+      <PublicLayout>
+        <Div>
+          <Container>
+            <Typography component="h2" variant="h4">
+              About Us
+            </Typography>
+          </Container>
+        </Div>
+      </PublicLayout>
     </>
   );
 }
