@@ -106,7 +106,9 @@ export const AppLayout = memo((props: Props) => {
               align="center"
               className="sub-warn"
             >
-              Your subscription is about to end.{' '}
+              {`Your subscription is ${
+                userDetails.leftDays > 0 ? 'about to' : ''
+              } end.`}{' '}
               <Link to="/me/subscription">Click here</Link> to renew now.
             </Typography>
           )}
