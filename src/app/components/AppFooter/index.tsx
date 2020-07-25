@@ -19,7 +19,7 @@ export const AppFooter: React.FC = () => {
             </Grid>
             <Grid item>
               <Typography variant="caption">
-                <Link to="/aboutus"> About us </Link>
+                <Link to="/privacy"> Privacy Policy </Link>
               </Typography>
             </Grid>
           </Grid>
