@@ -190,7 +190,8 @@ const Div = styled.div<{ theme: Theme }>`
     }
     .promo {
       .promo-submit {
-        margin: 1px 0px 0px 5px;
+        margin: 0px 0px 0px 5px;
+        height: 40px;
       }
       .promo-action {
         margin: 15px 0px;
