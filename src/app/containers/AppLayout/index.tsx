@@ -10,8 +10,8 @@ import { Helmet } from 'react-helmet-async';
 import styled from 'styled-components/macro';
 import { ThemeProvider } from '@material-ui/core/styles';
 import { useHistory, Redirect } from 'react-router-dom';
-import { Theme } from '@material-ui/core';
-import { Route, Switch } from 'react-router-dom';
+import { Theme, Typography } from '@material-ui/core';
+import { Route, Switch, Link } from 'react-router-dom';
 import { HomePage } from 'app/containers/HomePage';
 import { Logout as LogoutRequest } from 'utils/auth';
 import { useInjectReducer, useInjectSaga } from 'utils/redux-injectors';
@@ -99,6 +99,17 @@ export const AppLayout = memo((props: Props) => {
             userDetails={userDetails}
             handleLogout={handleLogout}
           />
+          {!!userDetails && userDetails.leftDays < 10 && (
+            <Typography
+              component="div"
+              variant="caption"
+              align="center"
+              className="sub-warn"
+            >
+              Your subscription is about to end.{' '}
+              <Link to="/me/subscription">Click here</Link> to renew now.
+            </Typography>
+          )}
           {!!userDetails && !!userDetails.email && (
             <Switch>
               <Route
@@ -132,4 +143,8 @@ export const AppLayout = memo((props: Props) => {
   );
 });
 
-const Div = styled.div<{ theme: Theme }>``;
+const Div = styled.div<{ theme: Theme }>`
+  .sub-warn {
+    background-color: ${props => props.theme.palette.warning.light};
+  }
+`;
