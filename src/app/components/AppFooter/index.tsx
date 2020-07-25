@@ -2,33 +2,44 @@ import * as React from 'react';
 import CopyrightIcon from '@material-ui/icons/Copyright';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import styled from 'styled-components/macro';
-import { Grid, Typography } from '@material-ui/core';
+import { Grid, Typography, createMuiTheme, Theme } from '@material-ui/core';
+import { red } from '@material-ui/core/colors';
+
 import { Link } from 'react-router-dom';
 
-export const AppFooter: React.FC = () => {
+interface Props {
+  theme?: Theme;
+}
+
+export const AppFooter = (props: Props) => {
   const year = new Date().getFullYear();
+  const theme = props.theme || createMuiTheme();
   return (
-    <Footer>
-      <Grid container justify="space-between">
+    <Footer theme={theme}>
+      <Grid container className="footer-container" justify="space-between">
         <Grid item>
           <Grid container spacing={1}>
             <Grid item>
               <Typography variant="caption">
-                <Link to="/aboutus"> About us </Link>
+                <Link className="footer-link" to="/aboutus">
+                  About us
+                </Link>
               </Typography>
             </Grid>
             <Grid item>
               <Typography variant="caption">
-                <Link to="/privacy"> Privacy Policy </Link>
+                <Link className="footer-link" to="/privacy">
+                  Privacy Policy
+                </Link>
               </Typography>
             </Grid>
           </Grid>
         </Grid>
         <Grid item>
-          <Typography className="footer-container" variant="caption">
+          <Typography variant="caption">
             Made with <FavoriteIcon className="icon favorite-icon" /> in India{' '}
             <CopyrightIcon className="icon" />
-            {year} DooToday All rights reserved
+            {year} DooToday Pvt. Ltd.
           </Typography>
         </Grid>
       </Grid>
@@ -36,16 +47,24 @@ export const AppFooter: React.FC = () => {
   );
 };
 
-const Footer = styled.div`
+const Footer = styled.div<{ theme: Theme }>`
   border-top: solid #9c9c9c2e 1px;
   min-height: 50px;
   padding: 20px;
   .footer-container {
+    color: ${props => props.theme.palette.secondary.light};
+    .footer-link {
+      color: ${props => props.theme.palette.secondary.light};
+      text-decoration: none;
+    }
     .icon {
-      font-size: 16px;
+      font-size: 14px;
     }
     .favorite-icon {
-      color: #f31d11b0;
+      color: ${red[400]};
+    }
+    @media (max-width: 48em) {
+      justify-content: center;
     }
   }
 `;

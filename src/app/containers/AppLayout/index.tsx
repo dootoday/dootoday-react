@@ -106,7 +106,7 @@ export const AppLayout = memo((props: Props) => {
               component={() => <SettingsPage theme={theme} />}
             />
           </Switch>
-          <AppFooter />
+          <AppFooter theme={theme} />
         </Div>
       </ThemeProvider>
     </>

@@ -23,7 +23,7 @@ export function PublicLayout(props: Props) {
       <Div>
         <AppHeader theme={theme} />
         <div className="public-container">{props.children}</div>
-        <AppFooter />
+        <AppFooter theme={theme} />
       </Div>
     </ThemeProvider>
   );
