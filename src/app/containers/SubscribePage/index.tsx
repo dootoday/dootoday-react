@@ -49,11 +49,11 @@ export const SubscribePage = memo((props: Props) => {
   const theme = props.theme || createMuiTheme();
   const calcLeftDaysClass = (leftDays: number | undefined) => {
     leftDays = leftDays || 0;
-    if (leftDays <= 15) {
-      return 'warning';
-    }
     if (leftDays <= 5) {
       return 'error';
+    }
+    if (leftDays <= 15) {
+      return 'warning';
     }
     return '';
   };

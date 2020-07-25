@@ -9,7 +9,7 @@ import { Helmet } from 'react-helmet-async';
 // import { useTranslation } from 'react-i18next';
 import styled from 'styled-components/macro';
 import { ThemeProvider } from '@material-ui/core/styles';
-import { useHistory } from 'react-router-dom';
+import { useHistory, Redirect } from 'react-router-dom';
 import { Theme } from '@material-ui/core';
 import { Route, Switch } from 'react-router-dom';
 import { HomePage } from 'app/containers/HomePage';
@@ -97,9 +97,20 @@ export const AppLayout = memo((props: Props) => {
             <Route
               exact
               path="/"
-              render={() => (
-                <HomePage userFetched={userFetched} theme={theme} />
-              )}
+              render={props => {
+                if (!!userDetails && !!userDetails.leftDays) {
+                  return <HomePage userFetched={userFetched} theme={theme} />;
+                } else {
+                  return (
+                    <Redirect
+                      to={{
+                        pathname: '/me/subscription',
+                        state: { from: props.location.pathname },
+                      }}
+                    />
+                  );
+                }
+              }}
             />
             <Route
               path="/me"
