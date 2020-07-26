@@ -16,6 +16,7 @@ import { createMuiTheme, Theme } from '@material-ui/core/styles';
 import { Typography } from '@material-ui/core';
 import ReactMarkdown from 'react-markdown';
 import emoji from 'emoji-dictionary';
+import { blue } from '@material-ui/core/colors';
 
 export interface Task {
   id: string;
@@ -213,11 +214,21 @@ const Div = styled.div<{ theme: Theme; highlight: boolean }>`
       props.highlight
         ? props.theme.palette.primary.light
         : props.theme.palette.secondary.light};
+    .md {
+      a {
+        color: ${blue[200]};
+      }
+    }
     :hover {
       color: ${props =>
         props.highlight
           ? props.theme.palette.primary.dark
           : props.theme.palette.secondary.dark};
+      .md {
+        a {
+          color: ${blue[400]};
+        }
+      }
     }
   }
   .input {
@@ -275,6 +286,10 @@ const Div = styled.div<{ theme: Theme; highlight: boolean }>`
         list-style: none;
         padding: 0px;
       }
+    }
+    a {
+      text-decoration: none;
+      color: ${blue[400]};
     }
   }
 
