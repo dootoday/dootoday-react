@@ -3,6 +3,7 @@ import { SubscribePageState } from 'app/containers/SubscribePage/types';
 import { HomePageState } from 'app/containers/HomePage/types';
 import { SettingsPageState } from 'app/containers/SettingsPage/types';
 import { ThemePageState } from 'app/containers/ThemePage/types';
+import { ProfilePageState } from 'app/containers/ProfilePage/types';
 /* 
   Because the redux-injectors injects your reducers asynchronously somewhere in your code
   You have to declare them here manually
@@ -13,4 +14,5 @@ export interface RootState {
   homePage?: HomePageState;
   settingsPage?: SettingsPageState;
   themePage?: ThemePageState;
+  profilePage?: ProfilePageState;
 }

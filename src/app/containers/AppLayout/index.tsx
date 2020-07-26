@@ -146,6 +146,7 @@ export const AppLayout = memo((props: Props) => {
 });
 
 const Div = styled.div<{ theme: Theme }>`
+  min-height: calc(100vh - 104px);
   .sub-warn {
     background-color: ${props => props.theme.palette.warning.light};
   }
