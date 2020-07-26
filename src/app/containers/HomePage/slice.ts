@@ -152,13 +152,24 @@ const homePageSlice = createSlice({
       reducer: (state, action: PayloadAction<TaskResponse>) => {
         SetLastUpdated('');
         const task = action.payload;
+        const mappedTask = TaskMapper(task);
         if (task.date) {
           const idx = state.dailyTask.findIndex(t => t.id === task.date);
           if (idx > -1) {
             const tidx = state.dailyTask[idx].tasks.findIndex(
               t => t.id === task.id.toString(),
             );
-            state.dailyTask[idx].tasks[tidx] = TaskMapper(task);
+            state.dailyTask[idx].tasks[tidx].isDone = mappedTask.isDone;
+            state.dailyTask[idx].tasks[tidx].markdown = mappedTask.markdown;
+          }
+        } else {
+          const idx = state.columnTask.findIndex(t => t.id === task.column_id);
+          if (idx > -1) {
+            const tidx = state.columnTask[idx].tasks.findIndex(
+              t => t.id === task.id.toString(),
+            );
+            state.columnTask[idx].tasks[tidx].isDone = mappedTask.isDone;
+            state.columnTask[idx].tasks[tidx].markdown = mappedTask.markdown;
           }
         }
         return state;
