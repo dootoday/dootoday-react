@@ -69,7 +69,7 @@ export const HomePage = memo((props: Props) => {
         }
       }
     });
-    refreshTimer.current = setTimeout(refreshTaskList, 5 * 60 * 1000, true);
+    refreshTimer.current = setTimeout(refreshTaskList, 60 * 1000, true);
   }, [currentLoc, dispatch]);
 
   useEffect(() => {
