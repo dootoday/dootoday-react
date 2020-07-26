@@ -24,7 +24,7 @@ function* getDailyTasks(action) {
   }
 }
 
-function* getColumnTasks(action) {
+function* getColumnTasks() {
   const { data, status } = yield call(GetTasksOnColumnAPI);
   if (status === http.StatusOK) {
     yield put(actions.getColumnTaksSuccess(data));
@@ -62,7 +62,10 @@ function* deleteTask(action) {
 }
 
 function* reposTask(action) {
-  yield call(ReposTaskAPI, action.payload);
+  const { status } = yield call(ReposTaskAPI, action.payload);
+  if (status === http.StatusOK) {
+    yield put(actions.reposSuccess());
+  }
 }
 
 function* updateColumn(action) {

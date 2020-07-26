@@ -4,7 +4,7 @@
  *
  */
 
-import React, { memo, useEffect } from 'react';
+import React, { memo, useEffect, useState, useCallback, useRef } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useSelector, useDispatch } from 'react-redux';
 import styled from 'styled-components/macro';
@@ -25,6 +25,10 @@ import { homePageSaga } from './saga';
 import { Today, MapDateToString } from 'utils/mappers';
 import { dragNDropPayload } from './types';
 import { IconButton } from '@material-ui/core';
+import { GetLastUpdateAPI } from 'utils/api';
+import http from 'utils/httpcodes';
+import { GetLastUpdated, SetLastUpdated } from 'utils/auth';
+import { differenceInSeconds } from 'date-fns/esm';
 
 interface Props {
   theme?: Theme;
@@ -41,20 +45,62 @@ export const HomePage = memo((props: Props) => {
   const colTaskCols = useSelector(selectColumnTask);
   const dailyTaskStartPos = useSelector(selectDailyTaskStart);
   const colTaskStartPos = useSelector(selectColTaskStart);
+  const [currentLoc, setCurrentLoc] = useState(Today());
+
+  const refreshTimer = useRef(0);
+  const refreshTaskList = useCallback(() => {
+    GetLastUpdateAPI().then(resp => {
+      if (resp.status === http.StatusOK) {
+        const lastUpdatedInClientInString = GetLastUpdated();
+        if (!!!lastUpdatedInClientInString) {
+          SetLastUpdated(resp.data.last_updated);
+        } else {
+          const lastUpdatedInServer = new Date(resp.data.last_updated);
+          const lastUpdatedInClient = new Date(lastUpdatedInClientInString);
+          const diff = differenceInSeconds(
+            lastUpdatedInServer,
+            lastUpdatedInClient,
+          );
+          if (diff > 0) {
+            SetLastUpdated(lastUpdatedInServer.toString());
+            dispatch(actions.clearAllTask());
+            dispatch(actions.getDailyTaskRequest(currentLoc));
+            dispatch(actions.getColumnTaskRequest());
+          }
+        }
+      }
+    });
+    refreshTimer.current = setTimeout(refreshTaskList, 60 * 1000, true);
+  }, [currentLoc, dispatch]);
 
   useEffect(() => {
     if (userFetched) {
-      dispatch(actions.getDailyTaskRequest(Today()));
-      dispatch(actions.getColumnTaskRequest(Today()));
+      dispatch(actions.getDailyTaskRequest(currentLoc));
     }
-  }, [dispatch, userFetched]);
+  }, [dispatch, userFetched, currentLoc]);
+
+  useEffect(() => {
+    if (userFetched) {
+      dispatch(actions.getColumnTaskRequest());
+      refreshTaskList();
+    }
+  }, [dispatch, userFetched, refreshTaskList]);
+
+  // This is equivalent to componentWillUnmount
+  useEffect(() => {
+    return function cleanup() {
+      clearTimeout(refreshTimer.current);
+      dispatch(actions.clearAllTask());
+    };
+  }, [dispatch]);
 
   const moveToHomeLocation = () => {
     const idx = dailyTaskCols.findIndex(col => col.active);
     if (idx > 0) {
       dispatch(actions.moveDailyTaskToHome(idx));
     } else {
-      dispatch(actions.getDailyTaskRequest(Today()));
+      setCurrentLoc(Today());
+      // dispatch(actions.getDailyTaskRequest(Today()));
     }
   };
 
@@ -141,9 +187,7 @@ export const HomePage = memo((props: Props) => {
             theme={theme}
             onMoveRequest={move => dispatch(actions.moveDailyTask(move))}
             onHomeRequest={moveToHomeLocation}
-            onMoveToDateRequest={move =>
-              dispatch(actions.getDailyTaskRequest(MapDateToString(move)))
-            }
+            onMoveToDateRequest={move => setCurrentLoc(MapDateToString(move))}
             onTaskAdd={createTaskOnDate}
             onTaskUpdate={updateTask}
           ></MainSection>

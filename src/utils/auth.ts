@@ -8,6 +8,7 @@ import { Refresh as RefreshAPI, Login as LoginAPI } from 'utils/api';
 
 const AUTH_COOKIE_NAME = 'dootoday_auth_token';
 const REFRESH_LS_KEY = 'dootoday_refresh_token';
+const LAST_UPDATE_LS_KEY = 'dootoday_last_update';
 const EXPIRE_IN_DAYS = 1;
 
 // RefreshToken :
@@ -79,5 +80,16 @@ export const GetAuthToken = (): boolean => {
 // Logout : function to clear tokens
 export const Logout = () => {
   remove(REFRESH_LS_KEY);
+  remove(LAST_UPDATE_LS_KEY);
   Cookies.remove(AUTH_COOKIE_NAME);
+};
+
+// SetLastUpdated : function to set last updated
+export const SetLastUpdated = (tm: string): void => {
+  set<string>(LAST_UPDATE_LS_KEY, tm);
+};
+
+// GetLastUpdated : function to set last updated
+export const GetLastUpdated = (): string => {
+  return get<string>(LAST_UPDATE_LS_KEY);
 };
