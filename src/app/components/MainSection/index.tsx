@@ -263,7 +263,6 @@ const Section = styled.section<{
     overflow: hidden;
     position: relative;
     z-index: 1;
-
     .grid {
       margin-top: 0px;
       display: grid;

@@ -12,6 +12,7 @@ import styled from 'styled-components/macro';
 
 import { SubscribePage } from 'app/containers/SubscribePage';
 import { ThemePage } from 'app/containers/ThemePage';
+import { ProfilePage } from 'app/containers/ProfilePage';
 import { useInjectReducer, useInjectSaga } from 'utils/redux-injectors';
 import { reducer, sliceKey } from './slice';
 import { selectSettingsPage } from './selectors';
@@ -88,6 +89,11 @@ export const SettingsPage = memo((props: Props) => {
             </Grid>
             <Grid item container md={9} lg={9} sm={12}>
               <Switch>
+                <Route
+                  exact
+                  path="/me"
+                  component={() => <ProfilePage theme={theme} />}
+                />
                 <Route
                   exact
                   path="/me/subscription"
