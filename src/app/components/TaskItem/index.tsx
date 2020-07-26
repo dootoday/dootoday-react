@@ -155,6 +155,10 @@ export const TaskItem = memo(
     const emojiSupport = text =>
       text.value.replace(/:\w+:/gi, name => emoji.getUnicode(name) || name);
 
+    useEffect(() => {
+      setTaskState(task);
+    }, [task]);
+
     return (
       <>
         <Div {...{ theme, highlight }}>

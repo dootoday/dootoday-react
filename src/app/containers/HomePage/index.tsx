@@ -63,7 +63,6 @@ export const HomePage = memo((props: Props) => {
           );
           if (diff > 0) {
             SetLastUpdated(lastUpdatedInServer.toString());
-            dispatch(actions.clearAllTask());
             dispatch(actions.getDailyTaskRequest(currentLoc));
             dispatch(actions.getColumnTaskRequest());
           }
