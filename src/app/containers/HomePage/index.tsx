@@ -89,7 +89,8 @@ export const HomePage = memo((props: Props) => {
   useEffect(() => {
     return function cleanup() {
       clearTimeout(refreshTimer.current);
-      dispatch(actions.clearAllTask());
+      // this produce a flicker on view change
+      // dispatch(actions.clearAllTask());
     };
   }, [dispatch]);
 
