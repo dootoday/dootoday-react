@@ -18,6 +18,7 @@ import {
   Login as LoginRequest,
   IsAuthenticated,
 } from 'utils/auth';
+import { PublicLayout } from 'app/components/PublicLayout';
 
 interface Props extends RouteComponentProps<any> {}
 
@@ -58,27 +59,29 @@ export const Login = memo((props: Props) => {
           content="Login to DooToday, your personal task manager"
         />
       </Helmet>
-      <Div>
-        <Container fixed maxWidth="sm">
-          <Card className="login-card">
-            <CardMedia
-              className="logo"
-              image="https://dootoday-assets.s3.ap-south-1.amazonaws.com/logo-200x200.png"
-              title="DooToday"
-            />
-            <CardContent className="login-card-content">
-              <GoogleLogin
-                className="google-login"
-                clientId={process.env.REACT_APP_GOOGLE_APP_CLIENT_ID || ''}
-                buttonText="Login with Google"
-                onSuccess={d => handleLogin(d['tokenId'])}
-                onFailure={d => console.log(d)}
-                cookiePolicy={'single_host_origin'}
+      <PublicLayout>
+        <Div>
+          <Container fixed maxWidth="sm">
+            <Card className="login-card">
+              <CardMedia
+                className="logo"
+                image="https://dootoday-assets.s3.ap-south-1.amazonaws.com/logo-200x200.png"
+                title="DooToday"
               />
-            </CardContent>
-          </Card>
-        </Container>
-      </Div>
+              <CardContent className="login-card-content">
+                <GoogleLogin
+                  className="google-login"
+                  clientId={process.env.REACT_APP_GOOGLE_APP_CLIENT_ID || ''}
+                  buttonText="Login with Google"
+                  onSuccess={d => handleLogin(d['tokenId'])}
+                  onFailure={d => console.log(d)}
+                  cookiePolicy={'single_host_origin'}
+                />
+              </CardContent>
+            </Card>
+          </Container>
+        </Div>
+      </PublicLayout>
     </>
   );
 });
