@@ -21,7 +21,7 @@ import { userFetchedSelector, userSelector } from './selector';
 import appLayoutSaga from './saga';
 import { RefreshToken } from 'utils/auth';
 import { AppFooter } from 'app/components/AppFooter';
-import { SettingsPage } from 'app/containers/SettingsPage/Loadable';
+import { SettingsPage } from 'app/containers/SettingsPage';
 import { selectSelectedTheme } from 'app/containers/ThemePage/selectors';
 import { AppHeader } from 'app/components/AppHeader';
 

@@ -4,10 +4,12 @@
  *
  */
 import React from 'react';
-import { Route, Redirect } from 'react-router-dom';
+import { Route, useLocation, Redirect } from 'react-router-dom';
 import { IsAuthenticated } from 'utils/auth';
+import { LandingPage } from 'app/containers/LandingPage';
 
-export function ProtectedRoute({ component: Component, ...rest }) {
+export const ProtectedRoute = ({ component: Component, ...rest }) => {
+  const location = useLocation();
   return (
     <Route
       {...rest}
@@ -15,16 +17,20 @@ export function ProtectedRoute({ component: Component, ...rest }) {
         if (IsAuthenticated()) {
           return <Component {...props} />;
         } else {
-          return (
-            <Redirect
-              to={{
-                pathname: '/login',
-                state: { from: props.location.pathname },
-              }}
-            />
-          );
+          if (location.pathname === '/') {
+            return <LandingPage />;
+          } else {
+            return (
+              <Redirect
+                to={{
+                  pathname: '/login',
+                  state: { from: props.location.pathname },
+                }}
+              />
+            );
+          }
         }
       }}
     />
   );
-}
+};
