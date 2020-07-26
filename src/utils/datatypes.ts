@@ -89,3 +89,7 @@ export interface ThemeResponse {
   name: string;
   theme: AppTheme;
 }
+
+export interface LastUpdateResponse {
+  last_updated: string;
+}

@@ -4,6 +4,7 @@ import { ContainerState, Column, dragNDropPayload } from './types';
 import { ColumnResponse, TaskResponse } from 'utils/datatypes';
 import { ColMapper, Today, TaskMapper } from 'utils/mappers';
 import { Task } from 'app/components/TaskItem';
+import { SetLastUpdated } from 'utils/auth';
 
 // The initial state of the HomePage container
 export const initialState: ContainerState = {
@@ -36,12 +37,7 @@ const homePageSlice = createSlice({
         return { payload: colTasks.map(c => ColMapper(c)) };
       },
     },
-    getColumnTaskRequest: {
-      reducer: state => state,
-      prepare: (date: string) => {
-        return { payload: { date } };
-      },
-    },
+    getColumnTaskRequest: state => state,
     getColumnTaksSuccess: {
       reducer: (state, action: PayloadAction<Column[]>) => {
         state.columnTask = action.payload;
@@ -128,6 +124,7 @@ const homePageSlice = createSlice({
     },
     createTaskSuccess: {
       reducer: (state, action: PayloadAction<TaskResponse>) => {
+        SetLastUpdated('');
         const task = action.payload;
         if (task.date) {
           const idx = state.dailyTask.findIndex(t => t.id === task.date);
@@ -153,6 +150,7 @@ const homePageSlice = createSlice({
     },
     updateTaskSuccess: {
       reducer: (state, action: PayloadAction<TaskResponse>) => {
+        SetLastUpdated('');
         const task = action.payload;
         if (task.date) {
           const idx = state.dailyTask.findIndex(t => t.id === task.date);
@@ -175,6 +173,7 @@ const homePageSlice = createSlice({
     },
     deleteTaskSuccess: {
       reducer: (state, action: PayloadAction<{ taskID: number }>) => {
+        SetLastUpdated('');
         const { taskID } = action.payload;
         for (let i = 0; i < state.dailyTask.length; i++) {
           for (let j = 0; j < state.dailyTask[i].tasks.length; j++) {
@@ -253,6 +252,11 @@ const homePageSlice = createSlice({
       },
     },
 
+    reposSuccess: state => {
+      SetLastUpdated('');
+      return state;
+    },
+
     colUpdateRequest: {
       reducer: state => state,
       prepare: (id: string, name: string) => {
@@ -262,6 +266,7 @@ const homePageSlice = createSlice({
 
     colUpdateSuccess: {
       reducer: (state, action: PayloadAction<{ id: string; name: string }>) => {
+        SetLastUpdated('');
         const idx = state.columnTask.findIndex(c => c.id === action.payload.id);
         if (idx > -1) {
           state.columnTask[idx].title = action.payload.name;
@@ -282,6 +287,7 @@ const homePageSlice = createSlice({
 
     colCreateSuccess: {
       reducer: (state, action: PayloadAction<Column>) => {
+        SetLastUpdated('');
         state.columnTask.push(action.payload);
         state.columnTaskStartMob = state.columnTask.length - 1;
         state.columnTaskStart = state.columnTask.length - 5;
@@ -301,6 +307,7 @@ const homePageSlice = createSlice({
 
     colDeleteSuccess: {
       reducer: (state, action: PayloadAction<{ id: string }>) => {
+        SetLastUpdated('');
         state.columnTask = state.columnTask.filter(
           c => c.id !== action.payload.id,
         );
@@ -310,6 +317,7 @@ const homePageSlice = createSlice({
         return { payload: { id } };
       },
     },
+    clearAllTask: state => initialState,
   },
 });
 

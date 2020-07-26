@@ -11,6 +11,7 @@ import {
   OrderResponse,
   PlanResponse,
   ThemeResponse,
+  LastUpdateResponse,
 } from './datatypes';
 import { mockthemeresps } from './theme';
 
@@ -45,7 +46,7 @@ export const GetTasksOnDateAPI = (
   fromdate: string,
   todate: string,
 ): Promise<AxiosResponse<ColumnResponse>> => {
-  console.log('API: making request get tasks..');
+  console.log('API: making request get tasks on date..');
   const url = `${BASE_URL}/v1/tasks?from=${fromdate}&to=${todate}`;
   const headers = { Authorization: 'Bearer ' + GetAuthToken() };
   return axios.get(url, { headers });
@@ -54,7 +55,7 @@ export const GetTasksOnDateAPI = (
 export const GetTasksOnColumnAPI = (): Promise<
   AxiosResponse<ColumnResponse>
 > => {
-  console.log('API: making request get tasks..');
+  console.log('API: making request get tasks on column..');
   const url = `${BASE_URL}/v1/columns`;
   const headers = { Authorization: 'Bearer ' + GetAuthToken() };
   return axios.get(url, { headers });
@@ -148,4 +149,13 @@ export const GetThemesAPI = (): Promise<AxiosResponse<ThemeResponse[]>> => {
     status: 200,
     data: [...mockthemeresps],
   } as AxiosResponse);
+};
+
+export const GetLastUpdateAPI = (): Promise<
+  AxiosResponse<LastUpdateResponse>
+> => {
+  console.log('API: making request to get last update..');
+  const url = `${BASE_URL}/v1/last_update`;
+  const headers = { Authorization: 'Bearer ' + GetAuthToken() };
+  return axios.get(url, { headers });
 };
