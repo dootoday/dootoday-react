@@ -80,7 +80,7 @@ export const Login = memo((props: Props) => {
               </Grid>
               <Grid item className="google-login">
                 <Typography variant="body2" align="center">
-                  Feeling reluctant? Read our{' '}
+                  Feeling reluctant? Checkout our <br />
                   <Link to="/tnc">Terms & Condition</Link>
                   {' and '}
                   <Link to="/privacy">Privacy Policy</Link>

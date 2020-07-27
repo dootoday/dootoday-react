@@ -12,13 +12,13 @@ interface Props {
 }
 
 export const AppFooter = (props: Props) => {
-  const year = new Date().getFullYear();
+  // const year = new Date().getFullYear();
   const theme = props.theme || createMuiTheme();
   return (
     <Footer theme={theme}>
       <Grid container className="footer-container" justify="space-between">
         <Grid item>
-          <Grid container spacing={2}>
+          <Grid container spacing={1} justify="center">
             <Grid item>
               <Typography variant="caption">
                 <Link className="footer-link" to="/aboutus">
@@ -43,10 +43,9 @@ export const AppFooter = (props: Props) => {
           </Grid>
         </Grid>
         <Grid item>
-          <Typography variant="caption">
+          <Typography variant="caption" align={'center'}>
             Made with <FavoriteIcon className="icon favorite-icon" /> in India{' '}
-            <CopyrightIcon className="icon" />
-            {year} Rudolph Labs Pvt. Ltd.
+            <CopyrightIcon className="icon" /> Rudolph Labs
           </Typography>
         </Grid>
       </Grid>
@@ -62,7 +61,6 @@ const Footer = styled.div<{ theme: Theme }>`
     color: ${props => props.theme.palette.secondary.light};
     .footer-link {
       color: ${props => props.theme.palette.secondary.light};
-      text-decoration: none;
     }
     .icon {
       font-size: 14px;

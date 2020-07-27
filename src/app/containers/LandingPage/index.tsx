@@ -32,7 +32,7 @@ export function LandingPage(props: Props) {
               <Grid item>
                 <Typography variant="h6" align="center">
                   We know you got a lot to do today! <br />
-                  So, let's not waste time on any fancy Landing Page
+                  So, let's not waste time on any fancy Landing Page.
                 </Typography>
               </Grid>
               <Grid item className="signup-button">
