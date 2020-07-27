@@ -13,14 +13,16 @@ import { themepresets } from 'utils/theme';
 
 interface Props {
   children: ReactNode;
+  className?: string;
 }
 
 const theme = createMuiTheme(themepresets.default);
 
 export function PublicLayout(props: Props) {
+  const { className } = props;
   return (
     <ThemeProvider theme={theme}>
-      <Div>
+      <Div className={className}>
         <AppHeader theme={theme} />
         <div className="public-container">{props.children}</div>
         <AppFooter theme={theme} />

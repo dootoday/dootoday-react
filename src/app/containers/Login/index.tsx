@@ -9,8 +9,8 @@ import { Helmet } from 'react-helmet-async';
 import GoogleLogin from 'react-google-login';
 // import { useTranslation } from 'react-i18next';
 import styled from 'styled-components/macro';
-import { Container, Card, CardContent, CardMedia } from '@material-ui/core';
-import { RouteComponentProps, useLocation } from 'react-router-dom';
+import { Container, Grid, Typography } from '@material-ui/core';
+import { RouteComponentProps, useLocation, Link } from 'react-router-dom';
 import { useInjectSaga } from 'utils/redux-injectors';
 import { loginSaga } from './saga';
 import {
@@ -62,23 +62,31 @@ export const Login = memo((props: Props) => {
       <PublicLayout>
         <Div>
           <Container fixed maxWidth="sm">
-            <Card className="login-card">
-              <CardMedia
-                className="logo"
-                image="https://dootoday-assets.s3.ap-south-1.amazonaws.com/logo-200x200.png"
-                title="DooToday"
-              />
-              <CardContent className="login-card-content">
+            <Grid container justify="center" direction="column" spacing={5}>
+              <Grid item>
+                <Typography variant="h6" align="center">
+                  All you need, is a Google account. <br />
+                  And all we ask or is your email and name.
+                </Typography>
+              </Grid>
+              <Grid item className="google-login">
                 <GoogleLogin
-                  className="google-login"
                   clientId={process.env.REACT_APP_GOOGLE_APP_CLIENT_ID || ''}
                   buttonText="Login with Google"
                   onSuccess={d => handleLogin(d['tokenId'])}
                   onFailure={d => console.log(d)}
                   cookiePolicy={'single_host_origin'}
                 />
-              </CardContent>
-            </Card>
+              </Grid>
+              <Grid item className="google-login">
+                <Typography variant="body2" align="center">
+                  Feeling reluctant? Read our{' '}
+                  <Link to="/tnc">Terms & Condition</Link>
+                  {' and '}
+                  <Link to="/privacy">Privacy Policy</Link>
+                </Typography>
+              </Grid>
+            </Grid>
           </Container>
         </Div>
       </PublicLayout>
@@ -87,29 +95,7 @@ export const Login = memo((props: Props) => {
 });
 
 const Div = styled.div`
-  .login-card {
-    margin-top: 30%;
-    width: 300px;
-    margin-left: auto;
-    margin-right: auto;
-
-    .logo {
-      height: 230px;
-      margin: 20px;
-    }
-
-    .login-card-content {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-
-      .card-header {
-        margin-bottom: 30px;
-      }
-
-      .google-login {
-        margin-bottom: 20px;
-      }
-    }
+  .google-login {
+    text-align: center;
   }
 `;
