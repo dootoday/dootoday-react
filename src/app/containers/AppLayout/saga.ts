@@ -3,18 +3,22 @@ import { actions } from './slice';
 import { GetUserAPI } from 'utils/api';
 import http from 'utils/httpcodes';
 
-function* getUserDetails() {
-  const { data, status } = yield call(GetUserAPI);
-  if (status === http.StatusOK || status === http.StatusPartialContent) {
-    yield put(
-      actions.getUserDetailsSuccess({
-        firstName: data.first_name,
-        lastName: data.last_name,
-        email: data.email,
-        avatar: data.avatar,
-        leftDays: data.left_days,
-      }),
-    );
+function* getUserDetails(action) {
+  try {
+    const { data, status } = yield call(GetUserAPI);
+    if (status === http.StatusOK || status === http.StatusPartialContent) {
+      yield put(
+        actions.getUserDetailsSuccess({
+          firstName: data.first_name,
+          lastName: data.last_name,
+          email: data.email,
+          avatar: data.avatar,
+          leftDays: data.left_days,
+        }),
+      );
+    }
+  } catch {
+    yield put(actions.getUserDetailsFailure());
   }
 }
 

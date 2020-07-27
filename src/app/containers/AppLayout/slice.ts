@@ -4,6 +4,7 @@ import { ContainerState, UserDetails } from './types';
 
 export const initialState: ContainerState = {
   userfetched: false,
+  authProblem: false,
   userDetails: {
     firstName: '',
     lastName: '',
@@ -20,14 +21,17 @@ const slice = createSlice({
     getUserDetailsRequest: state => state,
     getUserDetailsSuccess: {
       reducer: (state, action: PayloadAction<UserDetails>) => {
-        return {
-          userfetched: true,
-          userDetails: { ...state.userDetails, ...action.payload },
-        };
+        state.userfetched = true;
+        state.userDetails = action.payload;
+        return state;
       },
       prepare: (userDetails: UserDetails) => {
         return { payload: userDetails };
       },
+    },
+    getUserDetailsFailure: state => {
+      state.authProblem = true;
+      return state;
     },
     updateLeftDays: {
       reducer: (state, action: PayloadAction<{ days: number }>) => {

@@ -11,6 +11,7 @@ export interface UserDetails {
 export interface AppLayoutState {
   userfetched: boolean;
   userDetails: UserDetails;
+  authProblem: boolean;
 }
 
 export type ContainerState = AppLayoutState;

@@ -17,7 +17,11 @@ import { Logout as LogoutRequest } from 'utils/auth';
 import { useInjectReducer, useInjectSaga } from 'utils/redux-injectors';
 import { reducer, slicekey, actions } from './slice';
 import { useSelector, useDispatch } from 'react-redux';
-import { userFetchedSelector, userSelector } from './selector';
+import {
+  userFetchedSelector,
+  userSelector,
+  userAuthProblemSelector,
+} from './selector';
 import appLayoutSaga from './saga';
 import { RefreshToken } from 'utils/auth';
 import { AppFooter } from 'app/components/AppFooter';
@@ -33,6 +37,7 @@ export const AppLayout = memo((props: Props) => {
   useInjectSaga({ key: slicekey, saga: appLayoutSaga });
   const userFetched = useSelector(userFetchedSelector);
   const userDetails = useSelector(userSelector);
+  const authProblem = useSelector(userAuthProblemSelector);
   const theme = useSelector(selectSelectedTheme);
   const dispatch = useDispatch();
   const history = useHistory();
@@ -41,6 +46,11 @@ export const AppLayout = memo((props: Props) => {
     LogoutRequest();
     history.push('/login');
   }, [history]);
+  useEffect(() => {
+    if (authProblem) {
+      handleLogout();
+    }
+  }, [authProblem, handleLogout]);
 
   const [refreshToken, setRefreshToken] = useState(false);
   const refreshTimer = useRef(0);

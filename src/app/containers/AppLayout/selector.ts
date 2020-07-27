@@ -12,3 +12,8 @@ export const userFetchedSelector = createSelector(
   appSelector,
   state => state?.userfetched,
 );
+
+export const userAuthProblemSelector = createSelector(
+  appSelector,
+  state => state?.authProblem,
+);
