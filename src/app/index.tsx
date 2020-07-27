@@ -18,6 +18,8 @@ import { Login } from 'app/containers/Login/Loadable';
 import { NotFoundPage } from 'app/components/NotFoundPage/Loadable';
 import { ProtectedRoute } from 'app/components/ProtectedRoute';
 import { AboutUs } from 'app/containers/AboutUs/Loadable';
+import { PrivacyPage } from 'app/containers/PrivacyPage/Loadable';
+import { TermsPage } from 'app/containers/TermsPage/Loadable';
 
 export function App() {
   return (
@@ -33,6 +35,8 @@ export function App() {
         <Switch>
           <Route exact path="/login" component={Login} />
           <Route exact path="/aboutus" component={AboutUs} />
+          <Route exact path="/privacy" component={PrivacyPage} />
+          <Route exact path="/tnc" component={TermsPage} />
           <ProtectedRoute path="/" component={AppLayout} />
           <Route component={NotFoundPage} />
         </Switch>
