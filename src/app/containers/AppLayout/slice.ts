@@ -23,6 +23,7 @@ const slice = createSlice({
       reducer: (state, action: PayloadAction<UserDetails>) => {
         state.userfetched = true;
         state.userDetails = action.payload;
+        state.authProblem = false;
         return state;
       },
       prepare: (userDetails: UserDetails) => {
