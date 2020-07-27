@@ -18,18 +18,25 @@ export const AppFooter = (props: Props) => {
     <Footer theme={theme}>
       <Grid container className="footer-container" justify="space-between">
         <Grid item>
-          <Grid container spacing={1}>
+          <Grid container spacing={2}>
             <Grid item>
               <Typography variant="caption">
                 <Link className="footer-link" to="/aboutus">
-                  Aboutus
+                  About us
                 </Link>
               </Typography>
             </Grid>
             <Grid item>
               <Typography variant="caption">
                 <Link className="footer-link" to="/privacy">
-                  PrivacyPolicy
+                  Privacy Policy
+                </Link>
+              </Typography>
+            </Grid>
+            <Grid item>
+              <Typography variant="caption">
+                <Link className="footer-link" to="/tnc">
+                  Terms and Condition
                 </Link>
               </Typography>
             </Grid>
@@ -39,7 +46,7 @@ export const AppFooter = (props: Props) => {
           <Typography variant="caption">
             Made with <FavoriteIcon className="icon favorite-icon" /> in India{' '}
             <CopyrightIcon className="icon" />
-            {year} DooToday Pvt. Ltd.
+            {year} Rudolph Labs Pvt. Ltd.
           </Typography>
         </Grid>
       </Grid>
