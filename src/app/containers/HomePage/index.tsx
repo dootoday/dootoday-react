@@ -105,21 +105,24 @@ export const HomePage = memo((props: Props) => {
   };
 
   const createTaskOnDate = (task, date) => {
-    if (!!task) {
-      dispatch(actions.createTaskRequest(task, date, '', false));
+    const inp = task.trim();
+    if (!!inp) {
+      dispatch(actions.createTaskRequest(inp, date, '', false));
     }
   };
 
   const createTaskOnColumn = (task, col) => {
-    if (!!task) {
-      dispatch(actions.createTaskRequest(task, '', col, false));
+    const inp = task.trim();
+    if (!!inp) {
+      dispatch(actions.createTaskRequest(inp, '', col, false));
     }
   };
 
   const updateTask = task => {
     const { markdown, isDone, id } = task;
-    if (!!markdown) {
-      dispatch(actions.updateTaskRequest(id, markdown, isDone));
+    const inp = markdown.trim();
+    if (!!inp) {
+      dispatch(actions.updateTaskRequest(id, inp, isDone));
     } else {
       dispatch(actions.deleteTaskRequest(id));
     }
