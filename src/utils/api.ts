@@ -14,13 +14,14 @@ import {
   LastUpdateResponse,
 } from './datatypes';
 import { mockthemeresps } from './theme';
+import { log } from './log';
 
 export const BASE_URL = process.env.REACT_APP_BASE_API_URL;
 
 export const Login = (
   tokenID: string,
 ): Promise<AxiosResponse<LoginResponse>> => {
-  console.log('API: making request to login..');
+  log('API: making request to login..');
   const url = BASE_URL + '/v1/login';
   const data: LoginRequest = { id_token: tokenID };
   return axios.post(url, data);
@@ -29,14 +30,14 @@ export const Login = (
 export const Refresh = (
   refreshToken: string,
 ): Promise<AxiosResponse<RefreshResponse>> => {
-  console.log('API: making request to refresh token..');
+  log('API: making request to refresh token..');
   const url = BASE_URL + '/v1/refresh';
   const data: RefreshRequest = { refresh_token: refreshToken };
   return axios.post(url, data);
 };
 
 export const GetUserAPI = (): Promise<AxiosResponse<UserResponse>> => {
-  console.log('API: making request to get user details..');
+  log('API: making request to get user details..');
   const url = BASE_URL + '/v1/user';
   const headers = { Authorization: 'Bearer ' + GetAuthToken() };
   return axios.get(url, { headers });
@@ -46,7 +47,7 @@ export const GetTasksOnDateAPI = (
   fromdate: string,
   todate: string,
 ): Promise<AxiosResponse<ColumnResponse>> => {
-  console.log('API: making request get tasks on date..');
+  log('API: making request get tasks on date..');
   const url = `${BASE_URL}/v1/tasks?from=${fromdate}&to=${todate}`;
   const headers = { Authorization: 'Bearer ' + GetAuthToken() };
   return axios.get(url, { headers });
@@ -55,7 +56,7 @@ export const GetTasksOnDateAPI = (
 export const GetTasksOnColumnAPI = (): Promise<
   AxiosResponse<ColumnResponse>
 > => {
-  console.log('API: making request get tasks on column..');
+  log('API: making request get tasks on column..');
   const url = `${BASE_URL}/v1/columns`;
   const headers = { Authorization: 'Bearer ' + GetAuthToken() };
   return axios.get(url, { headers });
@@ -67,7 +68,7 @@ export const CreateTaskAPI = (
   column_id: string,
   is_done: boolean,
 ): Promise<AxiosResponse<TaskResponse>> => {
-  console.log('API: making request creating task..');
+  log('API: making request creating task..');
   const url = `${BASE_URL}/v1/task`;
   const headers = { Authorization: 'Bearer ' + GetAuthToken() };
   return axios.post(url, { markdown, date, column_id, is_done }, { headers });
@@ -78,21 +79,21 @@ export const UpdateTaskAPI = (
   markdown: string,
   is_done: boolean,
 ): Promise<AxiosResponse<TaskResponse>> => {
-  console.log('API: making request updating task..');
+  log('API: making request updating task..');
   const url = `${BASE_URL}/v1/task/${id}`;
   const headers = { Authorization: 'Bearer ' + GetAuthToken() };
   return axios.post(url, { markdown, is_done }, { headers });
 };
 
 export const DeleteTaskAPI = (id: string): Promise<AxiosResponse> => {
-  console.log('API: making request deleting task..');
+  log('API: making request deleting task..');
   const url = `${BASE_URL}/v1/task/${id}`;
   const headers = { Authorization: 'Bearer ' + GetAuthToken() };
   return axios.delete(url, { headers });
 };
 
 export const ReposTaskAPI = (data): Promise<AxiosResponse> => {
-  console.log('API: making request respos task..');
+  log('API: making request respos task..');
   const url = `${BASE_URL}/v1/repos`;
   const headers = { Authorization: 'Bearer ' + GetAuthToken() };
   return axios.post(url, data, { headers });
@@ -102,7 +103,7 @@ export const UpdateColumnAPI = (
   id: string,
   name: string,
 ): Promise<AxiosResponse<TaskResponse>> => {
-  console.log('API: making request updating column..');
+  log('API: making request updating column..');
   const url = `${BASE_URL}/v1/column/${id}`;
   const headers = { Authorization: 'Bearer ' + GetAuthToken() };
   return axios.post(url, { name }, { headers });
@@ -111,7 +112,7 @@ export const UpdateColumnAPI = (
 export const CreateColumnAPI = (
   name: string,
 ): Promise<AxiosResponse<TaskResponse>> => {
-  console.log('API: making request for creating new column..');
+  log('API: making request for creating new column..');
   const url = `${BASE_URL}/v1/column`;
   const headers = { Authorization: 'Bearer ' + GetAuthToken() };
   return axios.post(url, { name }, { headers });
@@ -120,7 +121,7 @@ export const CreateColumnAPI = (
 export const DeleteColumnAPI = (
   id: string,
 ): Promise<AxiosResponse<TaskResponse>> => {
-  console.log('API: making request deleting column..');
+  log('API: making request deleting column..');
   const url = `${BASE_URL}/v1/column/${id}`;
   const headers = { Authorization: 'Bearer ' + GetAuthToken() };
   return axios.delete(url, { headers });
@@ -129,7 +130,7 @@ export const DeleteColumnAPI = (
 export const PlansAPI = (
   code: string = '',
 ): Promise<AxiosResponse<PlanResponse[]>> => {
-  console.log('API: making request to get plans..');
+  log('API: making request to get plans..');
   const url = `${BASE_URL}/v1/plans?code=${code}`;
   const headers = { Authorization: 'Bearer ' + GetAuthToken() };
   return axios.get(url, { headers });
@@ -138,7 +139,7 @@ export const PlansAPI = (
 export const SubscribeAPI = (
   planId: string,
 ): Promise<AxiosResponse<OrderResponse>> => {
-  console.log('API: making request to subscribe..');
+  log('API: making request to subscribe..');
   const url = `${BASE_URL}/v1/subscribe/${planId}`;
   const headers = { Authorization: 'Bearer ' + GetAuthToken() };
   return axios.post(url, {}, { headers });
@@ -154,7 +155,7 @@ export const GetThemesAPI = (): Promise<AxiosResponse<ThemeResponse[]>> => {
 export const GetLastUpdateAPI = (): Promise<
   AxiosResponse<LastUpdateResponse>
 > => {
-  console.log('API: making request to get last update..');
+  log('API: making request to get last update..');
   const url = `${BASE_URL}/v1/last_update`;
   const headers = { Authorization: 'Bearer ' + GetAuthToken() };
   return axios.get(url, { headers });
