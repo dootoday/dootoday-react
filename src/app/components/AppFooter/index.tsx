@@ -16,7 +16,12 @@ export const AppFooter = (props: Props) => {
   const theme = props.theme || createMuiTheme();
   return (
     <Footer theme={theme}>
-      <Grid container className="footer-container" justify="space-between">
+      <Grid
+        container
+        className="footer-container"
+        justify="space-between"
+        spacing={1}
+      >
         <Grid item>
           <Grid container spacing={1} justify="center">
             <Grid item>
@@ -37,6 +42,20 @@ export const AppFooter = (props: Props) => {
               <Typography variant="caption">
                 <Link className="footer-link" to="/tnc">
                   Terms and Condition
+                </Link>
+              </Typography>
+            </Grid>
+            <Grid item>
+              <Typography variant="caption">
+                <Link className="footer-link" to="/refund-policy">
+                  Refund Policy
+                </Link>
+              </Typography>
+            </Grid>
+            <Grid item>
+              <Typography variant="caption">
+                <Link className="footer-link" to="/contact">
+                  Contact Us
                 </Link>
               </Typography>
             </Grid>
