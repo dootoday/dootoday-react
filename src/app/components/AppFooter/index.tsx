@@ -33,6 +33,13 @@ export const AppFooter = (props: Props) => {
             </Grid>
             <Grid item>
               <Typography variant="caption">
+                <Link className="footer-link" to="/contact">
+                  Contact Us
+                </Link>
+              </Typography>
+            </Grid>
+            <Grid item>
+              <Typography variant="caption">
                 <Link className="footer-link" to="/privacy">
                   Privacy Policy
                 </Link>
@@ -49,13 +56,6 @@ export const AppFooter = (props: Props) => {
               <Typography variant="caption">
                 <Link className="footer-link" to="/refund-policy">
                   Refund Policy
-                </Link>
-              </Typography>
-            </Grid>
-            <Grid item>
-              <Typography variant="caption">
-                <Link className="footer-link" to="/contact">
-                  Contact Us
                 </Link>
               </Typography>
             </Grid>
