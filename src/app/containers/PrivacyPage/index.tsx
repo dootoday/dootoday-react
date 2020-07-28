@@ -9,6 +9,7 @@ import { Helmet } from 'react-helmet-async';
 import styled from 'styled-components/macro';
 import { PublicLayout } from 'app/components/PublicLayout';
 import { Container, Typography, Grid, Divider } from '@material-ui/core';
+import { Link } from 'react-router-dom';
 
 interface Props {}
 
@@ -91,7 +92,7 @@ export function PrivacyPage(props: Props) {
                     If after you opt-in, you change your mind, you may withdraw
                     your consent for us to contact you, for the continued
                     collection, use or disclosure of your information, at
-                    anytime, by contacting us at{' '}
+                    anytime, by <Link to="/contact">contacting us</Link> at{' '}
                     <a href="mailto:contact@doo.today">contact@doo.today</a>
                   </Typography>
                 </Grid>

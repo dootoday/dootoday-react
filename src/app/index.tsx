@@ -21,6 +21,7 @@ import { AboutUs } from 'app/containers/AboutUs/Loadable';
 import { PrivacyPage } from 'app/containers/PrivacyPage/Loadable';
 import { TermsPage } from 'app/containers/TermsPage/Loadable';
 import { ContactPage } from 'app/containers/ContactPage/Loadable';
+import { RefundPage } from 'app/containers/RefundPage/Loadable';
 
 export function App() {
   return (
@@ -38,6 +39,7 @@ export function App() {
           <Route exact path="/aboutus" component={AboutUs} />
           <Route exact path="/privacy" component={PrivacyPage} />
           <Route exact path="/contact" component={ContactPage} />
+          <Route exact path="/refund-policy" component={RefundPage} />
           <Route exact path="/tnc" component={TermsPage} />
           <ProtectedRoute path="/" component={AppLayout} />
           <Route component={NotFoundPage} />
