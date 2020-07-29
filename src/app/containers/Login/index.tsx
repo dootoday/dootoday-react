@@ -65,8 +65,8 @@ export const Login = memo((props: Props) => {
             <Grid container justify="center" direction="column" spacing={5}>
               <Grid item>
                 <Typography variant="h6" align="center">
-                  All you need, is a Google account. <br />
-                  And all we ask or is your email and name.
+                  Sign up with your Google account. <br />
+                  All we ask for is your name and email.
                 </Typography>
               </Grid>
               <Grid item className="google-login">

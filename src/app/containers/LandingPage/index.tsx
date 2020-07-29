@@ -31,7 +31,7 @@ export function LandingPage(props: Props) {
               </Grid>
               <Grid item>
                 <Typography variant="h6" align="center">
-                  We know you got a lot to do today! <br />
+                  We know you have a lot to do today! <br />
                   So, let's not waste time on any fancy Landing Page.
                 </Typography>
               </Grid>
@@ -50,7 +50,7 @@ export function LandingPage(props: Props) {
               </Grid>
               <Grid item>
                 <Typography variant="body1" align="center">
-                  Not Important! But in case if you want to know, <br />
+                  Not Important! But in case if you want to know more, <br />
                   here is little something <Link to="/aboutus">About Us.</Link>
                 </Typography>
               </Grid>
