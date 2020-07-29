@@ -25,7 +25,12 @@ export function LandingPage(props: Props) {
           <Container>
             <Grid container justify="center" direction="column" spacing={5}>
               <Grid item>
-                <Typography variant="h5" align="center" className="heared1">
+                <Typography
+                  variant="h5"
+                  align="center"
+                  className="heared1"
+                  color="primary"
+                >
                   Simplest Daily Task Manager ever
                 </Typography>
               </Grid>
@@ -51,7 +56,10 @@ export function LandingPage(props: Props) {
               <Grid item>
                 <Typography variant="body1" align="center">
                   Not Important! But in case if you want to know more, <br />
-                  here is little something <Link to="/aboutus">About Us.</Link>
+                  here is little something{' '}
+                  <Link className="about-us" to="/aboutus">
+                    About Us.
+                  </Link>
                 </Typography>
               </Grid>
             </Grid>
@@ -71,5 +79,9 @@ const Div = styled.div`
     a {
       text-decoration: none;
     }
+  }
+  .about-us {
+    text-decoration: none;
+    font-style: italic;
   }
 `;
