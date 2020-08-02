@@ -22,8 +22,10 @@ import { PrivacyPage } from 'app/containers/PrivacyPage/Loadable';
 import { TermsPage } from 'app/containers/TermsPage/Loadable';
 import { ContactPage } from 'app/containers/ContactPage/Loadable';
 import { RefundPage } from 'app/containers/RefundPage/Loadable';
+import { GetStoredTheme } from 'utils/theme';
 
 export function App() {
+  const theme = GetStoredTheme().theme.palette.primary.main;
   return (
     <BrowserRouter>
       <QueryParamProvider ReactRouterRoute={Route}>
@@ -32,6 +34,7 @@ export function App() {
           defaultTitle="DooToday - Daily task simplified"
         >
           <meta name="description" content="Daily task simplified" />
+          <meta name="theme-color" content={theme} />
         </Helmet>
 
         <Switch>
