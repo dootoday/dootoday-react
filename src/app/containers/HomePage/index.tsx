@@ -105,6 +105,9 @@ export const HomePage = memo((props: Props) => {
   };
 
   const createTaskOnDate = (task, date) => {
+    if (!!!task) {
+      return;
+    }
     const inp = task.trim();
     if (!!inp) {
       dispatch(actions.createTaskRequest(inp, date, '', false));
@@ -112,6 +115,9 @@ export const HomePage = memo((props: Props) => {
   };
 
   const createTaskOnColumn = (task, col) => {
+    if (!!!task) {
+      return;
+    }
     const inp = task.trim();
     if (!!inp) {
       dispatch(actions.createTaskRequest(inp, '', col, false));
