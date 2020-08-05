@@ -138,8 +138,19 @@ export const HomePage = memo((props: Props) => {
 
   const handleDragNDrop = (event: OnDragEndResponder) => {
     try {
+      const taskID = event.draggableId.split('-')[0];
+      const recurringID = event.draggableId.split('-')[1];
+
+      // If it's a recurring task then inter column
+      // drop is not allowed
+      if (
+        recurringID !== '0' &&
+        event.source.droppableId !== event.destination.droppableId
+      ) {
+        return;
+      }
       const payload: dragNDropPayload = {
-        taskID: event.draggableId,
+        taskID: taskID,
         source: {
           colID: event.source.droppableId,
           idx: event.source.index,
