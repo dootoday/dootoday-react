@@ -22,19 +22,27 @@ const homePageSlice = createSlice({
   reducers: {
     getDailyTaskRequest: {
       reducer: state => state,
-      prepare: (date: string) => {
-        return { payload: { date } };
+      prepare: (date: string, resetPos: boolean = true) => {
+        return { payload: { date, resetPos } };
       },
     },
-    getDailyTaksSuccess: {
-      reducer: (state, action: PayloadAction<Column[]>) => {
-        state.dailyTask = action.payload;
-        state.dailyTaskStart = 10;
-        state.dailyTaskStartMob = 11;
+    getDailyTaskSuccess: {
+      reducer: (
+        state,
+        action: PayloadAction<{ tasks: Column[]; resetPos: boolean }>,
+      ) => {
+        const { tasks, resetPos } = action.payload;
+        state.dailyTask = tasks;
+        if (resetPos) {
+          state.dailyTaskStart = 10;
+          state.dailyTaskStartMob = 11;
+        }
         return state;
       },
-      prepare: (colTasks: ColumnResponse[]) => {
-        return { payload: colTasks.map(c => ColMapper(c)) };
+      prepare: (colTasks: ColumnResponse[], resetPos: boolean) => {
+        return {
+          payload: { tasks: colTasks.map(c => ColMapper(c)), resetPos },
+        };
       },
     },
     getColumnTaskRequest: state => state,
@@ -113,13 +121,14 @@ const homePageSlice = createSlice({
         date: string,
         column_id: string,
         is_done: boolean,
+        loc: string,
       ) => {
         if (date && !column_id) {
           const slectedDate = new Date(date).getTime();
           const today = new Date(Today()).getTime();
           is_done = slectedDate < today;
         }
-        return { payload: { markdown, date, column_id, is_done } };
+        return { payload: { markdown, date, column_id, is_done, loc } };
       },
     },
     createTaskSuccess: {
@@ -144,8 +153,14 @@ const homePageSlice = createSlice({
 
     updateTaskRequest: {
       reducer: state => state,
-      prepare: (id: number, markdown: string, is_done: boolean) => {
-        return { payload: { markdown, is_done, id } };
+      prepare: (
+        id: string,
+        markdown: string,
+        recurring_id: string,
+        is_done: boolean,
+        loc: string,
+      ) => {
+        return { payload: { markdown, is_done, id, recurring_id, loc } };
       },
     },
     updateTaskSuccess: {
@@ -178,8 +193,8 @@ const homePageSlice = createSlice({
     },
     deleteTaskRequest: {
       reducer: state => state,
-      prepare: (id: number) => {
-        return { payload: { id } };
+      prepare: (id: string, isRecurring: boolean, loc: string) => {
+        return { payload: { id, isRecurring, loc } };
       },
     },
     deleteTaskSuccess: {

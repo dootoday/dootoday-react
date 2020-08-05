@@ -13,6 +13,7 @@ import {
   DeleteColumnAPI,
 } from 'utils/api';
 import { GetDateRange } from 'utils/mappers';
+import { SetLastUpdated } from 'utils/auth';
 
 // export function* doSomething() {}
 
@@ -20,7 +21,7 @@ function* getDailyTasks(action) {
   const [startDate, endDate] = GetDateRange(action.payload.date);
   const { data, status } = yield call(GetTasksOnDateAPI, startDate, endDate);
   if (status === http.StatusOK) {
-    yield put(actions.getDailyTaksSuccess(data));
+    yield put(actions.getDailyTaskSuccess(data, action.payload.resetPos));
   }
 }
 
@@ -32,7 +33,7 @@ function* getColumnTasks() {
 }
 
 function* createTask(action) {
-  const { markdown, date, column_id, is_done } = action.payload;
+  const { markdown, date, column_id, is_done, loc } = action.payload;
   const { data, status } = yield call(
     CreateTaskAPI,
     markdown,
@@ -41,23 +42,44 @@ function* createTask(action) {
     is_done,
   );
   if (status === http.StatusOK) {
-    yield put(actions.createTaskSuccess(data));
+    if (data.recurring_id !== 0) {
+      SetLastUpdated('');
+      yield put(actions.getDailyTaskRequest(loc, false));
+    } else {
+      yield put(actions.createTaskSuccess(data));
+    }
   }
 }
 
 function* updateTask(action) {
-  const { markdown, id, is_done } = action.payload;
-  const { data, status } = yield call(UpdateTaskAPI, id, markdown, is_done);
+  const { markdown, id, is_done, recurring_id, loc } = action.payload;
+  const { data, status } = yield call(
+    UpdateTaskAPI,
+    id,
+    markdown,
+    is_done,
+    parseInt(recurring_id),
+  );
   if (status === http.StatusOK) {
-    yield put(actions.updateTaskSuccess(data));
+    if (data.recurring_id !== 0) {
+      SetLastUpdated('');
+      yield put(actions.getDailyTaskRequest(loc, false));
+    } else {
+      yield put(actions.updateTaskSuccess(data));
+    }
   }
 }
 
 function* deleteTask(action) {
-  const { id } = action.payload;
+  const { id, isRecurring, loc } = action.payload;
   const { status } = yield call(DeleteTaskAPI, id);
   if (status === http.StatusOK) {
-    yield put(actions.deleteTaskSuccess(id));
+    if (isRecurring) {
+      SetLastUpdated('');
+      yield put(actions.getDailyTaskRequest(loc, false));
+    } else {
+      yield put(actions.deleteTaskSuccess(id));
+    }
   }
 }
 

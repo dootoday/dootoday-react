@@ -33,6 +33,7 @@ export const TaskMapper = (task: TaskResponse): Task => {
     id: task.id.toString(),
     markdown: task.markdown,
     isDone: task.is_done,
+    recurringID: task.recurring_id.toString(),
   };
 };
 

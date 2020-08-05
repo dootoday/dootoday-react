@@ -22,6 +22,7 @@ export interface Task {
   id: string;
   markdown: string;
   isDone: boolean;
+  recurringID: string;
 }
 
 interface Props {
@@ -73,6 +74,7 @@ export const TaskItem = memo(
       id: task.id,
       markdown: '',
       isDone: false,
+      recurringID: task.recurringID,
     };
     const [taskState, setTaskState] = useState<Task>(
       isJustInput ? justEditingTaskState : task,
@@ -156,6 +158,11 @@ export const TaskItem = memo(
     const emojiSupport = text =>
       text.value.replace(/:\w+:/gi, name => emoji.getUnicode(name) || name);
 
+    const calcTaskText = (task: Task) => {
+      // adding repeat emoji if it's a recurring task
+      return `${task.recurringID !== '0' ? ':repeat:' : ''} ${task.markdown}`;
+    };
+
     useEffect(() => {
       setTaskState(task);
     }, [task]);
@@ -173,7 +180,7 @@ export const TaskItem = memo(
               <ReactMarkdown
                 className={'md'}
                 disallowedTypes={['break', 'delete']}
-                source={taskState.markdown}
+                source={calcTaskText(taskState)}
                 renderers={{ link: LinkRenderer, text: emojiSupport }}
               />
             </Typography>

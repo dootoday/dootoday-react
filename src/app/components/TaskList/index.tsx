@@ -189,7 +189,12 @@ export const TaskList = memo((props: Props) => {
               {!!tasks &&
                 !!tasks.length &&
                 tasks.map((task, index) => (
-                  <Draggable draggableId={task.id} index={index} key={task.id}>
+                  <Draggable
+                    draggableId={task.id}
+                    isDragDisabled={!!task.recurringID}
+                    index={index}
+                    key={task.id}
+                  >
                     {provided => (
                       <li
                         ref={provided.innerRef}

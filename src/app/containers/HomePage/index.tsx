@@ -23,7 +23,7 @@ import {
 } from './selectors';
 import { homePageSaga } from './saga';
 import { Today, MapDateToString } from 'utils/mappers';
-import { dragNDropPayload } from './types';
+import { dragNDropPayload, Task } from './types';
 import { IconButton } from '@material-ui/core';
 import { GetLastUpdateAPI } from 'utils/api';
 import http from 'utils/httpcodes';
@@ -110,7 +110,7 @@ export const HomePage = memo((props: Props) => {
     }
     const inp = task.trim();
     if (!!inp) {
-      dispatch(actions.createTaskRequest(inp, date, '', false));
+      dispatch(actions.createTaskRequest(inp, date, '', false, currentLoc));
     }
   };
 
@@ -120,17 +120,19 @@ export const HomePage = memo((props: Props) => {
     }
     const inp = task.trim();
     if (!!inp) {
-      dispatch(actions.createTaskRequest(inp, '', col, false));
+      dispatch(actions.createTaskRequest(inp, '', col, false, currentLoc));
     }
   };
 
-  const updateTask = task => {
-    const { markdown, isDone, id } = task;
+  const updateTask = (task: Task) => {
+    const { markdown, recurringID, isDone, id } = task;
     const inp = markdown.trim();
     if (!!inp) {
-      dispatch(actions.updateTaskRequest(id, inp, isDone));
+      dispatch(
+        actions.updateTaskRequest(id, inp, recurringID, isDone, currentLoc),
+      );
     } else {
-      dispatch(actions.deleteTaskRequest(id));
+      dispatch(actions.deleteTaskRequest(id, !!recurringID, currentLoc));
     }
   };
 
