@@ -19,11 +19,14 @@ export const Months = [
 
 export const ColMapper = (col: ColumnResponse): Column => {
   const meta = DateMapper(col.meta);
+  const sortedTasks = col.tasks
+    .sort((t1, t2) => t1.order - t2.order)
+    .map(t => TaskMapper(t));
   return {
     id: col.id,
     title: col.name,
     meta: meta,
-    tasks: col.tasks.map(t => TaskMapper(t)),
+    tasks: sortedTasks,
     active: col.meta === MapDateToString(new Date()),
   };
 };
