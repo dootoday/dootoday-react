@@ -78,11 +78,12 @@ export const UpdateTaskAPI = (
   id: string,
   markdown: string,
   is_done: boolean,
+  recurring_id: number,
 ): Promise<AxiosResponse<TaskResponse>> => {
   log('API: making request updating task..');
   const url = `${BASE_URL}/v1/task/${id}`;
   const headers = { Authorization: 'Bearer ' + GetAuthToken() };
-  return axios.post(url, { markdown, is_done }, { headers });
+  return axios.post(url, { markdown, is_done, recurring_id }, { headers });
 };
 
 export const DeleteTaskAPI = (id: string): Promise<AxiosResponse> => {

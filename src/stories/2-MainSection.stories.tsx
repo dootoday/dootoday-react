@@ -69,6 +69,7 @@ const getTaskColumns = (): TaskColumn[] => {
         id: 'some-id-' + id + i,
         markdown: 'This is task ' + id + i,
         isDone: false,
+        recurringID: '0',
       });
     }
     output.push({

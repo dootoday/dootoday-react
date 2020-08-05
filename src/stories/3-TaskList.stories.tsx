@@ -19,10 +19,30 @@ const Container = ({ children }) => (
 );
 
 const tasks = [
-  { id: 'some-id-1', markdown: 'This is task 1', isDone: false },
-  { id: 'some-id-2', markdown: 'This is task 2', isDone: false },
-  { id: 'some-id-3', markdown: 'This is task 3', isDone: false },
-  { id: 'some-id-4', markdown: 'This is task 4', isDone: false },
+  {
+    id: 'some-id-1',
+    markdown: 'This is task 1',
+    isDone: false,
+    recurringID: '0',
+  },
+  {
+    id: 'some-id-2',
+    markdown: 'This is task 2',
+    isDone: false,
+    recurringID: '0',
+  },
+  {
+    id: 'some-id-3',
+    markdown: 'This is task 3',
+    isDone: false,
+    recurringID: '0',
+  },
+  {
+    id: 'some-id-4',
+    markdown: 'This is task 4',
+    isDone: false,
+    recurringID: '0',
+  },
 ];
 
 export const taskList = () => (

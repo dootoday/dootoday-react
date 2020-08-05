@@ -7,7 +7,12 @@ describe('<TaskItem  />', () => {
   it('should match snapshot', () => {
     const loadingIndicator = render(
       <TaskItem
-        task={{ id: 'sone-id', markdown: 'This is a task', isDone: false }}
+        task={{
+          id: 'sone-id',
+          markdown: 'This is a task',
+          isDone: false,
+          recurringID: '0',
+        }}
       />,
     );
     expect(loadingIndicator.container.firstChild).toMatchSnapshot();

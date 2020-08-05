@@ -36,6 +36,7 @@ export interface TaskResponse {
   column_id: string;
   date: string;
   order: number;
+  recurring_id: number;
 }
 
 // This is the column response

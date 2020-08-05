@@ -31,7 +31,12 @@ const theme = createMuiTheme({
 export const taskItem = () => (
   <>
     <TaskItem
-      task={{ id: 'some-id', markdown: 'This is a task', isDone: false }}
+      task={{
+        id: 'some-id',
+        markdown: 'This is a task',
+        isDone: false,
+        recurringID: '0',
+      }}
       isEditable={true}
       onTaskUpdate={action('task updated')}
     />
@@ -40,6 +45,7 @@ export const taskItem = () => (
         id: 'some-id',
         markdown: 'This is a **non editable** task',
         isDone: true,
+        recurringID: '0',
       }}
     />
     <TaskItem
@@ -48,6 +54,7 @@ export const taskItem = () => (
         markdown:
           'This is a very long text. This is a very long text. This is a very long text. This is a very long text. This is a very long text. This is a very long text. This is a very long text. This is a very long text. This is a very long text. This is a very long text. This is a very long text. This is a very long text. This is a very long text. This is a very long text.',
         isDone: false,
+        recurringID: '0',
       }}
       isEditable={true}
       onTaskUpdate={action('task updated')}
@@ -58,6 +65,7 @@ export const taskItem = () => (
         id: 'some-id',
         markdown: 'This is highlighted task',
         isDone: false,
+        recurringID: '0',
       }}
       highlight={true}
       isEditable={true}
@@ -69,6 +77,7 @@ export const taskItem = () => (
         id: 'some-id',
         markdown: 'This is highlighted task with theme',
         isDone: false,
+        recurringID: '0',
       }}
       theme={theme}
       highlight={true}
@@ -81,6 +90,7 @@ export const taskItem = () => (
         id: '0',
         markdown: 'hello',
         isDone: false,
+        recurringID: '0',
       }}
       isJustInput={true}
       placeHolder="Add a new task here"
@@ -92,6 +102,7 @@ export const taskItem = () => (
         id: '0',
         markdown: 'hello',
         isDone: false,
+        recurringID: '0',
       }}
       highlight={true}
       isJustInput={true}
@@ -104,6 +115,7 @@ export const taskItem = () => (
         id: 'some-id',
         markdown: 'This is a tsak with emoji :smiley:',
         isDone: false,
+        recurringID: '0',
       }}
       theme={theme}
       isEditable={true}
