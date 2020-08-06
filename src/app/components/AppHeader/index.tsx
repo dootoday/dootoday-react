@@ -21,6 +21,7 @@ import {
 } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import { UserDetails } from 'app/containers/AppLayout/types';
+import headerLogo from 'assets/logo-with-name-bw-561x109.png';
 
 interface Props {
   userFetched?: boolean;
@@ -57,11 +58,7 @@ export const AppHeader = memo((props: Props) => {
       <AppBar position="static" elevation={0}>
         <Toolbar variant="dense" className="tool-bar">
           <Link to="/">
-            <img
-              className="header-logo"
-              src="https://dootoday-assets.s3.ap-south-1.amazonaws.com/logo-bw-horiz.png"
-              alt="dootoday"
-            />
+            <img className="header-logo" src={headerLogo} alt="dootoday" />
           </Link>
           {userFetched && (
             <>
