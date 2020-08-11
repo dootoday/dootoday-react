@@ -140,11 +140,20 @@ export const GetStoredTheme = (): ThemeResponse => {
     theme = mockthemeresps[2];
     set(THEME_LS_KEY, theme);
   }
+  ChangeMetaTheme(theme.theme.palette.primary.main);
   return theme;
 };
 
 export const SetStoredTheme = (theme: ThemeResponse | undefined): void => {
   if (theme) {
+    ChangeMetaTheme(theme.theme.palette.primary.main);
     set(THEME_LS_KEY, theme);
+  }
+};
+
+export const ChangeMetaTheme = (color: string): void => {
+  var metaThemeColor = document.querySelector('meta[name=theme-color]');
+  if (metaThemeColor) {
+    metaThemeColor.setAttribute('content', color);
   }
 };
