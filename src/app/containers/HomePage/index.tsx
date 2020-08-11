@@ -132,7 +132,7 @@ export const HomePage = memo((props: Props) => {
         actions.updateTaskRequest(id, inp, recurringID, isDone, currentLoc),
       );
     } else {
-      dispatch(actions.deleteTaskRequest(id, !!recurringID, currentLoc));
+      dispatch(actions.deleteTaskRequest(id, recurringID !== '0', currentLoc));
     }
   };
 
