@@ -43,10 +43,11 @@ export const TaskMapper = (task: TaskResponse): Task => {
 
 // For the components
 export const DateMapper = (d: string): string => {
-  const thatDay = moment(d).parseZone();
-  if (thatDay.toString() === 'Invalid Date') {
+  const check = new Date(d);
+  if (check.toString() === 'Invalid Date') {
     return d;
   }
+  const thatDay = moment(d).parseZone();
   const date = thatDay.date();
   const month = thatDay.month();
   const year = thatDay.year();
