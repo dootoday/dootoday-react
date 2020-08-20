@@ -6,6 +6,7 @@
 
 import React, { memo, useEffect, useState, useCallback, useRef } from 'react';
 import { Helmet } from 'react-helmet-async';
+import moment from 'moment';
 import { useSelector, useDispatch } from 'react-redux';
 import styled from 'styled-components/macro';
 import { Theme, createMuiTheme } from '@material-ui/core/styles';
@@ -191,7 +192,6 @@ export const HomePage = memo((props: Props) => {
   const handleColumnDelete = (colID: string) => {
     dispatch(actions.colDeleteRequest(colID));
   };
-
   return (
     <>
       <Helmet>
@@ -209,7 +209,9 @@ export const HomePage = memo((props: Props) => {
             theme={theme}
             onMoveRequest={move => dispatch(actions.moveDailyTask(move))}
             onHomeRequest={moveToHomeLocation}
-            onMoveToDateRequest={move => setCurrentLoc(MapDateToString(move))}
+            onMoveToDateRequest={move =>
+              setCurrentLoc(MapDateToString(moment(move)))
+            }
             onTaskAdd={createTaskOnDate}
             onTaskUpdate={updateTask}
           ></MainSection>

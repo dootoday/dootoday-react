@@ -1,6 +1,7 @@
 import { ColumnResponse, TaskResponse } from './datatypes';
 import { Column } from 'app/containers/HomePage/types';
 import { Task } from 'app/components/TaskItem';
+import moment, { Moment } from 'moment';
 
 export const Months = [
   'Jan',
@@ -27,7 +28,7 @@ export const ColMapper = (col: ColumnResponse): Column => {
     title: col.name,
     meta: meta,
     tasks: sortedTasks,
-    active: col.meta === MapDateToString(new Date()),
+    active: col.meta === MapDateToString(moment().parseZone()),
   };
 };
 
@@ -42,21 +43,21 @@ export const TaskMapper = (task: TaskResponse): Task => {
 
 // For the components
 export const DateMapper = (d: string): string => {
-  const thatDay = new Date(d);
+  const thatDay = moment(d).parseZone();
   if (thatDay.toString() === 'Invalid Date') {
     return d;
   }
-  const date = thatDay.getDate();
-  const month = thatDay.getMonth();
-  const year = thatDay.getFullYear();
+  const date = thatDay.date();
+  const month = thatDay.month();
+  const year = thatDay.year();
   return `${date} ${Months[month]}, ${year}`;
 };
 
 // For the APIs
-export const MapDateToString = (d: Date): string => {
-  var dd: string | number = d.getDate();
-  var mm: string | number = d.getMonth() + 1;
-  var yyyy = d.getFullYear();
+export const MapDateToString = (d: Moment): string => {
+  var dd: string | number = d.date();
+  var mm: string | number = d.month() + 1;
+  var yyyy = d.year();
   if (dd < 10) {
     dd = '0' + dd;
   }
@@ -67,18 +68,18 @@ export const MapDateToString = (d: Date): string => {
 };
 
 export const Today = (): string => {
-  return MapDateToString(new Date());
+  return MapDateToString(moment().parseZone());
 };
 
 export const GetDateRange = (start: string): string[] => {
-  const d = new Date(start);
-  const startDay = d.toString() === 'Invalid Date' ? new Date() : d;
+  const d = moment(start).parseZone();
+  const startDay = d.toString() === 'Invalid Date' ? moment().parseZone() : d;
   return [
     MapDateToString(GetDateByDays(startDay, -11)),
     MapDateToString(GetDateByDays(startDay, 11)),
   ];
 };
 
-export const GetDateByDays = (startDate: Date, addDay: number): Date => {
-  return new Date(new Date(startDate).setDate(startDate.getDate() + addDay));
+export const GetDateByDays = (startDate: Moment, addDay: number): Moment => {
+  return moment(startDate).add(addDay, 'days');
 };
