@@ -26,6 +26,7 @@ export interface UserResponse {
   email: string;
   avatar: string;
   left_days: number;
+  time_zone_offset: number;
 }
 
 // This is the interface for the task repsonse

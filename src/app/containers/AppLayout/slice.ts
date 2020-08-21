@@ -44,6 +44,12 @@ const slice = createSlice({
       },
     },
     deleteUserDetails: state => initialState,
+    updateUserTimeZoneOffset: {
+      reducer: state => state,
+      prepare: (offset: number) => {
+        return { payload: { offset } };
+      },
+    },
   },
 });
 

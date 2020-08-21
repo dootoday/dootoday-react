@@ -161,3 +161,10 @@ export const GetLastUpdateAPI = (): Promise<
   const headers = { Authorization: 'Bearer ' + GetAuthToken() };
   return axios.get(url, { headers });
 };
+
+export const UpdateUserTimeZone = (offset: number): Promise<AxiosResponse> => {
+  log('API: making request to update the user timezone..');
+  const url = `${BASE_URL}/v1/user/updatetz`;
+  const headers = { Authorization: 'Bearer ' + GetAuthToken() };
+  return axios.post(url, { time_zone_offset: offset }, { headers });
+};
