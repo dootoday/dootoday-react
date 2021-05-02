@@ -38,8 +38,6 @@ export const ProfilePage = memo((props: Props) => {
 
   const theme = props.theme || createMuiTheme();
 
-  console.log('#####-1', userDetails);
-
   return (
     <>
       <Helmet>
