@@ -6,6 +6,7 @@ export interface UserDetails {
   email: string;
   avatar: string;
   leftDays: number;
+  isAutoTaskMoveOn: boolean;
 }
 
 export interface AppLayoutState {
