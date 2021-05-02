@@ -20,6 +20,7 @@ function* getUserDetails(action) {
           email: data.email,
           avatar: data.avatar,
           leftDays: data.left_days,
+          isAutoTaskMoveOn: data.is_auto_task_move_on,
         }),
       );
     }

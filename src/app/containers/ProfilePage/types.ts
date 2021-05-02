@@ -1,4 +1,7 @@
 /* --- STATE --- */
-export interface ProfilePageState {}
+export interface ProfilePageState {
+  autoTaskMoveError: string;
+  autoTaskMoveSubmitting: boolean;
+}
 
 export type ContainerState = ProfilePageState;

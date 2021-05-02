@@ -6,12 +6,12 @@
 
 import React, { memo } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components/macro';
 
 import { useInjectReducer, useInjectSaga } from 'utils/redux-injectors';
-import { reducer, sliceKey } from './slice';
-import { profilePageSaga } from './saga';
+import { actions, reducer, sliceKey } from './slice';
+import profilePageSaga from './saga';
 import {
   Theme,
   createMuiTheme,
@@ -19,8 +19,10 @@ import {
   Paper,
   Typography,
   Container,
+  Switch,
 } from '@material-ui/core';
 import { userSelector } from 'app/containers/AppLayout/selector';
+import { selectProfilePage } from './selectors';
 
 interface Props {
   theme?: Theme;
@@ -30,9 +32,13 @@ export const ProfilePage = memo((props: Props) => {
   useInjectReducer({ key: sliceKey, reducer: reducer });
   useInjectSaga({ key: sliceKey, saga: profilePageSaga });
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const userDetails = useSelector(userSelector);
+  const profilePage = useSelector(selectProfilePage);
+  const dispatch = useDispatch();
+
   const theme = props.theme || createMuiTheme();
+
+  console.log('#####-1', userDetails);
 
   return (
     <>
@@ -53,6 +59,32 @@ export const ProfilePage = memo((props: Props) => {
                 {`${userDetails?.firstName} ${userDetails?.lastName}`}
               </Typography>
               <Typography variant="body1">{`${userDetails?.email}`}</Typography>
+            </Grid>
+          </Grid>
+          <Grid component="label" container alignItems="center" spacing={1}>
+            <Grid item>
+              <Typography variant="body2">Auto task move</Typography>
+            </Grid>
+            <Grid item>
+              <Switch
+                disabled={profilePage.autoTaskMoveSubmitting}
+                checked={userDetails?.isAutoTaskMoveOn}
+                onChange={() => {
+                  dispatch(
+                    actions.updateAutoTaskMove(!userDetails?.isAutoTaskMoveOn),
+                  );
+                }}
+                color="primary"
+                name="auto-task-move"
+                inputProps={{ 'aria-label': 'secondary checkbox' }}
+              />
+            </Grid>
+          </Grid>
+          <Grid component="label" container alignItems="center" spacing={1}>
+            <Grid item>
+              <Typography color="error" variant="caption">
+                {profilePage.autoTaskMoveError}
+              </Typography>
             </Grid>
           </Grid>
         </Container>

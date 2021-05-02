@@ -11,6 +11,7 @@ export const initialState: ContainerState = {
     email: '',
     avatar: '',
     leftDays: 0,
+    isAutoTaskMoveOn: false,
   },
 };
 
@@ -48,6 +49,18 @@ const slice = createSlice({
       reducer: state => state,
       prepare: (offset: number) => {
         return { payload: { offset } };
+      },
+    },
+    updateTaskAutoMove: {
+      prepare: (enable: boolean) => {
+        return { payload: { enable } };
+      },
+      reducer: (
+        state: ContainerState,
+        action: PayloadAction<{ enable: boolean }>,
+      ) => {
+        state.userDetails.isAutoTaskMoveOn = action.payload.enable;
+        return state;
       },
     },
   },

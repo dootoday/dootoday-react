@@ -27,6 +27,7 @@ export interface UserResponse {
   avatar: string;
   left_days: number;
   time_zone_offset: number;
+  is_auto_task_move_on: boolean;
 }
 
 // This is the interface for the task repsonse

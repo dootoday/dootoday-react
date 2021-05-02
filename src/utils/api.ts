@@ -40,7 +40,7 @@ export const GetUserAPI = (): Promise<AxiosResponse<UserResponse>> => {
   log('API: making request to get user details..');
   const url = BASE_URL + '/v1/user';
   const headers = { Authorization: 'Bearer ' + GetAuthToken() };
-  return axios.get(url, { headers });
+  return axios.get<UserResponse>(url, { headers });
 };
 
 export const GetTasksOnDateAPI = (
@@ -167,4 +167,17 @@ export const UpdateUserTimeZone = (offset: number): Promise<AxiosResponse> => {
   const url = `${BASE_URL}/v1/user/updatetz`;
   const headers = { Authorization: 'Bearer ' + GetAuthToken() };
   return axios.post(url, { time_zone_offset: offset }, { headers });
+};
+
+export const UpdateAutoTaskMove = (
+  allowAutoTaskMove: boolean,
+): Promise<AxiosResponse> => {
+  log('API: making request to update auto task move..');
+  const url = `${BASE_URL}/v1/user/taskmove`;
+  const headers = { Authorization: 'Bearer ' + GetAuthToken() };
+  return axios.post(
+    url,
+    { allow_auto_task_move: allowAutoTaskMove },
+    { headers },
+  );
 };
