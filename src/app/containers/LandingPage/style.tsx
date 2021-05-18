@@ -1,6 +1,6 @@
 import styled from 'styled-components/macro';
 
-export const Div = styled.div`
+export const Div = styled.div<{ mobileMenuOpen: boolean }>`
   font-family: 'Roboto', sans-serif;
   display: inline-block;
   width: 100%;
@@ -263,7 +263,7 @@ export const Div = styled.div`
     }
 
     .nav .mobile-links {
-      display: none;
+      display: ${props => (props.mobileMenuOpen ? 'block' : 'none')};
       margin-top: 7vh;
       height: 93vh;
     }

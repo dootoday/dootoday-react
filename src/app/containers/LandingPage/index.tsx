@@ -4,7 +4,7 @@
  *
  */
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Div } from './style';
 import logo from 'assets/logo1.png';
@@ -18,16 +18,16 @@ import { Link } from 'react-router-dom';
 interface Props {}
 
 export function LandingPage(props: Props) {
+  const [mobileMenu, setMobileMenue] = useState<boolean>(false);
   return (
     <>
       <Helmet>
         <title>LandingPage</title>
         <meta name="description" content="Description of LandingPage" />
       </Helmet>
-      <Div>
+      <Div mobileMenuOpen={mobileMenu}>
         <header className="header">
           <nav className="nav">
-            <input id="nav-toggle" type="checkbox" />
             <div className="logo">
               <img src={logo} alt="" className="logo-img" />
             </div>
@@ -45,7 +45,11 @@ export function LandingPage(props: Props) {
                 <a href="#ping_us">Ping Us</a>
               </li>
             </ul>
-            <ul id="mobile-links" className="mobile-links">
+            <ul
+              id="mobile-links"
+              className="mobile-links"
+              onClick={() => setMobileMenue(!mobileMenu)}
+            >
               <li className="list-item">
                 <a href="#home">Home</a>
               </li>
@@ -59,7 +63,10 @@ export function LandingPage(props: Props) {
                 <a href="#ping_us">Ping Us</a>
               </li>
             </ul>
-            <label className="icon-burger">
+            <label
+              className="icon-burger"
+              onClick={() => setMobileMenue(!mobileMenu)}
+            >
               <div className="line"></div>
               <div className="line"></div>
               <div className="line"></div>
