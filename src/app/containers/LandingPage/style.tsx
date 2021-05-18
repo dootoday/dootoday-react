@@ -160,12 +160,38 @@ export const Div = styled.div`
 
   /* ---------------------------------1st section-------------------------------- */
 
-  .subscribe_card {
-    width: 22rem;
+  .subscribe-card {
+    width: 55%;
+    max-width: 500px;
     height: 31rem;
     background: #0d6c8c;
     border-radius: 2rem;
     margin-top: 7rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    padding-left: 30px;
+    color: #fff;
+
+    .line1 {
+      font-size: 2.8em;
+      font-weight: 100;
+      margin: 10px 0px;
+    }
+
+    .line2 {
+      font-size: 1.8em;
+      font-weight: 100;
+      margin: 10px 0px;
+    }
+
+    .line3 {
+      font-size: 1.4em;
+      font-weight: 100;
+      margin: 10px 0px;
+      text-align: left;
+    }
   }
 
   /* join button */
@@ -262,7 +288,7 @@ export const Div = styled.div`
     .forth {
       order: 3;
     }
-    .subscribe_card {
+    .subscribe-card {
       order: 8;
       width: 80%;
       height: 400px;

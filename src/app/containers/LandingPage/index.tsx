@@ -114,7 +114,13 @@ export function LandingPage(props: Props) {
           </section>
 
           <section className="section" id="pricing">
-            <div className="subscribe_card"></div>
+            <div className="subscribe-card">
+              <h2 className="line1">Join for free</h2>
+              <h3 className="line2">Your first month is on us</h3>
+              <h3 className="line3">
+                Subscription starts from as small as 10 rupees
+              </h3>
+            </div>
 
             <div className="joinus">
               <h3 className="meta alignr">Less then</h3>
@@ -158,7 +164,7 @@ export function LandingPage(props: Props) {
                   For desert the sticky rice with mango, i dream about it now.
                 </p>
                 <p className="para">Highly recomend if you are in the mood</p>
-                <h2 className="alignr"> - Rishi Mukherjee</h2>
+                <h2 className="alignr"> - Someone Important</h2>
               </div>
             </section>
             <section>
