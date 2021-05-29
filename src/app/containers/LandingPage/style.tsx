@@ -198,7 +198,7 @@ export const Div = styled.div<{ mobileMenuOpen: boolean }>`
 
   /* join button */
   .join {
-    margin-top: 2.25px;
+    margin: 20px 0px;
     text-decoration: none;
     font-size: 2rem;
     padding: 1px 30px;

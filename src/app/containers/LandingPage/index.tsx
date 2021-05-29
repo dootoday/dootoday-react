@@ -128,7 +128,7 @@ export function LandingPage(props: Props) {
                 <h3 className="meta suffix-spcl-case">a</h3>
                 <h1 className="heading">buck</h1>
               </div>
-              <h3 className="meta">when you subscribe</h3>
+              <h3 className="meta alignr">when you subscribe</h3>
               <Link to="/login" className="alignr join">
                 JOIN NOW
               </Link>
