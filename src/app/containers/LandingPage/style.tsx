@@ -143,13 +143,13 @@ export const Div = styled.div<{ mobileMenuOpen: boolean }>`
 
   /* Image*/
   .responsive-image {
-    width: 90%;
+    width: 50%;
   }
 
   .section {
     display: flex;
     align-items: center;
-    justify-content: space-evenly;
+    justify-content: space-between;
     width: 95vw;
     margin: auto;
   }
@@ -278,6 +278,8 @@ export const Div = styled.div<{ mobileMenuOpen: boolean }>`
     }
     .section {
       flex-direction: column;
+      padding-top: 20px;
+      padding-bottom: 20px;
     }
     .alignr {
       text-align: center;

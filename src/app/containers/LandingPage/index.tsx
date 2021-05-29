@@ -13,6 +13,7 @@ import pic2 from 'assets/pic2.png';
 import pic3 from 'assets/pic3.png';
 import pic4 from 'assets/pic4.png';
 import todo from 'assets/todo.png';
+import clr from 'assets/colors.png';
 import { Link } from 'react-router-dom';
 
 interface Props {}
@@ -85,16 +86,11 @@ export function LandingPage(props: Props) {
                 going
               </p>
             </div>
-            <div>
-              <img src={pic1} alt="" className="responsive-image" />
-            </div>
+            <img src={pic1} alt="" className="responsive-image" />
           </section>
 
           <section className="section">
-            <div className="third">
-              <img src={pic2} alt="" className="responsive-image" />
-            </div>
-
+            <img src={pic2} alt="" className="responsive-image third" />
             <div className="forth">
               <h1 className="heading alignr">Simple</h1>
               <h3 className="meta alignr">as pen on papper</h3>
@@ -114,10 +110,7 @@ export function LandingPage(props: Props) {
                 Or, Let us your diary for a refresh look
               </p>
             </div>
-
-            <div>
-              <img className="responsive-image" src={pic1} alt="" />
-            </div>
+            <img className="responsive-image" src={clr} alt="" />
           </section>
 
           <section className="section" id="pricing">
@@ -150,16 +143,12 @@ export function LandingPage(props: Props) {
               <h3 className="meta">Come join us today</h3>
             </div>
 
-            <div>
-              <img src={pic3} alt="" className="responsive-image" />
-            </div>
+            <img src={pic3} alt="" className="responsive-image" />
           </section>
 
           <footer id="ping_us">
-            <section className="section">
-              <div>
-                <img src={todo} alt="" className="responsive-image" />
-              </div>
+            {/* <section className="section">
+              <img src={todo} alt="" className="responsive-image" />
               <div>
                 <h1 className="meta">Buzz about us</h1>
                 <p className="para">
@@ -173,11 +162,9 @@ export function LandingPage(props: Props) {
                 <p className="para">Highly recomend if you are in the mood</p>
                 <h2 className="alignr"> - Someone Important</h2>
               </div>
-            </section>
+            </section> */}
             <section>
-              <div>
-                <img src={pic4} alt="" className="last-img" />
-              </div>
+              <img src={pic4} alt="" className="last-img" />
               <nav className="foot-nav">
                 <Link className="foot-nav-item" to="/aboutus">
                   About us
