@@ -42,9 +42,9 @@ export function LandingPage(props: Props) {
               <li className="list-item">
                 <a href="#pricing">Join</a>
               </li>
-              <li className="list-item">
+              {/* <li className="list-item">
                 <a href="#ping_us">Ping Us</a>
-              </li>
+              </li> */}
             </ul>
             <ul
               id="mobile-links"
@@ -60,9 +60,9 @@ export function LandingPage(props: Props) {
               <li className="list-item">
                 <a href="#pricing">Join</a>
               </li>
-              <li className="list-item">
+              {/* <li className="list-item">
                 <a href="#ping_us">Ping Us</a>
-              </li>
+              </li> */}
             </ul>
             <label
               className="icon-burger"
@@ -146,7 +146,7 @@ export function LandingPage(props: Props) {
             <img src={pic3} alt="" className="responsive-image" />
           </section>
 
-          <footer id="ping_us">
+          <footer id="ping_us" style={{ marginTop: '40px' }}>
             {/* <section className="section">
               <img src={todo} alt="" className="responsive-image" />
               <div>
@@ -164,7 +164,7 @@ export function LandingPage(props: Props) {
               </div>
             </section> */}
             <section>
-              <img src={pic4} alt="" className="last-img" />
+              {/* <img src={pic4} alt="" className="last-img" /> */}
               <nav className="foot-nav">
                 <Link className="foot-nav-item" to="/aboutus">
                   About us

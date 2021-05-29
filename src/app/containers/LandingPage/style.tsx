@@ -20,7 +20,7 @@ export const Div = styled.div<{ mobileMenuOpen: boolean }>`
 
   .nav {
     height: 100%;
-    width: 95vw;
+    width: 75vw;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -150,8 +150,10 @@ export const Div = styled.div<{ mobileMenuOpen: boolean }>`
     display: flex;
     align-items: center;
     justify-content: space-between;
-    width: 95vw;
+    width: 75vw;
     margin: auto;
+    padding-top: 20px;
+    padding-bottom: 20px;
   }
 
   .forth {
@@ -237,7 +239,9 @@ export const Div = styled.div<{ mobileMenuOpen: boolean }>`
   /* ----------------------------2nd Nav Section------------------------------- */
 
   .last-img {
-    width: 100%;
+    width: 80%;
+    opacity: 0.6;
+    margin: auto;
     text-decoration: none;
   }
   .foot-nav {
@@ -278,8 +282,6 @@ export const Div = styled.div<{ mobileMenuOpen: boolean }>`
     }
     .section {
       flex-direction: column;
-      padding-top: 20px;
-      padding-bottom: 20px;
     }
     .alignr {
       text-align: center;
