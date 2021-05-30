@@ -22,8 +22,8 @@ export const AppFooter = (props: Props) => {
         justify="space-between"
         spacing={1}
       >
-        <Grid item>
-          <Grid container spacing={1} justify="center">
+        <Grid item md={8} xs={12}>
+          <Grid container spacing={1} className="links">
             <Grid item>
               <Typography variant="caption">
                 <Link className="footer-link" to="/aboutus">
@@ -61,8 +61,8 @@ export const AppFooter = (props: Props) => {
             </Grid>
           </Grid>
         </Grid>
-        <Grid item>
-          <Typography variant="caption" align={'center'}>
+        <Grid item md={4} xs={12} className="copyright">
+          <Typography variant="caption">
             Made with <FavoriteIcon className="icon favorite-icon" /> in India{' '}
             <CopyrightIcon className="icon" /> Rudolph Labs
           </Typography>
@@ -78,6 +78,9 @@ const Footer = styled.div<{ theme: Theme }>`
   padding: 20px;
   .footer-container {
     color: ${props => props.theme.palette.secondary.light};
+    .copyright {
+      text-align: right;
+    }
     .footer-link {
       color: ${props => props.theme.palette.secondary.light};
     }
@@ -87,8 +90,14 @@ const Footer = styled.div<{ theme: Theme }>`
     .favorite-icon {
       color: ${red[400]};
     }
-    @media (max-width: 48em) {
+    @media (max-width: 960px) {
       justify-content: center;
+      .links {
+        justify-content: center;
+      }
+      .copyright {
+        text-align: center;
+      }
     }
   }
 `;

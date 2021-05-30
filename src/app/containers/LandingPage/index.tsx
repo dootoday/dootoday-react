@@ -15,11 +15,15 @@ import pic3 from 'assets/pic3.png';
 // import todo from 'assets/todo.png';
 import clr from 'assets/colors.png';
 import { Link } from 'react-router-dom';
+import { AppFooter } from 'app/components/AppFooter';
+import { themepresets } from 'utils/theme';
+import { createMuiTheme } from '@material-ui/core';
 
 interface Props {}
 
 export function LandingPage(props: Props) {
   const [mobileMenu, setMobileMenue] = useState<boolean>(false);
+  const theme = createMuiTheme(themepresets.default);
   return (
     <>
       <Helmet>
@@ -147,41 +151,8 @@ export function LandingPage(props: Props) {
           </section>
 
           <footer id="ping_us" style={{ marginTop: '40px' }}>
-            {/* <section className="section">
-              <img src={todo} alt="" className="responsive-image" />
-              <div>
-                <h1 className="meta">Buzz about us</h1>
-                <p className="para">
-                  Heart be still i loved this place. Way better than i expeted.
-                  I had the spicy noodles and they were delicious,
-                </p>
-                <p className="para">flavor great and quality was on point.</p>
-                <p className="para">
-                  For desert the sticky rice with mango, i dream about it now.
-                </p>
-                <p className="para">Highly recomend if you are in the mood</p>
-                <h2 className="alignr"> - Someone Important</h2>
-              </div>
-            </section> */}
             <section>
-              {/* <img src={pic4} alt="" className="last-img" /> */}
-              <nav className="foot-nav">
-                <Link className="foot-nav-item" to="/aboutus">
-                  About us
-                </Link>
-                <Link className="foot-nav-item" to="/contact">
-                  Contact Us
-                </Link>
-                <Link className="foot-nav-item" to="/privacy">
-                  Privacy Policy
-                </Link>
-                <Link className="foot-nav-item" to="/tnc">
-                  Terms and Condition
-                </Link>
-                <Link className="foot-nav-item" to="/refund-policy">
-                  Refund Policy
-                </Link>
-              </nav>
+              <AppFooter theme={theme} />
             </section>
           </footer>
         </main>
