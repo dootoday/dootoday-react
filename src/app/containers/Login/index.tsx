@@ -9,7 +9,7 @@ import { Helmet } from 'react-helmet-async';
 import GoogleLogin from 'react-google-login';
 // import { useTranslation } from 'react-i18next';
 import styled from 'styled-components/macro';
-import { Container, Grid, Typography } from '@material-ui/core';
+import { Card, Container, Grid, Typography } from '@material-ui/core';
 import { RouteComponentProps, useLocation, Link } from 'react-router-dom';
 import { useInjectSaga } from 'utils/redux-injectors';
 import { loginSaga } from './saga';
@@ -61,33 +61,49 @@ export const Login = memo((props: Props) => {
       </Helmet>
       <PublicLayout>
         <Div>
-          <Container fixed maxWidth="sm">
-            <Grid container justify="center" direction="column" spacing={5}>
-              <Grid item>
-                <Typography variant="h6" align="center">
-                  Sign up with your Google account. <br />
-                  All we ask for is your name and email.
-                </Typography>
+          <Card
+            raised={true}
+            style={{ maxWidth: '290px', margin: 'auto', padding: '20px 0px' }}
+          >
+            <Container fixed maxWidth="sm">
+              <Grid container justify="center" direction="column" spacing={5}>
+                <Grid item className="google-login">
+                  <Typography
+                    color="primary"
+                    variant="h6"
+                    align="center"
+                    style={{ fontWeight: 200, marginBottom: '20px' }}
+                  >
+                    Sign up with your Google account.
+                  </Typography>
+                  <Typography color="primary" variant="caption" align="center">
+                    We only ask for your name and email.
+                  </Typography>
+                </Grid>
+                <Grid item className="google-login">
+                  <GoogleLogin
+                    clientId={process.env.REACT_APP_GOOGLE_APP_CLIENT_ID || ''}
+                    buttonText="Login with Google"
+                    onSuccess={d => handleLogin(d['tokenId'])}
+                    onFailure={d => console.log(d)}
+                    cookiePolicy={'single_host_origin'}
+                  />
+                </Grid>
+                <Grid item className="google-login">
+                  <Typography color="primary" variant="caption" align="center">
+                    Feeling reluctant? Checkout our <br />
+                    <Link target="_blak" to="/tnc">
+                      Terms & Condition
+                    </Link>
+                    <br /> {' and '} <br />
+                    <Link target="_blak" to="/privacy">
+                      Privacy Policy
+                    </Link>
+                  </Typography>
+                </Grid>
               </Grid>
-              <Grid item className="google-login">
-                <GoogleLogin
-                  clientId={process.env.REACT_APP_GOOGLE_APP_CLIENT_ID || ''}
-                  buttonText="Login with Google"
-                  onSuccess={d => handleLogin(d['tokenId'])}
-                  onFailure={d => console.log(d)}
-                  cookiePolicy={'single_host_origin'}
-                />
-              </Grid>
-              <Grid item className="google-login">
-                <Typography variant="body2" align="center">
-                  Feeling reluctant? Checkout our <br />
-                  <Link to="/tnc">Terms & Condition</Link>
-                  {' and '}
-                  <Link to="/privacy">Privacy Policy</Link>
-                </Typography>
-              </Grid>
-            </Grid>
-          </Container>
+            </Container>
+          </Card>
         </Div>
       </PublicLayout>
     </>
