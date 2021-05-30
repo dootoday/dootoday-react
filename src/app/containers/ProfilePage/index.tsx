@@ -13,6 +13,7 @@ import { useInjectReducer, useInjectSaga } from 'utils/redux-injectors';
 import { actions, reducer, sliceKey } from './slice';
 import profilePageSaga from './saga';
 import {
+  Avatar,
   Theme,
   createMuiTheme,
   Grid,
@@ -47,23 +48,31 @@ export const ProfilePage = memo((props: Props) => {
       <Div theme={theme}>
         <Container>
           <Grid container spacing={4}>
-            <Grid item>
+            <Grid item lg={1} sm={2} xs={3}>
               <Paper elevation={0} className="user-image">
-                <img src={userDetails?.avatar} alt="profile" />
+                <Avatar
+                  alt=""
+                  style={{ height: theme.spacing(7), width: theme.spacing(7) }}
+                  src={userDetails?.avatar}
+                />
               </Paper>
             </Grid>
-            <Grid item>
+            <Grid item lg={11} sm={10} xs={9}>
               <Typography variant="h5">
                 {`${userDetails?.firstName} ${userDetails?.lastName}`}
               </Typography>
               <Typography variant="body1">{`${userDetails?.email}`}</Typography>
             </Grid>
           </Grid>
+          <hr />
+          <Typography variant="h6">Settings</Typography>
           <Grid component="label" container alignItems="center" spacing={1}>
-            <Grid item>
-              <Typography variant="body2">Auto task move</Typography>
+            <Grid item xs={10}>
+              <Typography variant="body2">
+                Move undone tasks to today
+              </Typography>
             </Grid>
-            <Grid item>
+            <Grid item xs={2}>
               <Switch
                 disabled={profilePage.autoTaskMoveSubmitting}
                 checked={userDetails?.isAutoTaskMoveOn}
@@ -79,9 +88,32 @@ export const ProfilePage = memo((props: Props) => {
             </Grid>
           </Grid>
           <Grid component="label" container alignItems="center" spacing={1}>
+            <Grid item xs={10}>
+              <Typography variant="body2">
+                Receive daily email update
+              </Typography>
+            </Grid>
+            <Grid item xs={2}>
+              <Switch
+                disabled={profilePage.emailUpdateSubmitting}
+                checked={userDetails?.isDailyEmailUpdateOn}
+                onChange={() => {
+                  dispatch(
+                    actions.updateDailyEmailUpdate(
+                      !userDetails?.isDailyEmailUpdateOn,
+                    ),
+                  );
+                }}
+                color="primary"
+                name="auto-task-move"
+                inputProps={{ 'aria-label': 'secondary checkbox' }}
+              />
+            </Grid>
+          </Grid>
+          <Grid component="label" container alignItems="center" spacing={1}>
             <Grid item>
               <Typography color="error" variant="caption">
-                {profilePage.autoTaskMoveError}
+                {profilePage.error}
               </Typography>
             </Grid>
           </Grid>
@@ -94,5 +126,6 @@ export const ProfilePage = memo((props: Props) => {
 const Div = styled.div<{ theme: Theme }>`
   margin-top: 30px;
   margin-bottom: 30px;
+  width: 100%;
   color: ${props => props.theme.palette.primary.dark};
 `;

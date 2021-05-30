@@ -4,8 +4,9 @@ import { ContainerState } from './types';
 
 // The initial state of the ProfilePage container
 export const initialState: ContainerState = {
-  autoTaskMoveError: '',
+  error: '',
   autoTaskMoveSubmitting: false,
+  emailUpdateSubmitting: false,
 };
 
 const profilePageSlice = createSlice({
@@ -14,7 +15,7 @@ const profilePageSlice = createSlice({
   reducers: {
     updateAutoTaskMove: {
       reducer: state => {
-        state.autoTaskMoveError = '';
+        state.error = '';
         state.autoTaskMoveSubmitting = true;
         return state;
       },
@@ -23,7 +24,7 @@ const profilePageSlice = createSlice({
       },
     },
     autoTaskMoveSuccess: state => {
-      state.autoTaskMoveError = '';
+      state.error = '';
       state.autoTaskMoveSubmitting = false;
       return state;
     },
@@ -32,8 +33,36 @@ const profilePageSlice = createSlice({
         state: ContainerState,
         action: PayloadAction<{ error: string }>,
       ) => {
-        state.autoTaskMoveError = action.payload.error;
+        state.error = action.payload.error;
         state.autoTaskMoveSubmitting = false;
+        return state;
+      },
+      prepare: (error: string) => {
+        return { payload: { error } };
+      },
+    },
+    updateDailyEmailUpdate: {
+      reducer: state => {
+        state.error = '';
+        state.emailUpdateSubmitting = true;
+        return state;
+      },
+      prepare: (enable: boolean) => {
+        return { payload: { enable } };
+      },
+    },
+    updateDailyEmailUpdateSuccess: state => {
+      state.error = '';
+      state.emailUpdateSubmitting = false;
+      return state;
+    },
+    updateDailyEmailUpdateFailure: {
+      reducer: (
+        state: ContainerState,
+        action: PayloadAction<{ error: string }>,
+      ) => {
+        state.error = action.payload.error;
+        state.emailUpdateSubmitting = false;
         return state;
       },
       prepare: (error: string) => {
