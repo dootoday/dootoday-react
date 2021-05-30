@@ -148,7 +148,7 @@ export const AppLayout = memo((props: Props) => {
               />
             </Switch>
           )}
-          <AppFooter />
+          <AppFooter theme={theme} />
         </Div>
       </ThemeProvider>
     </>

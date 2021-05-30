@@ -77,12 +77,12 @@ const Footer = styled.div<{ theme: Theme }>`
   min-height: 50px;
   padding: 20px;
   .footer-container {
-    color: ${props => props.theme.palette.secondary.light};
+    color: ${props => props.theme.palette.primary.main};
     .copyright {
       text-align: right;
     }
     .footer-link {
-      color: ${props => props.theme.palette.secondary.light};
+      color: ${props => props.theme.palette.primary.main};
     }
     .icon {
       font-size: 14px;
