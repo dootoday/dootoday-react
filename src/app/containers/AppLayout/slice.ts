@@ -12,6 +12,7 @@ export const initialState: ContainerState = {
     avatar: '',
     leftDays: 0,
     isAutoTaskMoveOn: false,
+    isDailyEmailUpdateOn: false,
   },
 };
 
@@ -60,6 +61,18 @@ const slice = createSlice({
         action: PayloadAction<{ enable: boolean }>,
       ) => {
         state.userDetails.isAutoTaskMoveOn = action.payload.enable;
+        return state;
+      },
+    },
+    updateDailyEmailUpdate: {
+      prepare: (enable: boolean) => {
+        return { payload: { enable } };
+      },
+      reducer: (
+        state: ContainerState,
+        action: PayloadAction<{ enable: boolean }>,
+      ) => {
+        state.userDetails.isDailyEmailUpdateOn = action.payload.enable;
         return state;
       },
     },

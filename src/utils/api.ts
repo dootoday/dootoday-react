@@ -181,3 +181,10 @@ export const UpdateAutoTaskMove = (
     { headers },
   );
 };
+
+export const UpdateDailyEmail = (allow: boolean): Promise<AxiosResponse> => {
+  log('API: making request to update daily email update..');
+  const url = `${BASE_URL}/v1/user/emailupdate`;
+  const headers = { Authorization: 'Bearer ' + GetAuthToken() };
+  return axios.post(url, { allow_daily_email_update: allow }, { headers });
+};

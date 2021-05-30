@@ -1,7 +1,8 @@
 /* --- STATE --- */
 export interface ProfilePageState {
-  autoTaskMoveError: string;
   autoTaskMoveSubmitting: boolean;
+  error: string;
+  emailUpdateSubmitting: boolean;
 }
 
 export type ContainerState = ProfilePageState;

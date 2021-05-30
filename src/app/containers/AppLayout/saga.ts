@@ -21,6 +21,7 @@ function* getUserDetails(action) {
           avatar: data.avatar,
           leftDays: data.left_days,
           isAutoTaskMoveOn: data.is_auto_task_move_on,
+          isDailyEmailUpdateOn: data.is_daily_email_update_on,
         }),
       );
     }
