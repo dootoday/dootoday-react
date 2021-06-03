@@ -14,6 +14,7 @@ import React, {
 import styled from 'styled-components/macro';
 import { createMuiTheme, Theme } from '@material-ui/core/styles';
 import EditIcon from '@material-ui/icons/Edit';
+import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import { Typography } from '@material-ui/core';
 import ReactMarkdown from 'react-markdown';
 import emoji from 'emoji-dictionary';
@@ -81,10 +82,19 @@ export const TaskItem = memo(
       isJustInput ? justEditingTaskState : task,
     );
     const inputRef = useRef() as React.MutableRefObject<HTMLInputElement>;
-    const handleDoublieClick = () => {
+    const handleEdit = e => {
+      e.preventDefault();
+      e.stopPropagation();
       if (isEditable) {
         setEditing(true);
       }
+    };
+    const handleDelete = e => {
+      e.preventDefault();
+      e.stopPropagation();
+      const newState = { ...taskState, ...{ markdown: '' } };
+      setTaskState(newState);
+      onTaskUpdate && onTaskUpdate(newState);
     };
     const handleClick = e => {
       e.preventDefault();
@@ -174,9 +184,16 @@ export const TaskItem = memo(
                   renderers={{ link: LinkRenderer, text: emojiSupport }}
                 />
               </Typography>
-              <div className="edit-icon" onClick={handleDoublieClick}>
-                <EditIcon style={{ fontSize: '0.75rem' }} />
-              </div>
+              {!taskState.isDone && (
+                <div className="edit-icon" onClick={handleEdit}>
+                  <EditIcon style={{ fontSize: '0.75rem' }} />
+                </div>
+              )}
+              {taskState.isDone && taskState.markdown && (
+                <div className="edit-icon" onClick={handleDelete}>
+                  <DeleteForeverIcon style={{ fontSize: '0.75rem' }} />
+                </div>
+              )}
             </>
           )}
           {(editing || isJustInput) && (
@@ -219,17 +236,6 @@ const Div = styled.div<{ theme: Theme; highlight: boolean }>`
     .md {
       a {
         color: ${blue[200]};
-      }
-    }
-    :hover {
-      color: ${props =>
-        props.highlight
-          ? props.theme.palette.primary.dark
-          : props.theme.palette.secondary.dark};
-      .md {
-        a {
-          color: ${blue[400]};
-        }
       }
     }
   }
@@ -289,13 +295,14 @@ const Div = styled.div<{ theme: Theme; highlight: boolean }>`
 
   .edit-icon {
     position: absolute;
-    top: 0;
+    top: 2px;
     right: 0;
     cursor: pointer;
     width: 20px;
     display: flex;
     justify-content: center;
     align-items: center;
+    opacity: 0.6;
   }
 
   :hover {
@@ -307,6 +314,17 @@ const Div = styled.div<{ theme: Theme; highlight: boolean }>`
       cursor: grab;
       position: relative;
       z-index: 2;
+    }
+    .done {
+      color: ${props =>
+        props.highlight
+          ? props.theme.palette.primary.dark
+          : props.theme.palette.secondary.dark};
+      .md {
+        a {
+          color: ${blue[400]};
+        }
+      }
     }
   }
 
