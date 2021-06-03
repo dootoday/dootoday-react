@@ -13,6 +13,7 @@ import React, {
 } from 'react';
 import styled from 'styled-components/macro';
 import { createMuiTheme, Theme } from '@material-ui/core/styles';
+import EditIcon from '@material-ui/icons/Edit';
 import { Typography } from '@material-ui/core';
 import ReactMarkdown from 'react-markdown';
 import emoji from 'emoji-dictionary';
@@ -80,14 +81,7 @@ export const TaskItem = memo(
       isJustInput ? justEditingTaskState : task,
     );
     const inputRef = useRef() as React.MutableRefObject<HTMLInputElement>;
-    let timeouts: number[] = [];
     const handleDoublieClick = () => {
-      if (timeouts.length) {
-        timeouts.forEach(to => {
-          clearTimeout(to);
-        });
-        timeouts = [];
-      }
       if (isEditable) {
         setEditing(true);
       }
@@ -95,13 +89,9 @@ export const TaskItem = memo(
     const handleClick = e => {
       e.preventDefault();
       e.stopPropagation();
-      timeouts.push(
-        setTimeout(() => {
-          const newState = { ...taskState, ...{ isDone: !taskState.isDone } };
-          setTaskState(newState);
-          onTaskUpdate && onTaskUpdate(newState);
-        }, 400),
-      );
+      const newState = { ...taskState, ...{ isDone: !taskState.isDone } };
+      setTaskState(newState);
+      onTaskUpdate && onTaskUpdate(newState);
     };
     const onBlur = (event: any) => {
       event.preventDefault();
@@ -171,19 +161,23 @@ export const TaskItem = memo(
       <>
         <Div {...{ theme, highlight }}>
           {!editing && (
-            <Typography
-              onDoubleClick={handleDoublieClick}
-              onClick={handleClick}
-              variant={'caption'}
-              className={taskState.isDone ? 'done' : ''}
-            >
-              <ReactMarkdown
-                className={'md'}
-                disallowedTypes={['break', 'delete']}
-                source={calcTaskText(taskState)}
-                renderers={{ link: LinkRenderer, text: emojiSupport }}
-              />
-            </Typography>
+            <>
+              <Typography
+                onClick={handleClick}
+                variant={'caption'}
+                className={taskState.isDone ? 'done' : ''}
+              >
+                <ReactMarkdown
+                  className={'md'}
+                  disallowedTypes={['break', 'delete']}
+                  source={calcTaskText(taskState)}
+                  renderers={{ link: LinkRenderer, text: emojiSupport }}
+                />
+              </Typography>
+              <div className="edit-icon" onClick={handleDoublieClick}>
+                <EditIcon style={{ fontSize: '0.75rem' }} />
+              </div>
+            </>
           )}
           {(editing || isJustInput) && (
             <input
@@ -210,6 +204,7 @@ const Div = styled.div<{ theme: Theme; highlight: boolean }>`
   height: 25px;
   margin-bottom: 0px;
   margin-top: 0px;
+  position: relative;
   color: ${props =>
     props.highlight
       ? props.theme.palette.primary.dark
@@ -256,19 +251,11 @@ const Div = styled.div<{ theme: Theme; highlight: boolean }>`
         : props.theme.palette.secondary.dark};
   }
   .md {
-    width: 100%;
+    width: calc(100% - 20px);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     padding-left: 2px;
-    :hover {
-      overflow: visible;
-      text-overflow: unset;
-      white-space: initial;
-      background-color: ${props => props.theme.palette.primary.light};
-      cursor: grab;
-      position: relative;
-    }
 
     h1,
     h2,
@@ -297,6 +284,29 @@ const Div = styled.div<{ theme: Theme; highlight: boolean }>`
     a {
       text-decoration: none;
       color: ${blue[400]};
+    }
+  }
+
+  .edit-icon {
+    position: absolute;
+    top: 0;
+    right: 0;
+    cursor: pointer;
+    width: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  :hover {
+    .md {
+      overflow: visible;
+      text-overflow: unset;
+      white-space: initial;
+      background-color: ${props => props.theme.palette.primary.light};
+      cursor: grab;
+      position: relative;
+      z-index: 2;
     }
   }
 
