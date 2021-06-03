@@ -257,7 +257,7 @@ const Div = styled.div<{ theme: Theme; highlight: boolean }>`
         : props.theme.palette.secondary.dark};
   }
   .md {
-    width: calc(100% - 20px);
+    width: calc(100% - 30px);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -298,7 +298,7 @@ const Div = styled.div<{ theme: Theme; highlight: boolean }>`
     top: 2px;
     right: 0;
     cursor: pointer;
-    width: 20px;
+    width: 30px;
     display: flex;
     justify-content: center;
     align-items: center;
