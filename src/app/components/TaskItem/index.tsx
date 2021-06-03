@@ -186,12 +186,12 @@ export const TaskItem = memo(
               </Typography>
               {!taskState.isDone && (
                 <div className="edit-icon" onClick={handleEdit}>
-                  <EditIcon style={{ fontSize: '0.75rem' }} />
+                  <EditIcon className="ico" />
                 </div>
               )}
               {taskState.isDone && taskState.markdown && (
                 <div className="edit-icon" onClick={handleDelete}>
-                  <DeleteForeverIcon style={{ fontSize: '0.75rem' }} />
+                  <DeleteForeverIcon className="ico" />
                 </div>
               )}
             </>
@@ -303,6 +303,10 @@ const Div = styled.div<{ theme: Theme; highlight: boolean }>`
     justify-content: center;
     align-items: center;
     opacity: 0.6;
+
+    .ico {
+      font-size: 0.75rem;
+    }
   }
 
   :hover {
@@ -350,6 +354,11 @@ const Div = styled.div<{ theme: Theme; highlight: boolean }>`
         font-size: 0.95rem;
       }
       li {
+        font-size: 0.95rem;
+      }
+    }
+    .edit-icon {
+      .ico {
         font-size: 0.95rem;
       }
     }
