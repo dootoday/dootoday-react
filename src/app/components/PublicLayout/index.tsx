@@ -9,16 +9,18 @@ import { ThemeProvider } from '@material-ui/core/styles';
 import { AppHeader } from 'app/components/AppHeader';
 import { AppFooter } from 'app/components/AppFooter';
 import { createMuiTheme } from '@material-ui/core';
-import { themepresets } from 'utils/theme';
+import { GetStoredTheme, themepresets } from 'utils/theme';
 
 interface Props {
   children: ReactNode;
   className?: string;
 }
 
-const theme = createMuiTheme(themepresets.default);
-
 export function PublicLayout(props: Props) {
+  const localTheme = GetStoredTheme();
+  const theme = localTheme
+    ? createMuiTheme(localTheme.theme)
+    : createMuiTheme(themepresets.default);
   const { className } = props;
   return (
     <ThemeProvider theme={theme}>
